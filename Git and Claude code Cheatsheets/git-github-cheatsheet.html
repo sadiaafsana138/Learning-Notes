@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git & GitHub Cheatsheet</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#f5f0e8;
+  --surface:#ede8dc;
+  --card:#faf7f2;
+  --border:#d6cfc0;
+  --ink:#1a1612;
+  --muted:#7a6f62;
+  --accent:#c0392b;
+  --accent2:#2c7a4b;
+  --accent3:#1a5276;
+  --highlight:#f9e4b7;
+  --code-bg:#1a1612;
+  --code-text:#f0d080;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  padding:48px 24px;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(0,0,0,0.04) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(0,0,0,0.02) 40px
+    );
+}
+
+.header{
+  text-align:center;
+  margin-bottom:52px;
+}
+
+.header::before{
+  content:'';
+  display:block;
+  width:60px;
+  height:4px;
+  background:var(--accent);
+  margin:0 auto 20px;
+  border-radius:2px;
+}
+
+.badge{
+  font-family:'Fira Code',monospace;
+  font-size:11px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:12px;
+  display:block;
+}
+
+h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.4rem,6vw,4rem);
+  font-weight:400;
+  line-height:1.05;
+}
+
+h1 em{
+  color:var(--accent);
+  font-style:italic;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-top:12px;
+  font-size:14px;
+  font-family:'Fira Code',monospace;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:22px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.card{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:4px;
+  padding:26px;
+  box-shadow:3px 3px 0 var(--border);
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:5px 5px 0 var(--border);
+}
+
+.card-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+  padding-bottom:14px;
+  border-bottom:1.5px solid var(--border);
+}
+
+.cat-label{
+  font-family:'Fira Code',monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:2px;
+}
+
+.cat-red{
+  background:rgba(192,57,43,0.1);
+  color:var(--accent);
+  border:1px solid rgba(192,57,43,0.25);
+}
+
+.cat-green{
+  background:rgba(44,122,75,0.1);
+  color:var(--accent2);
+  border:1px solid rgba(44,122,75,0.25);
+}
+
+.cat-blue{
+  background:rgba(26,82,118,0.1);
+  color:var(--accent3);
+  border:1px solid rgba(26,82,118,0.25);
+}
+
+.cat-brown{
+  background:rgba(122,111,98,0.1);
+  color:var(--muted);
+  border:1px solid rgba(122,111,98,0.25);
+}
+
+.cmd-block{
+  margin-bottom:14px;
+  padding-bottom:14px;
+  border-bottom:1px dashed var(--border);
+}
+
+.cmd-block:last-child{
+  border-bottom:none;
+}
+
+.cmd{
+  font-family:'Fira Code',monospace;
+  font-size:12.5px;
+  background:var(--code-bg);
+  color:var(--code-text);
+  padding:7px 12px;
+  border-radius:3px;
+  margin-bottom:5px;
+  display:block;
+  user-select:all;
+}
+
+.cmd-desc{
+  font-size:12.5px;
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.placeholder{
+  color:#80c0ff;
+}
+
+.note{
+  background:var(--highlight);
+  border-left:3px solid #e0a020;
+  padding:8px 12px;
+  border-radius:0 3px 3px 0;
+  font-size:12px;
+  color:#6b4c00;
+  margin-top:10px;
+}
+
+.footer{
+  text-align:center;
+  margin-top:52px;
+  color:var(--muted);
+  font-size:11.5px;
+  font-family:'Fira Code',monospace;
+}
+
+.footer::before{
+  content:'';
+  display:block;
+  width:40px;
+  height:2px;
+  background:var(--border);
+  margin:0 auto 16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <span class="badge">version control · github · quick reference</span>
+  <h1>Git & GitHub <em>Cheatsheet</em></h1>
+  <p class="subtitle">$ Git + GitHub workflow commands — বাংলায়</p>
+</div>
+
+<div class="grid">
+
+  <!-- SETUP -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-brown">⚙ Setup</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git config --global user.name "তোমার নাম"</code>
+      <div class="cmd-desc">Git username set করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git config --global user.email "email@gmail.com"</code>
+      <div class="cmd-desc">Git email set করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git config --list</code>
+      <div class="cmd-desc">সব configuration দেখো</div>
+    </div>
+
+    <div class="note">
+      💡 এটা একবার করলেই সব project এ কাজ করবে
+    </div>
+  </div>
+
+  <!-- INIT -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-green">🌱 Repo Start</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git init</code>
+      <div class="cmd-desc">নতুন Git repository তৈরি করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git clone https://github.com/user/repo</code>
+      <div class="cmd-desc">GitHub repo copy করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git status</code>
+      <div class="cmd-desc">কি change হয়েছে দেখো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git log --oneline</code>
+      <div class="cmd-desc">সব commit history দেখো</div>
+    </div>
+  </div>
+
+  <!-- ADD COMMIT -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-green">📦 Add & Commit</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git add .</code>
+      <div class="cmd-desc">সব files stage করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git add filename.py</code>
+      <div class="cmd-desc">একটা file stage করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git commit -m "fix navbar"</code>
+      <div class="cmd-desc">changes save করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git commit --amend</code>
+      <div class="cmd-desc">শেষ commit edit করো</div>
+    </div>
+  </div>
+
+  <!-- PUSH PULL -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-blue">☁ Push & Pull</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git push</code>
+      <div class="cmd-desc">GitHub এ upload করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git pull</code>
+      <div class="cmd-desc">latest changes নামাও</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git fetch</code>
+      <div class="cmd-desc">changes check করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git push -u origin main</code>
+      <div class="cmd-desc">প্রথম push এর সময়</div>
+    </div>
+  </div>
+
+  <!-- BRANCH -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-green">🌿 Branching</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git branch</code>
+      <div class="cmd-desc">সব branch দেখো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git checkout new-feature</code>
+      <div class="cmd-desc">branch change করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git checkout -b new-feature</code>
+      <div class="cmd-desc">নতুন branch তৈরি + switch</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git merge new-feature</code>
+      <div class="cmd-desc">branch merge করো</div>
+    </div>
+  </div>
+
+  <!-- UNDO -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-red">↩ Undo / Fix</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git restore .</code>
+      <div class="cmd-desc">সব unstaged changes remove</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git reset HEAD~1</code>
+      <div class="cmd-desc">শেষ commit undo</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git stash</code>
+      <div class="cmd-desc">temporary save</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git stash pop</code>
+      <div class="cmd-desc">stash ফিরিয়ে আনো</div>
+    </div>
+  </div>
+
+  <!-- GITHUB CONNECT -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-blue">🔗 GitHub Connect</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git remote add origin https://github.com/user/repo.git</code>
+      <div class="cmd-desc">GitHub repo connect করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git remote -v</code>
+      <div class="cmd-desc">connected remote দেখো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git branch -M main</code>
+      <div class="cmd-desc">main branch rename করো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">git push -u origin main</code>
+      <div class="cmd-desc">GitHub এ প্রথম push</div>
+    </div>
+  </div>
+
+  <!-- GITHUB CLI -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-blue">🐙 GitHub CLI</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh auth login</code>
+      <div class="cmd-desc">GitHub login</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh repo create</code>
+      <div class="cmd-desc">নতুন repo তৈরি</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh repo clone user/repo</code>
+      <div class="cmd-desc">repo clone</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh repo view</code>
+      <div class="cmd-desc">repo details দেখো</div>
+    </div>
+  </div>
+
+  <!-- PULL REQUEST -->
+  <div class="card">
+    <div class="card-header">
+      <span class="cat-label cat-blue">🔀 Pull Requests</span>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh pr create</code>
+      <div class="cmd-desc">নতুন Pull Request তৈরি</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh pr list</code>
+      <div class="cmd-desc">সব PR দেখো</div>
+    </div>
+
+    <div class="cmd-block">
+      <code class="cmd">gh pr checkout 12</code>
+      <div class="cmd-desc">PR locally checkout করো</div>
+    </div>
+
+    <div class="note">
+      💡 Pull Request team collaboration এর সবচেয়ে গুরুত্বপূর্ণ অংশ
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>
+    git & github cheatsheet · নীল = GitHub · সবুজ = local Git · লাল = সাবধানে!
+  </p>
+</div>
+
+</body>
+</html>
