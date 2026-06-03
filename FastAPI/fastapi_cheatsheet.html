@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastAPI Cheat Sheet — Beginner to Advanced</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;800&display=swap');
+
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --line:#2d3645;
+    --ink:#e6edf3; --dim:#8b97a8; --faint:#5c6675;
+    --teal:#2dd4bf; --green:#7ee787; --blue:#79c0ff; --purple:#d2a8ff;
+    --pink:#ff7b9c; --amber:#ffd479; --orange:#ffa657; --red:#ff6b6b;
+    --kw:#ff7b9c; --str:#a5d6a4; --num:#79c0ff; --com:#6e7681; --fn:#d2a8ff; --dec:#ffd479;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Sora',sans-serif; line-height:1.5;
+    background-image:radial-gradient(circle at 15% -5%, #16344022, transparent 40%),
+                     radial-gradient(circle at 90% 0%, #2dd4bf11, transparent 35%);
+    padding:0 0 80px;
+  }
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+
+  /* ---- header ---- */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:34px 40px 26px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg,#10161f,#0d1117);
+  }
+  .logo{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .badge{
+    font-family:'JetBrains Mono';font-weight:700;font-size:13px;
+    color:var(--bg);background:var(--teal);padding:4px 10px;border-radius:6px;letter-spacing:.5px;
+  }
+  h1{font-size:34px;font-weight:800;letter-spacing:-.5px}
+  h1 .accent{color:var(--teal)}
+  .sub{color:var(--dim);font-size:14px;margin-top:6px;max-width:760px}
+  .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12px;font-family:'JetBrains Mono';color:var(--faint)}
+  .meta b{color:var(--green);font-weight:500}
+
+  /* ---- layout ---- */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .grid{column-count:2;column-gap:22px;margin-top:26px}
+  @media(max-width:900px){.grid{column-count:1}}
+
+  section{
+    break-inside:avoid; background:var(--panel);
+    border:1px solid var(--line); border-radius:12px;
+    margin:0 0 22px; overflow:hidden; display:inline-block; width:100%;
+  }
+  .sec-head{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 16px; border-bottom:1px solid var(--line);
+    background:var(--panel2);
+  }
+  .num{
+    font-family:'JetBrains Mono';font-weight:700;font-size:12px;
+    color:var(--bg); width:24px;height:24px;border-radius:6px;
+    display:grid;place-items:center;flex:none;
+  }
+  .sec-head h2{font-size:16px;font-weight:600;letter-spacing:-.2px}
+  .lvl{margin-left:auto;font-size:10px;font-family:'JetBrains Mono';
+    padding:3px 8px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
+  .lvl.b{color:var(--green);border-color:#2c4a36}
+  .lvl.i{color:var(--amber);border-color:#4a3f24}
+  .lvl.a{color:var(--pink);border-color:#4a2c36}
+
+  .body{padding:14px 16px}
+  p.note{font-size:13px;color:var(--dim);margin:0 0 10px}
+  p.note + pre{margin-top:0}
+  .tip{font-size:12px;color:var(--faint);margin:8px 0 0;padding-left:12px;border-left:2px solid var(--line)}
+  .tip b{color:var(--teal);font-weight:500}
+
+  pre{
+    background:#0b0f15;border:1px solid #20283400;border-radius:8px;
+    padding:12px 14px;overflow-x:auto;font-size:12.5px;line-height:1.65;
+    margin:10px 0;
+  }
+  pre:first-child{margin-top:0}
+  pre code{color:var(--ink);white-space:pre}
+
+  /* syntax */
+  .k{color:var(--kw)} .s{color:var(--str)} .n{color:var(--num)}
+  .c{color:var(--com);font-style:italic} .f{color:var(--fn)} .d{color:var(--dec)}
+  .t{color:var(--blue)} .o{color:var(--ink)}
+
+  .tablewrap{margin:10px 0 0;font-size:12.5px}
+  table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono';font-size:12px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--teal);font-weight:500}
+  td:first-child{color:var(--purple)}
+  td{color:var(--dim)}
+
+  .pill{display:inline-block;font-family:'JetBrains Mono';font-size:11px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+    padding:1px 7px;color:var(--amber);margin:0 2px}
+
+  /* TOC */
+  .toc{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:16px 20px;margin-top:26px;
+  }
+  .toc h3{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--faint);margin-bottom:12px;font-family:'JetBrains Mono'}
+  .toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px 18px}
+  .toc a{color:var(--dim);text-decoration:none;font-size:13px;display:flex;gap:8px;padding:3px 0;border-radius:4px}
+  .toc a:hover{color:var(--teal)}
+  .toc a .tn{font-family:'JetBrains Mono';color:var(--faint);font-size:11px;width:18px;flex:none}
+
+  footer{max-width:1180px;margin:30px auto 0;padding:18px 24px;border-top:1px solid var(--line);
+    color:var(--faint);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--teal);text-decoration:none}
+
+  /* color assignments for section numbers */
+  .c0{background:var(--green)} .c1{background:var(--teal)} .c2{background:var(--blue)}
+  .c3{background:var(--purple)} .c4{background:var(--amber)} .c5{background:var(--orange)}
+  .c6{background:var(--pink)} .c7{background:var(--red)}
+
+  @media print{
+    body{background:#fff;color:#111}
+    header{background:#fff}
+    .toc,footer{display:none}
+    section{border:1px solid #ccc;break-inside:avoid}
+    pre{background:#f6f8fa;border:1px solid #e1e4e8}
+    pre code,.k,.s,.n,.f,.d,.t,.o{color:#111 !important}
+    .c{color:#777 !important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap" style="padding:0">
+    <div class="logo">
+      <span class="badge">⚡ FastAPI</span>
+      <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--faint)">v0.12x · Pydantic 2 · Python 3.10+</span>
+    </div>
+    <h1>FastAPI <span class="accent">Cheat Sheet</span></h1>
+    <p class="sub">Everything from your first endpoint to production-grade async APIs — one sheet, beginner to advanced. Each block is copy-paste ready.</p>
+    <div class="meta">
+      <span>install <b>pip install "fastapi[standard]"</b></span>
+      <span>run <b>fastapi dev main.py</b></span>
+      <span>docs <b>/docs</b> (Swagger) · <b>/redoc</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <nav class="toc">
+    <h3>// contents</h3>
+    <div class="toc-grid">
+      <a href="#s1"><span class="tn">01</span> Hello World &amp; running</a>
+      <a href="#s2"><span class="tn">02</span> Path &amp; query params</a>
+      <a href="#s3"><span class="tn">03</span> Request body (Pydantic)</a>
+      <a href="#s4"><span class="tn">04</span> Validation &amp; types</a>
+      <a href="#s5"><span class="tn">05</span> Response model &amp; status</a>
+      <a href="#s6"><span class="tn">06</span> Headers, cookies, forms, files</a>
+      <a href="#s7"><span class="tn">07</span> Error handling</a>
+      <a href="#s8"><span class="tn">08</span> Async &amp; concurrency</a>
+      <a href="#s9"><span class="tn">09</span> Dependency injection</a>
+      <a href="#s10"><span class="tn">10</span> Routers &amp; project structure</a>
+      <a href="#s11"><span class="tn">11</span> Middleware &amp; CORS</a>
+      <a href="#s12"><span class="tn">12</span> Auth (OAuth2 + JWT)</a>
+      <a href="#s13"><span class="tn">13</span> Database (SQLModel)</a>
+      <a href="#s14"><span class="tn">14</span> Background &amp; lifespan</a>
+      <a href="#s15"><span class="tn">15</span> Testing</a>
+      <a href="#s16"><span class="tn">16</span> Deploy &amp; production</a>
+    </div>
+  </nav>
+
+  <div class="grid">
+
+    <!-- 01 -->
+    <section id="s1">
+      <div class="sec-head"><span class="num c0">01</span><h2>Hello World &amp; running</h2><span class="lvl b">basic</span></div>
+      <div class="body">
+<pre><code><span class="c"># main.py</span>
+<span class="k">from</span> fastapi <span class="k">import</span> FastAPI
+
+app = <span class="f">FastAPI</span>(title=<span class="s">"My API"</span>, version=<span class="s">"1.0"</span>)
+
+<span class="d">@app.get</span>(<span class="s">"/"</span>)
+<span class="k">def</span> <span class="f">root</span>():
+    <span class="k">return</span> {<span class="s">"hello"</span>: <span class="s">"world"</span>}</code></pre>
+        <p class="note">Run it (dev server with auto-reload):</p>
+<pre><code><span class="o">$</span> fastapi dev main.py        <span class="c"># dev, hot-reload</span>
+<span class="o">$</span> fastapi run main.py         <span class="c"># production</span>
+<span class="o">$</span> uvicorn main:app --reload   <span class="c"># classic way</span></code></pre>
+        <p class="tip"><b>Interactive docs</b> are auto-generated — open <span class="pill">/docs</span> and <span class="pill">/redoc</span>.</p>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section id="s2">
+      <div class="sec-head"><span class="num c1">02</span><h2>Path &amp; query params</h2><span class="lvl b">basic</span></div>
+      <div class="body">
+<pre><code><span class="c"># path param — typed &amp; validated</span>
+<span class="d">@app.get</span>(<span class="s">"/items/{item_id}"</span>)
+<span class="k">def</span> <span class="f">get_item</span>(item_id: <span class="t">int</span>):
+    <span class="k">return</span> {<span class="s">"id"</span>: item_id}
+
+<span class="c"># query params — anything not in the path</span>
+<span class="d">@app.get</span>(<span class="s">"/search"</span>)
+<span class="k">def</span> <span class="f">search</span>(q: <span class="t">str</span>, limit: <span class="t">int</span> = <span class="n">10</span>,
+           active: <span class="t">bool</span> = <span class="k">True</span>):
+    <span class="k">return</span> {<span class="s">"q"</span>: q, <span class="s">"limit"</span>: limit}</code></pre>
+        <p class="tip"><b>Rule:</b> in the path → path param. Has a default / not in path → query param. Types are auto-converted &amp; validated.</p>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section id="s3">
+      <div class="sec-head"><span class="num c2">03</span><h2>Request body — Pydantic models</h2><span class="lvl b">basic</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> pydantic <span class="k">import</span> BaseModel
+
+<span class="k">class</span> <span class="t">Item</span>(BaseModel):
+    name: <span class="t">str</span>
+    price: <span class="t">float</span>
+    in_stock: <span class="t">bool</span> = <span class="k">True</span>
+
+<span class="d">@app.post</span>(<span class="s">"/items"</span>)
+<span class="k">def</span> <span class="f">create</span>(item: <span class="t">Item</span>):
+    <span class="k">return</span> {<span class="s">"saved"</span>: item.name,
+            <span class="s">"total"</span>: item.price}</code></pre>
+        <p class="tip"><b>JSON body</b> is parsed, validated, and documented automatically from the model. Access fields with dot notation.</p>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section id="s4">
+      <div class="sec-head"><span class="num c3">04</span><h2>Validation &amp; richer types</h2><span class="lvl i">intermediate</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> Query, Path
+<span class="k">from</span> pydantic <span class="k">import</span> BaseModel, Field, EmailStr
+<span class="k">from</span> typing <span class="k">import</span> Annotated
+
+<span class="d">@app.get</span>(<span class="s">"/users"</span>)
+<span class="k">def</span> <span class="f">list_users</span>(
+    q: <span class="t">Annotated</span>[<span class="t">str</span> | <span class="k">None</span>,
+         <span class="f">Query</span>(max_length=<span class="n">50</span>)] = <span class="k">None</span>,
+    page: <span class="t">Annotated</span>[<span class="t">int</span>, <span class="f">Query</span>(ge=<span class="n">1</span>)] = <span class="n">1</span>,
+):
+    <span class="k">return</span> {<span class="s">"q"</span>: q, <span class="s">"page"</span>: page}
+
+<span class="k">class</span> <span class="t">User</span>(BaseModel):
+    email: <span class="t">EmailStr</span>
+    age: <span class="t">int</span> = <span class="f">Field</span>(gt=<span class="n">0</span>, le=<span class="n">120</span>)
+    name: <span class="t">str</span> = <span class="f">Field</span>(min_length=<span class="n">2</span>)</code></pre>
+        <div class="tablewrap">
+        <table>
+          <tr><th>Constraint</th><th>Meaning</th></tr>
+          <tr><td>gt / ge</td><td>greater than / or equal</td></tr>
+          <tr><td>lt / le</td><td>less than / or equal</td></tr>
+          <tr><td>min/max_length</td><td>string length</td></tr>
+          <tr><td>pattern=</td><td>regex match</td></tr>
+        </table>
+        </div>
+        <p class="tip"><b>Annotated</b> is the modern (recommended) way to attach <span class="pill">Query</span>/<span class="pill">Path</span> metadata.</p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section id="s5">
+      <div class="sec-head"><span class="num c4">05</span><h2>Response model &amp; status codes</h2><span class="lvl i">intermediate</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> status
+
+<span class="k">class</span> <span class="t">UserOut</span>(BaseModel):
+    id: <span class="t">int</span>
+    email: <span class="t">str</span>   <span class="c"># note: no password field</span>
+
+<span class="d">@app.post</span>(<span class="s">"/users"</span>,
+    response_model=<span class="t">UserOut</span>,
+    status_code=status.<span class="n">HTTP_201_CREATED</span>)
+<span class="k">def</span> <span class="f">create_user</span>(u: <span class="t">User</span>):
+    <span class="k">return</span> u   <span class="c"># password stripped by response_model</span></code></pre>
+        <p class="tip"><b>response_model</b> filters output — great for hiding fields (passwords, internal IDs) and shaping the API contract.</p>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section id="s6">
+      <div class="sec-head"><span class="num c5">06</span><h2>Headers, cookies, forms, files</h2><span class="lvl i">intermediate</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> Header, Cookie, Form, File, UploadFile
+<span class="k">from</span> typing <span class="k">import</span> Annotated
+
+<span class="d">@app.get</span>(<span class="s">"/h"</span>)
+<span class="k">def</span> <span class="f">h</span>(user_agent: <span class="t">Annotated</span>[<span class="t">str</span> | <span class="k">None</span>,
+                       <span class="f">Header</span>()] = <span class="k">None</span>):
+    <span class="k">return</span> {<span class="s">"ua"</span>: user_agent}
+
+<span class="d">@app.post</span>(<span class="s">"/login"</span>)
+<span class="k">def</span> <span class="f">login</span>(username: <span class="t">Annotated</span>[<span class="t">str</span>, <span class="f">Form</span>()],
+          password: <span class="t">Annotated</span>[<span class="t">str</span>, <span class="f">Form</span>()]):
+    <span class="k">return</span> {<span class="s">"user"</span>: username}
+
+<span class="d">@app.post</span>(<span class="s">"/upload"</span>)
+<span class="k">async</span> <span class="k">def</span> <span class="f">upload</span>(file: <span class="t">UploadFile</span>):
+    data = <span class="k">await</span> file.<span class="f">read</span>()
+    <span class="k">return</span> {<span class="s">"name"</span>: file.filename,
+            <span class="s">"size"</span>: <span class="f">len</span>(data)}</code></pre>
+        <p class="tip"><b>Forms/files</b> need <span class="pill">python-multipart</span> (included in <span class="pill">[standard]</span>).</p>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section id="s7">
+      <div class="sec-head"><span class="num c6">07</span><h2>Error handling</h2><span class="lvl i">intermediate</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> HTTPException
+
+<span class="d">@app.get</span>(<span class="s">"/items/{id}"</span>)
+<span class="k">def</span> <span class="f">get</span>(id: <span class="t">int</span>):
+    <span class="k">if</span> id <span class="k">not in</span> db:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(
+            status_code=<span class="n">404</span>,
+            detail=<span class="s">"Item not found"</span>)
+    <span class="k">return</span> db[id]
+
+<span class="c"># custom global handler</span>
+<span class="k">from</span> fastapi.responses <span class="k">import</span> JSONResponse
+
+<span class="d">@app.exception_handler</span>(<span class="t">ValueError</span>)
+<span class="k">def</span> <span class="f">on_value_error</span>(request, exc):
+    <span class="k">return</span> <span class="f">JSONResponse</span>(
+        status_code=<span class="n">400</span>,
+        content={<span class="s">"error"</span>: <span class="f">str</span>(exc)})</code></pre>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section id="s8">
+      <div class="sec-head"><span class="num c7">08</span><h2>Async &amp; concurrency</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="c"># use async def when you AWAIT I/O</span>
+<span class="d">@app.get</span>(<span class="s">"/data"</span>)
+<span class="k">async</span> <span class="k">def</span> <span class="f">data</span>():
+    result = <span class="k">await</span> <span class="f">fetch_from_db</span>()   <span class="c"># non-blocking</span>
+    <span class="k">return</span> result
+
+<span class="c"># run blocking code in a threadpool</span>
+<span class="k">from</span> fastapi.concurrency <span class="k">import</span> run_in_threadpool
+
+<span class="k">async</span> <span class="k">def</span> <span class="f">endpoint</span>():
+    <span class="k">await</span> <span class="f">run_in_threadpool</span>(heavy_sync_fn, arg)</code></pre>
+        <p class="tip"><b>Rule of thumb:</b> <span class="pill">async def</span> + <span class="pill">await</span> for async libs (httpx, async DB drivers). Plain <span class="pill">def</span> if your code is blocking — FastAPI runs it in a threadpool for you.</p>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section id="s9">
+      <div class="sec-head"><span class="num c0">09</span><h2>Dependency injection</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> Depends
+<span class="k">from</span> typing <span class="k">import</span> Annotated
+
+<span class="k">def</span> <span class="f">pagination</span>(skip: <span class="t">int</span> = <span class="n">0</span>, limit: <span class="t">int</span> = <span class="n">10</span>):
+    <span class="k">return</span> {<span class="s">"skip"</span>: skip, <span class="s">"limit"</span>: limit}
+
+<span class="t">Pager</span> = <span class="t">Annotated</span>[<span class="t">dict</span>, <span class="f">Depends</span>(pagination)]
+
+<span class="d">@app.get</span>(<span class="s">"/items"</span>)
+<span class="k">def</span> <span class="f">items</span>(p: <span class="t">Pager</span>):
+    <span class="k">return</span> p
+
+<span class="c"># dependency with cleanup (yield)</span>
+<span class="k">def</span> <span class="f">get_db</span>():
+    db = <span class="f">Session</span>()
+    <span class="k">try</span>:
+        <span class="k">yield</span> db
+    <span class="k">finally</span>:
+        db.<span class="f">close</span>()</code></pre>
+        <p class="tip"><b>DI</b> is FastAPI's superpower: reusable logic for auth, DB sessions, pagination, settings. <span class="pill">yield</span> deps run cleanup after the response.</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section id="s10">
+      <div class="sec-head"><span class="num c1">10</span><h2>Routers &amp; project structure</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="c"># routers/users.py</span>
+<span class="k">from</span> fastapi <span class="k">import</span> APIRouter
+
+router = <span class="f">APIRouter</span>(prefix=<span class="s">"/users"</span>,
+                   tags=[<span class="s">"users"</span>])
+
+<span class="d">@router.get</span>(<span class="s">"/"</span>)
+<span class="k">def</span> <span class="f">list_users</span>(): <span class="k">return</span> [...]
+
+<span class="c"># main.py</span>
+<span class="k">from</span> routers <span class="k">import</span> users
+app.<span class="f">include_router</span>(users.router)</code></pre>
+        <p class="note">Typical layout:</p>
+<pre><code>app/
+├── main.py          <span class="c"># app + include_router</span>
+├── routers/         <span class="c"># endpoints by feature</span>
+├── models.py        <span class="c"># pydantic / db models</span>
+├── dependencies.py  <span class="c"># shared deps</span>
+└── core/config.py   <span class="c"># settings</span></code></pre>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section id="s11">
+      <div class="sec-head"><span class="num c2">11</span><h2>Middleware &amp; CORS</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi.middleware.cors <span class="k">import</span> CORSMiddleware
+
+app.<span class="f">add_middleware</span>(
+    CORSMiddleware,
+    allow_origins=[<span class="s">"https://myapp.com"</span>],
+    allow_methods=[<span class="s">"*"</span>],
+    allow_headers=[<span class="s">"*"</span>],
+)
+
+<span class="c"># custom middleware</span>
+<span class="d">@app.middleware</span>(<span class="s">"http"</span>)
+<span class="k">async</span> <span class="k">def</span> <span class="f">timing</span>(request, call_next):
+    resp = <span class="k">await</span> <span class="f">call_next</span>(request)
+    resp.headers[<span class="s">"X-Server"</span>] = <span class="s">"fastapi"</span>
+    <span class="k">return</span> resp</code></pre>
+        <p class="tip"><b>CORS</b> is the #1 gotcha for frontend devs — add this if your browser app calls the API.</p>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section id="s12">
+      <div class="sec-head"><span class="num c3">12</span><h2>Auth — OAuth2 + JWT</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> Depends, HTTPException
+<span class="k">from</span> fastapi.security <span class="k">import</span> OAuth2PasswordBearer
+<span class="k">import</span> jwt  <span class="c"># pip install pyjwt</span>
+
+oauth2 = <span class="f">OAuth2PasswordBearer</span>(tokenUrl=<span class="s">"token"</span>)
+SECRET = <span class="s">"change-me"</span>
+
+<span class="k">def</span> <span class="f">current_user</span>(token: <span class="t">str</span> = <span class="f">Depends</span>(oauth2)):
+    <span class="k">try</span>:
+        payload = jwt.<span class="f">decode</span>(token, SECRET,
+                     algorithms=[<span class="s">"HS256"</span>])
+    <span class="k">except</span> jwt.<span class="t">PyJWTError</span>:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(<span class="n">401</span>, <span class="s">"Invalid token"</span>)
+    <span class="k">return</span> payload[<span class="s">"sub"</span>]
+
+<span class="d">@app.get</span>(<span class="s">"/me"</span>)
+<span class="k">def</span> <span class="f">me</span>(user: <span class="t">str</span> = <span class="f">Depends</span>(current_user)):
+    <span class="k">return</span> {<span class="s">"user"</span>: user}</code></pre>
+        <p class="tip"><b>Hash passwords</b> with <span class="pill">pwdlib</span> / bcrypt — never store plaintext. The <span class="pill">/token</span> route issues the JWT on login.</p>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section id="s13">
+      <div class="sec-head"><span class="num c4">13</span><h2>Database — SQLModel</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="c"># pip install sqlmodel</span>
+<span class="k">from</span> sqlmodel <span class="k">import</span> SQLModel, Field, Session, create_engine, select
+
+<span class="k">class</span> <span class="t">Hero</span>(SQLModel, table=<span class="k">True</span>):
+    id: <span class="t">int</span> | <span class="k">None</span> = <span class="f">Field</span>(default=<span class="k">None</span>,
+                              primary_key=<span class="k">True</span>)
+    name: <span class="t">str</span>
+
+engine = <span class="f">create_engine</span>(<span class="s">"sqlite:///db.sqlite"</span>)
+SQLModel.metadata.<span class="f">create_all</span>(engine)
+
+<span class="k">def</span> <span class="f">get_session</span>():
+    <span class="k">with</span> <span class="f">Session</span>(engine) <span class="k">as</span> s:
+        <span class="k">yield</span> s
+
+<span class="d">@app.post</span>(<span class="s">"/heroes"</span>)
+<span class="k">def</span> <span class="f">add</span>(hero: <span class="t">Hero</span>,
+        s: <span class="t">Session</span> = <span class="f">Depends</span>(get_session)):
+    s.<span class="f">add</span>(hero); s.<span class="f">commit</span>(); s.<span class="f">refresh</span>(hero)
+    <span class="k">return</span> hero</code></pre>
+        <p class="tip"><b>SQLModel</b> (same author as FastAPI) unifies Pydantic + SQLAlchemy. Also popular: raw SQLAlchemy 2.0, Tortoise ORM.</p>
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section id="s14">
+      <div class="sec-head"><span class="num c5">14</span><h2>Background tasks &amp; lifespan</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> BackgroundTasks
+
+<span class="d">@app.post</span>(<span class="s">"/send"</span>)
+<span class="k">def</span> <span class="f">send</span>(email: <span class="t">str</span>, bg: <span class="t">BackgroundTasks</span>):
+    bg.<span class="f">add_task</span>(send_email, email)
+    <span class="k">return</span> {<span class="s">"status"</span>: <span class="s">"queued"</span>}
+
+<span class="c"># startup / shutdown via lifespan</span>
+<span class="k">from</span> contextlib <span class="k">import</span> asynccontextmanager
+
+<span class="d">@asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span> <span class="f">lifespan</span>(app: <span class="t">FastAPI</span>):
+    <span class="f">connect_db</span>()        <span class="c"># startup</span>
+    <span class="k">yield</span>
+    <span class="f">close_db</span>()          <span class="c"># shutdown</span>
+
+app = <span class="f">FastAPI</span>(lifespan=lifespan)</code></pre>
+        <p class="tip">For heavy/distributed jobs use <b>Celery</b> or <b>ARQ</b> instead of BackgroundTasks.</p>
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section id="s15">
+      <div class="sec-head"><span class="num c6">15</span><h2>Testing</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="c"># pip install pytest httpx</span>
+<span class="k">from</span> fastapi.testclient <span class="k">import</span> TestClient
+<span class="k">from</span> main <span class="k">import</span> app
+
+client = <span class="f">TestClient</span>(app)
+
+<span class="k">def</span> <span class="f">test_root</span>():
+    r = client.<span class="f">get</span>(<span class="s">"/"</span>)
+    <span class="k">assert</span> r.status_code == <span class="n">200</span>
+    <span class="k">assert</span> r.<span class="f">json</span>() == {<span class="s">"hello"</span>: <span class="s">"world"</span>}
+
+<span class="k">def</span> <span class="f">test_create</span>():
+    r = client.<span class="f">post</span>(<span class="s">"/items"</span>,
+        json={<span class="s">"name"</span>: <span class="s">"x"</span>, <span class="s">"price"</span>: <span class="n">9.9</span>})
+    <span class="k">assert</span> r.status_code == <span class="n">200</span></code></pre>
+        <p class="tip">Override dependencies in tests with <span class="pill">app.dependency_overrides[dep] = fake</span> to mock DBs/auth.</p>
+      </div>
+    </section>
+
+    <!-- 16 -->
+    <section id="s16">
+      <div class="sec-head"><span class="num c7">16</span><h2>Deploy &amp; production</h2><span class="lvl a">advanced</span></div>
+      <div class="body">
+<pre><code><span class="c"># run multiple workers</span>
+<span class="o">$</span> fastapi run main.py --workers 4
+<span class="o">$</span> uvicorn main:app --host 0.0.0.0 --port 80 \
+      --workers 4
+
+<span class="c"># Dockerfile</span>
+<span class="k">FROM</span> python:3.13-slim
+<span class="k">WORKDIR</span> /code
+<span class="k">COPY</span> requirements.txt .
+<span class="k">RUN</span> pip install -r requirements.txt
+<span class="k">COPY</span> . .
+<span class="k">CMD</span> [<span class="s">"fastapi"</span>, <span class="s">"run"</span>, <span class="s">"main.py"</span>, <span class="s">"--port"</span>, <span class="s">"80"</span>]</code></pre>
+        <div class="tablewrap">
+        <table>
+          <tr><th>Concern</th><th>Tool</th></tr>
+          <tr><td>ASGI server</td><td>uvicorn / gunicorn</td></tr>
+          <tr><td>Reverse proxy</td><td>nginx / Caddy / Traefik</td></tr>
+          <tr><td>Config</td><td>pydantic-settings + .env</td></tr>
+          <tr><td>Migrations</td><td>Alembic</td></tr>
+        </table>
+        </div>
+        <p class="tip"><b>Prod checklist:</b> turn off reload · set CORS origins · use env-based secrets · run behind a proxy · add logging &amp; <span class="pill">/health</span>.</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer>
+  <span>FastAPI Cheat Sheet · beginner → advanced · one sheet</span>
+  <span>Official docs: <a href="https://fastapi.tiangolo.com">fastapi.tiangolo.com</a> · Tip: print to PDF for an offline copy</span>
+</footer>
+
+</body>
+</html>
