@@ -42,6 +42,14 @@ building every piece by hand first so the intuition is rock solid.
 - `SGDRegressor` — Stochastic Gradient Descent, for very large datasets.
 - Both compared against the from-scratch results.
 
+**Part 4 — Real-World Uses & Hyperparameter Tuning**
+- Where linear regression shows up in practice (pricing, forecasting, scoring, yield prediction, etc.) and why it's still worth knowing.
+- **Parameters vs. hyperparameters** — the key distinction, explained using the notebook's own variables (`w`, `b` vs. `alpha`, `max_iter`).
+- **Learning rate (α)** — a from-scratch demo comparing too-small / good / too-large, with a log-scale convergence plot showing exactly why Part 1 used `alpha=0.01`.
+- **Number of iterations**, and scikit-learn's hyperparameters — `SGDRegressor`'s `alpha` (regularization strength), `penalty`, `learning_rate` schedule, `eta0`, `max_iter`, `tol`; and `LinearRegression`'s `fit_intercept`, `positive`, `n_jobs`.
+- A live demo of regularization strength shrinking the weight vector, plus a quick-reference table of which hyperparameter matters most and why.
+- **A complete reference table** of every remaining hyperparameter on both estimators (`loss`, `l1_ratio`, `shuffle`, `epsilon`, `random_state`, `power_t`, `early_stopping`, `validation_fraction`, `n_iter_no_change`, `warm_start`, `average`, `copy_X`, etc.) — pulled directly from the installed scikit-learn's own signatures, so nothing is left out.
+
 ---
 
 ## 🧠 The Core Idea (in one minute)
@@ -56,6 +64,7 @@ Linear regression just **draws the best straight line through your data points**
 | **cost (MSE)** | how wrong the line is (lower = better) |
 | **gradient descent** | automatically searching for the best line |
 | **learning rate (α)** | how big a step we take while searching |
+| **hyperparameter** | a setting *you* choose before training (like α) — as opposed to `w`/`b`, which the model learns on its own |
 | **scikit-learn** | does all of the above for you in ~3 lines |
 
 The from-scratch parts teach you *what happens under the hood*; scikit-learn is
@@ -115,3 +124,4 @@ Background slides and reading on the history and structure of AI/ML:
 3. **Gradient descent** rolls down that bowl to find the best parameters automatically.
 4. **Simple → Multiple** changes almost nothing: the weight becomes a vector, the rest is identical.
 5. **Scikit-learn** is the real-world shortcut — understand the hood, then use the library.
+6. **Hyperparameters** (like the learning rate) are chosen by *you*, not learned by the model — the learning rate is the one to get right first; regularization strength is the one to reach for if a model overfits.
