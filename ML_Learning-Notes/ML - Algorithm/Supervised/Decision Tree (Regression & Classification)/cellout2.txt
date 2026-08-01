@@ -1,0 +1,42 @@
+=== cell 108 markdown ===
+## 7. Hyperparameters — `splitter`, `max_features`, `random_state`
+
+These three are what inject **randomness** into a tree — and randomness is what makes a Random Forest work.
+
+| Hyperparameter | Meaning |
+|---|---|
+| `splitter` | `'best'` (default) evaluates every candidate threshold and takes the best; `'random'` picks the best among *random* thresholds. |
+| `max_features` | How many features each split is allowed to consider — `None` (all, default), an int, a float, `'sqrt'`, or `'log2'`. |
+| `random_state` | Fixes the tie-breaking and any of the randomness above, making the result reproducible. |
+
+Because `max_features` and `splitter='random'` make the fit depend on the seed, the honest way to measure them is across **several seeds**, not one:
+=== cell 109 code ===
+def mean_test_acc(seeds=range(10), **kwargs):
+    accs = [accuracy_score(y_test, DecisionTreeClassifier(random_state=s, **kwargs)
+                           .fit(X_train, y_train).predict(X_test)) for s in seeds]
+    return np.mean(accs), np.std(accs)
+
+for label, kw in [
+    ("splitter=best,  max_features=None",   dict(splitter='best')),
+    ("splitter=best,  max_features='sqrt'", dict(splitter='best', max_features='sqrt')),
+    ("splitter=best,  max_features='log2'", dict(splitter='best', max_features='log2')),
+    ("splitter=random,max_features=None",   dict(splitter='random')),
+    ("splitter=random,max_features='sqrt'", dict(splitter='random', max_features='sqrt')),
+]:
+    mean, std = mean_test_acc(**kw)
+    print(f"{label:<38} test_acc {mean:.3f} +/- {std:.3f}  (over 10 seeds)")
+--OUT-- splitter=best,  max_features=None      test_acc 0.953 +/- 0.016  (over 10 seeds)
+
+--OUT-- splitter=best,  max_features='sqrt'    test_acc 0.910 +/- 0.026  (over 10 seeds)
+splitter=best,  max_features='log2'    test_acc 0.910 +/- 0.026  (over 10 seeds)
+
+--OUT-- splitter=random,max_features=None      test_acc 0.940 +/- 0.036  (over 10 seeds)
+--OUT-- 
+splitter=random,max_features='sqrt'    test_acc 0.907 +/- 0.047  (over 10 seeds)
+
+=== cell 110 markdown ===
+Averaged over 10 seeds, the plain default (`splitter='best'`, all features) is the strongest single tree at `0.953 ± 0.016`. Restricting features costs accuracy — `'sqrt'` and `'log2'` both drop to `0.910` (with only 4 features they both work out to 2, so their results are identical), and `splitter='random'` adds noticeably more spread (`± 0.036` to `± 0.047`).
+
+So for **one** tree, these hyperparameters make things worse, and that is the expected result. Their real purpose is in an ensemble: a Random Forest is precisely a bag of trees each fit with `max_features='sqrt'`, and Extra Trees adds `splitter='random'` on top. Individually weaker but *decorrelated* trees average into something far better than any single tree — the variability shown in the `± ` column above is the raw material that makes that work.
+
+Note also the `± 0.016` on the default row: the same code, the same data, ten seeds, and the result still moves by a couple of percent. That is the instability trees are famous for, measured.

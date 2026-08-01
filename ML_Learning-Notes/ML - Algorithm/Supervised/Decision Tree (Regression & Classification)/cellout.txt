@@ -1,0 +1,64 @@
+=== cell 121 markdown ===
+## 12. Quick Reference — Which Hyperparameter Matters Most?
+
+| Priority | Hyperparameter | When it matters |
+|---|---|---|
+| 🥇 1st | **`max_depth`** | Always — the primary overfitting control. |
+| 🥈 2nd | **`min_samples_leaf`** / `min_samples_split` | Always, especially on noisy data — a gentler alternative to a hard depth cap. |
+| 🥉 3rd | **`ccp_alpha`** | When you want the size chosen *for* you by the data rather than guessed. |
+| 4th | **`class_weight`** | Imbalanced classes — as Section 8 showed, essential there, irrelevant otherwise. |
+| 5th | **`max_features`**, `splitter` | Mainly for adding variety inside an ensemble; single trees rarely need them. |
+| Rarely | `criterion`, `max_leaf_nodes`, `min_impurity_decrease`, `min_weight_fraction_leaf`, `monotonic_cst` | Fine-tuning, or specific domain constraints. |
+| Not a knob | `random_state` | Reproducibility only — but *always* set it. |
+
+**One-line summary:** control the tree's size first (`max_depth` and `min_samples_leaf`, or let `ccp_alpha` do it), fix `class_weight` if the classes are imbalanced, and leave the rest alone until you have a specific reason.
+=== cell 122 markdown ===
+## 13. The Complete List (Every Hyperparameter, Pulled From the Installed Library)
+
+`DecisionTreeClassifier` has considerably more knobs than `KNeighborsClassifier`'s eight — Sections 4-11 above covered every one of them. Let's confirm that directly from the installed library with `inspect.signature`, so nothing is left out:
+=== cell 123 code ===
+import inspect
+import sklearn
+
+print("scikit-learn version:", sklearn.__version__)
+print()
+sig = inspect.signature(DecisionTreeClassifier.__init__)
+for name, param in sig.parameters.items():
+    if name == 'self':
+        continue
+    print(f"{name:<26} default = {param.default!r}")
+--OUT-- scikit-learn version: 1.9.0
+
+criterion                  default = 'gini'
+splitter                   default = 'best'
+max_depth                  default = None
+min_samples_split          default = 2
+min_samples_leaf           default = 1
+min_weight_fraction_leaf   default = 0.0
+max_features               default = None
+random_state               default = None
+max_leaf_nodes             default = None
+min_impurity_decrease      default = 0.0
+class_weight               default = None
+ccp_alpha                  default = 0.0
+monotonic_cst              default = None
+
+=== cell 124 markdown ===
+Thirteen in total: `criterion`, `splitter`, `max_depth`, `min_samples_split`, `min_samples_leaf`, `min_weight_fraction_leaf`, `max_features`, `random_state`, `max_leaf_nodes`, `min_impurity_decrease`, `class_weight`, `ccp_alpha`, `monotonic_cst` — all thirteen covered above, and none of them deprecated in this installed version. As always, defaults can shift between scikit-learn releases, so this cell's live output reflects whatever is installed when it was last run.
+
+(`DecisionTreeRegressor` is the same list, with `criterion` swapped for the regression options — `'squared_error'`, `'friedman_mse'`, `'absolute_error'`, `'poisson'` — and no `class_weight`.)
+=== cell 125 markdown ===
+---
+# Summary & Key Takeaways
+
+1. **The model**: a Decision Tree asks a sequence of "is this feature above or below a threshold?" questions and reads off the class at the leaf. No distances, no weights, no scaling — just splits.
+
+2. **The pipeline** (Part 1): load Iris (3 classes), split with `stratify=y`, fit `DecisionTreeClassifier` **without any scaler**, then evaluate with accuracy, a confusion matrix, and a classification report — `0.933`, with both errors on the genuinely overlapping versicolor/virginica boundary.
+
+3. **You can read the model** (Part 1, Sections 5-6): `plot_tree` and `export_text` print the fitted model in full, and `feature_importances_` shows the petal measurements carrying ~96% of the decision. Nothing else in this repo's notebooks offers that.
+
+4. **Parameters vs. hyperparameters** (Part 3, Section 3): a tree sits between the other two notebooks — KNN's `.fit()` learns *nothing*, Logistic Regression's learns a fixed vector of weights, and a tree learns a **structure** that grows with the data. `model.tree_` is the learned parameter.
+
+5. **Unpruned trees overfit, always**: the default `max_depth=None` grows until every leaf is pure — a perfect `1.000` on train and `0.933` on test. Every good result in this notebook came from making the tree *smaller*.
+
+6. **All the size knobs are the same knob**: `max_depth=3`, `min_samples_leaf=3`, `min_samples_split=5`, `ccp_alpha=0.0081`, `max_leaf_nodes=5` and `min_impurity_decrease=0.01` each independently found
