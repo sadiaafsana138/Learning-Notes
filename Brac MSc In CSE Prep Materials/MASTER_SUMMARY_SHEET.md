@@ -40,8 +40,16 @@
 | 1 | **Physical** | **Bit** | Cable, **Hub**, Repeater |
 
 **TCP/IP = 4 layer:** Application (7+6+5) · Transport (4) · Internet (3) · Network Access (2+1)
+
+### ⚡ ৭ শব্দে পুরো OSI ⭐⭐⭐
+> **App → Format → Connect → Packets → IP → MAC → Bits**
+> (Application · Presentation · Session · Transport · Network · Data Link · Physical)
+
 **Mnemonic:** All People Seem To Need Data Processing
-**PDU ক্রম:** Data → Segment → Packet → Frame → Bit
+**PDU ক্রম:** Data → **Segment** → Packet → Frame → Bit
+⚠️ Trick-এ L4 = "Packets" মনে রাখার জন্য, কিন্তু **PDU চাইলে Segment** লিখবে
+
+**বাস্তব উদাহরণ (google.com সার্চ):** Chrome request (7) → TLS encrypt (6) → session (5) → TCP + port 443 (4) → IP + routing (3) → MAC frame (2) → bits (1)
 
 ## IP Address
 | | |
