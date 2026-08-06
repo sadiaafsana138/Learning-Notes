@@ -1,470 +1,220 @@
 # 📑 INDEX — BRAC MSc CSE Admission
-### সম্পূর্ণ Topic তালিকা (Subject → Module → Topic)
+### সব ফাইল ও সব Topic — এক জায়গায়
 
-> শুধু **কী কী পড়তে হবে** তার তালিকা। সময়ের ভাগ ও পরিকল্পনা আলাদা file-এ (`STUDY_PLAN.md`)।
-> পড়া শেষ হলে ☐ box-এ টিক দাও।
-
----
-
-## 🗂️ Subject List
-
-| # | Subject | Course Code | Module | ফাইল |
-|---|---|---|---|---|
-| 1 | Networking | CSE 320 / 421 / 490 | 6 | — |
-| 2 | Database Systems | CSE 370 | 6 | — |
-| 3 | Programming & OOP | CSE 110 / 111 / 310 | 6 | — |
-| 4 | Operating Systems | CSE 321 | 4 | — |
-| 5 | Software Engineering | CSE 470 | 3 | — |
-| 6 | Digital Logic & Number System | CSE 260 | 3 | — |
-| 7 | Data Structures | CSE 220 | 11 | `CSE_220_Data_Structures.md` |
-| 8 | Algorithms | CSE 221 | 6 | `CSE_221_Algorithms.md` |
-| 9 | Algorithm Steps & Dry Run | CSE 220+221 | 11 | `Algorithm_Steps_and_DryRun.md` |
-| 10 | Machine Learning & Deep Learning | CSE 425 / 427 | 6 | `ML_DL_Basics.md` |
-| 11 | English Composition | — | 1 | — |
-| 12 | Optional (Architecture, Automata, Discrete Math) | CSE 340 / 331 / 230 | 3 | — |
-
----
----
-
-# 1️⃣ NETWORKING — CSE 320 / 421 / 490
-
-### Module 1: OSI & TCP/IP Model
-- ☐ OSI-এর ৭ layer — নাম ও ক্রম
-- ☐ TCP/IP-এর ৪ layer — নাম ও ক্রম
-- ☐ প্রতিটি layer-এর কাজ
-- ☐ কোন layer-এ কোন device (Hub, Switch, Router)
-- ☐ কোন layer-এ কোন protocol (HTTP, TCP, IP)
-- ☐ PDU: Bit → Frame → Packet → Segment → Data
-- ☐ OSI vs TCP/IP mapping
-
-### Module 2: IP Addressing
-- ☐ IPv4 = 32 bit, dotted decimal
-- ☐ IPv6 = 128 bit, hexadecimal + example
-- ☐ Class A / B / C / D / E — range ও default mask
-- ☐ Private IP ranges
-- ☐ Loopback address
-- ☐ IPv4 vs IPv6 comparison
-
-### Module 3: Subnetting, VLSM, CIDR
-- ☐ Subnet mask
-- ☐ CIDR notation (/24, /26) → mask রূপান্তর
-- ☐ VLSM — সংজ্ঞা ও প্রয়োজন
-- ☐ CIDR — সংজ্ঞা ও প্রয়োজন
-- ☐ Host সংখ্যা = 2ⁿ − 2
-- ☐ Subnet সংখ্যা = 2ᵐ
-- ☐ একটা subnetting সমস্যা হাতে solve
-
-### Module 4: Wireless & LAN Standards
-- ☐ 802.11b / a / g / n / ac — frequency ও bandwidth
-- ☐ IEEE 802.3 (Ethernet), 802.5 (Token Ring), 802.15 (Bluetooth)
-- ☐ LAN / MAN / WAN
-- ☐ Topology: Bus, Star, Ring, Mesh, Hybrid
-
-### Module 5: Protocols & Devices
-- ☐ TCP vs UDP
-- ☐ Port numbers (80, 443, 21, 22, 23, 25, 53)
-- ☐ DHCP, DNS, NAT, PAT
-- ☐ Hub vs Switch vs Router vs Bridge vs Gateway
-- ☐ Unicast / Broadcast / Multicast
-
-### Module 6: Data Communication Basics
-- ☐ Modulation
-- ☐ Bandwidth vs Throughput vs Latency
-- ☐ Multiplexing: FDM, TDM, WDM
-- ☐ Error detection: Parity, Checksum, CRC
-- ☐ Simplex / Half-duplex / Full-duplex
-- ☐ Guided vs Unguided media
+> **আজ রাতে সব পড়ার চেষ্টা করো না।** নিচের "কোনটা কখন পড়বে" অংশটা আগে দেখো।
 
 ---
 
-# 2️⃣ DATABASE SYSTEMS — CSE 370
+# 🚦 কোনটা কখন পড়বে
 
-### Module 1: DBMS Basics
-- ☐ DBMS vs File System
-- ☐ Schema, Instance, DDL/DML/DCL/TCL
-- ☐ 3-level architecture
-- ☐ Data independence (Physical / Logical)
-- ☐ Database models
-
-### Module 2: Relational Model & Keys
-- ☐ Relation, Tuple, Attribute, Domain, Degree, Cardinality
-- ☐ Primary Key
-- ☐ Foreign Key
-- ☐ Candidate / Super / Composite / Alternate Key
-- ☐ Entity Integrity & Referential Integrity
-
-### Module 3: SQL
-- ☐ `CREATE DATABASE`
-- ☐ `CREATE TABLE`
-- ☐ `SELECT ... FROM ... WHERE`
-- ☐ `INSERT` / `UPDATE` / `DELETE`
-- ☐ `ORDER BY`, `GROUP BY`, `HAVING`, `DISTINCT`
-- ☐ Aggregate: COUNT, SUM, AVG, MIN, MAX
-- ☐ JOIN: INNER, LEFT, RIGHT, FULL
-- ☐ `ALTER` / `DROP` vs `TRUNCATE` vs `DELETE`
-- ☐ Constraints
-
-### Module 4: Normalization
-- ☐ Functional Dependency
-- ☐ 1NF
-- ☐ 2NF (partial dependency)
-- ☐ 3NF (transitive dependency)
-- ☐ BCNF
-- ☐ Anomalies (Insert / Update / Delete)
-
-### Module 5: ER Model
-- ☐ Entity, Attribute, Relationship
-- ☐ Cardinality (1:1, 1:M, M:N)
-- ☐ Weak entity, Composite/Derived/Multivalued attribute
-- ☐ ER → Table রূপান্তর
-
-### Module 6: Transaction & Indexing
-- ☐ ACID properties
-- ☐ COMMIT, ROLLBACK, SAVEPOINT
-- ☐ Indexing (B+ Tree)
-- ☐ Clustered vs Non-clustered index
-
----
-
-# 3️⃣ PROGRAMMING & OOP — CSE 110 / 111 / 310
-
-### Module 1: C/C++ Basics
-- ☐ Data types ও size
-- ☐ Operator precedence
-- ☐ `i++` vs `++i`
-- ☐ Integer vs float division
-- ☐ Modulus `%` (integer only)
-- ☐ Type casting
-- ☐ Pointer, call by value vs reference
-
-### Module 2: math.h Functions
-- ☐ `round()`
-- ☐ `ceil()` / `floor()`
-- ☐ `fmod()` — float remainder
-- ☐ `pow()`, `sqrt()`, `abs()` / `fabs()`
-- ☐ Java: `Math.round()`, `Math.ceil()`, `Math.floor()`
-
-### Module 3: Control Flow & Loop Tracing
-- ☐ `for` / `while` / `do-while`
-- ☐ Short-circuit evaluation (`&&`, `||`)
-- ☐ Loop-এর ভিতরে increment কখন চলে
-- ☐ `break` vs `continue`
-- ☐ Loop output trace practice
-
-### Module 4: OOP Concepts
-- ☐ Encapsulation, Inheritance, Polymorphism, Abstraction
-- ☐ Class vs Object
-- ☐ Constructor (default / parameterized / copy)
-- ☐ Overloading vs Overriding
-- ☐ Abstract class vs Interface
-- ☐ Access modifiers
-- ☐ `static`, `final`, `this`, `super`
-- ☐ Inheritance types (Java-তে multiple নেই)
-
-### Module 5: Platform Independence
-- ☐ Source → Compiler → Bytecode → JVM → Machine code
-- ☐ "Write Once, Run Anywhere"
-- ☐ Bytecode independent, JVM dependent
-- ☐ JDK vs JRE vs JVM
-- ☐ Java vs C/C++ compilation
-
-### Module 6: Exception & Basics
-- ☐ try-catch-finally, throw vs throws
-- ☐ Checked vs Unchecked exception
-- ☐ String vs StringBuffer vs StringBuilder
-- ☐ `==` vs `.equals()`
-
----
-
-# 4️⃣ OPERATING SYSTEMS — CSE 321
-
-### Module 1: Process & Thread
-- ☐ Process সংজ্ঞা
-- ☐ Thread সংজ্ঞা
-- ☐ Multithreading
-- ☐ Process vs Thread comparison
-- ☐ Thread-এর সুবিধা
-- ☐ Process states
-- ☐ PCB, Context Switching
-
-### Module 2: CPU Scheduling
-- ☐ FCFS
-- ☐ SJF
-- ☐ Priority Scheduling
-- ☐ Round Robin
-- ☐ Preemptive vs Non-preemptive
-- ☐ Turnaround / Waiting / Response time
-
-### Module 3: Deadlock
-- ☐ ৪ শর্ত (Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait)
-- ☐ Prevention / Avoidance / Detection / Recovery
-- ☐ Banker's Algorithm
-- ☐ Starvation vs Deadlock
-
-### Module 4: Memory & Synchronization
-- ☐ Paging vs Segmentation
-- ☐ Virtual Memory, Page Fault, Thrashing
-- ☐ Page replacement: FIFO, LRU, Optimal
-- ☐ Internal vs External Fragmentation
-- ☐ Semaphore, Mutex, Critical Section, Race Condition
-
----
-
-# 5️⃣ SOFTWARE ENGINEERING — CSE 470
-
-### Module 1: SDLC
-- ☐ SDLC পূর্ণরূপ
-- ☐ ৬ ধাপ (Requirement → Design → Implementation → Testing → Deployment → Maintenance)
-- ☐ প্রতিটি ধাপের কাজ
-
-### Module 2: SDLC Models
-- ☐ Waterfall
-- ☐ Iterative / Incremental
-- ☐ Spiral
-- ☐ Agile / Scrum
-- ☐ V-Model
-- ☐ Waterfall vs Agile
-
-### Module 3: Testing & Design Principles
-- ☐ Black Box vs White Box
-- ☐ Unit → Integration → System → Acceptance
-- ☐ Verification vs Validation
-- ☐ Functional vs Non-functional requirement
-- ☐ Cohesion vs Coupling
-
----
-
-# 6️⃣ DIGITAL LOGIC & NUMBER SYSTEM — CSE 260
-
-### Module 1: Number System
-- ☐ Binary ↔ Decimal (ভগ্নাংশ সহ)
-- ☐ Binary ↔ Octal ↔ Hexadecimal
-- ☐ 1's complement, 2's complement
-- ☐ Binary arithmetic
-- ☐ BCD, Gray code, ASCII
-
-### Module 2: Boolean Algebra & Gates
-- ☐ AND, OR, NOT, NAND, NOR, XOR, XNOR — truth table
-- ☐ NAND / NOR = Universal gate
-- ☐ De Morgan's Theorem
-- ☐ Boolean simplification, K-map
-- ☐ SOP vs POS
-
-### Module 3: Combinational & Sequential
-- ☐ Half Adder, Full Adder
-- ☐ Mux, Demux, Encoder, Decoder
-- ☐ Flip-flops (SR, JK, D, T)
-- ☐ Counter, Register, Shift Register
-- ☐ Combinational vs Sequential
-
----
-
-# 7️⃣ DATA STRUCTURES — CSE 220
-`File: CSE_220_Data_Structures.md`
-
-### Module 1: Introduction
-- ☐ Data Structure
-- ☐ Data Objects
-- ☐ Classification (Primitive/Non-Primitive, Linear/Non-Linear)
-- ☐ Data Abstraction & ADT
-- ☐ Primitive Operations
-- ☐ Performance & Complexity
-
-### Module 2: Array
-- ☐ Array
-- ☐ Array Operations
-- ☐ Types of Arrays (1D, 2D, Multidimensional)
-
-### Module 3: Linked List
-- ☐ Linked List
-- ☐ Types (Singly, Doubly, Circular)
-- ☐ Operations & Array vs Linked List
-
-### Module 4: Stack
-- ☐ Stack (LIFO, Push/Pop, Overflow/Underflow)
-- ☐ Applications (Function call, Recursion, Undo, Infix→Postfix, Bracket matching)
-
-### Module 5: Queue
-- ☐ Queue (FIFO, Enqueue/Dequeue)
-- ☐ Types (Simple, Circular, Priority, Deque)
-
-### Module 6: Tree
-- ☐ Tree & Terminology
-- ☐ Binary Tree & Types
-- ☐ Tree Traversal (Pre/In/Post/Level)
-- ☐ Binary Search Tree
-- ☐ AVL & Balanced Trees
-- ☐ Heap
-
-### Module 7: Hashing
-- ☐ Hash Table & Hash Function
-- ☐ Collision & Resolution (Chaining, Probing)
-
-### Module 8: Graph
-- ☐ Graph & Terminology
-- ☐ Representation (Matrix vs List)
-
-### Module 9: Other Data Structures
-- ☐ Priority Queue
-- ☐ Set
-- ☐ Dictionary (Map)
-- ☐ Compound Structures
-
-### Module 10: Recursion
-- ☐ Recursion (Base case, Call stack, vs Iteration)
-
-### Module 11: Memory Management
-- ☐ Stack vs Heap, Static vs Dynamic, Fragmentation
-
----
-
-# 8️⃣ ALGORITHMS — CSE 221
-`File: CSE_221_Algorithms.md`
-
-### Module 1: Algorithm Analysis
-- ☐ Algorithm & ৫ বৈশিষ্ট্য
-- ☐ Asymptotic Notation (O, Ω, Θ)
-- ☐ Order of Growth
-- ☐ Recurrence & Master Theorem
-
-### Module 2: Design Techniques
-- ☐ Divide & Conquer
-- ☐ Greedy Algorithm
-- ☐ Dynamic Programming
-- ☐ Backtracking
-
-### Module 3: Sorting
-- ☐ Bubble, Selection, Insertion
-- ☐ Merge, Quick, Heap
-- ☐ Counting, Radix
-- ☐ Stable vs In-place
-- ☐ Sorting Master Table
-
-### Module 4: Searching
-- ☐ Linear Search
-- ☐ Binary Search
-
-### Module 5: Graph Algorithms
-- ☐ BFS
-- ☐ DFS
-- ☐ Dijkstra
-- ☐ Bellman-Ford
-- ☐ Floyd-Warshall
-- ☐ Prim's & Kruskal's (MST)
-- ☐ Topological Sort
-- ☐ Network Flow (সংক্ষেপে)
-
-### Module 6: Advanced
-- ☐ Amortized Analysis
-- ☐ P, NP, NP-Hard, NP-Complete
-- ☐ GCD, Primality, Sieve
-- ☐ Strassen, Horner's Rule
-
----
-
-# 9️⃣ ALGORITHM STEPS & DRY RUN
-`File: Algorithm_Steps_and_DryRun.md`
-
-- ☐ A. Searching (Linear, Binary)
-- ☐ B. Sorting (7টি)
-- ☐ C. Stack/Queue (Push/Pop, Infix→Postfix, Bracket)
-- ☐ D. Linked List (Insert, Delete, Reverse)
-- ☐ E. Tree (Traversal, BST Search/Insert/Delete)
-- ☐ F. Heap (Insert, Delete, Build Heap)
-- ☐ G. Hashing (Chaining, Linear Probing)
-- ☐ H. Graph (BFS, DFS, Dijkstra, Bellman-Ford, Floyd, Prim, Kruskal, Topological)
-- ☐ I. DP/Greedy (Fibonacci, Knapsack, LCS, Activity Selection, Huffman)
-- ☐ J. Backtracking (N-Queens)
-- ☐ K. Number (GCD, Sieve, Primality)
-
----
-
-# 🔟 MACHINE LEARNING & DEEP LEARNING
-`File: ML_DL_Basics.md`
-
-### Module 1: AI, ML, DL
-- ☐ AI ⊃ ML ⊃ DL সম্পর্ক
-- ☐ ML vs DL comparison
-
-### Module 2: Types of ML
-- ☐ Supervised (Classification vs Regression)
-- ☐ Unsupervised (Clustering, Dimensionality Reduction)
-- ☐ Semi-supervised
-- ☐ Reinforcement Learning
-
-### Module 3: Common Algorithms
-- ☐ Linear & Logistic Regression
-- ☐ KNN, Decision Tree, Random Forest
-- ☐ SVM, Naive Bayes
-- ☐ K-Means, PCA
-
-### Module 4: Training & Evaluation
-- ☐ Train / Validation / Test split, Cross-validation
-- ☐ Overfitting vs Underfitting, Bias-Variance
-- ☐ Regularization (L1, L2)
-- ☐ Confusion Matrix, Precision, Recall, F1
-- ☐ Regression metrics (MSE, RMSE, MAE, R²)
-
-### Module 5: Deep Learning Basics
-- ☐ Neural Network structure (weight, bias)
-- ☐ Activation Functions (Sigmoid, ReLU, Tanh, Softmax)
-- ☐ Forward Propagation → Loss → Backpropagation → Gradient Descent
-- ☐ Epoch, Batch, Iteration, Learning Rate
-- ☐ Vanishing Gradient, Dropout
-
-### Module 6: Architectures
-- ☐ CNN, RNN, LSTM
-- ☐ Transformer, GAN, Autoencoder
-
----
-
-# 1️⃣1️⃣ ENGLISH COMPOSITION
-
-- ☐ ২০০ শব্দের সীমা মেনে লেখার অভ্যাস
-- ☐ Structure: Introduction → Body → Conclusion
-- ☐ Linking words
-- ☐ একটা practice essay (১৫ মিনিটে)
-- ☐ সম্ভাব্য টপিক ভেবে রাখা (AI, Social media, Online education, Climate change)
-
----
-
-# 1️⃣2️⃣ OPTIONAL — সময় থাকলে
-
-### Computer Architecture (CSE 340)
-- ☐ RISC vs CISC
-- ☐ Cache memory, Cache hit/miss
-- ☐ Pipeline
-
-### Automata & Compiler (CSE 331 / 420)
-- ☐ Finite Automata (DFA/NFA)
-- ☐ Turing Machine
-- ☐ Halting Problem
-- ☐ Compiler vs Interpreter
-- ☐ Compiler phases (Lexical → Syntax → Semantic → Code gen)
-
-### Discrete Mathematics (CSE 230)
-- ☐ Set theory basics
-- ☐ Propositional logic
-- ☐ Graph theory basics
-- ☐ Permutation & Combination
-
----
----
-
-# ✅ Progress Summary
-
-| # | Subject | Module | শেষ |
+| অগ্রাধিকার | ফাইল | কখন | সময় |
 |---|---|---|---|
-| 1 | Networking | 6 | ☐ |
-| 2 | Database | 6 | ☐ |
-| 3 | Programming & OOP | 6 | ☐ |
-| 4 | Operating Systems | 4 | ☐ |
-| 5 | Software Engineering | 3 | ☐ |
-| 6 | Digital Logic | 3 | ☐ |
-| 7 | Data Structures | 11 | ☐ |
-| 8 | Algorithms | 6 | ☐ |
-| 9 | Algorithm Steps | 11 | ☐ |
-| 10 | ML & DL | 6 | ☐ |
-| 11 | English | 1 | ☐ |
-| 12 | Optional | 3 | ☐ |
-| | **মোট** | **66 module** | |
+| **১** | **`MASTER_SUMMARY_SHEET.md`** | আজ রাতে / কাল সকালে | ৩৫ মিনিট |
+| **২** | **`EXAM_DAY_SHEET.md`** | হলে ঢোকার ঠিক আগে | ২০ মিনিট |
+| **৩** | `English_Composition_Complete.md` | আজ রাতে (টেমপ্লেট + ২টা প্রবন্ধ) | ২০ মিনিট |
+| ৪ | বাকি ১২টা বিষয়ভিত্তিক ফাইল | **শুধু আটকে গেলে** — reference হিসেবে | — |
+
+> ⚠️ **সব ফাইলে মোট ৪৫,০০০+ শব্দ।** একবার পড়তেই ৭.৫ ঘণ্টা লাগবে।
+> বিষয়ভিত্তিক ফাইলগুলো **পাঠ্যবই নয়, অভিধান** — যখন কোনো কিছু বুঝতে পারবে না তখনই খুলবে।
+
+---
+---
+
+# 📚 সব ফাইলের তালিকা (১৬টি)
+
+## ★ চূড়ান্ত রিভিশন (২টি)
+| ফাইল | কী আছে |
+|---|---|
+| **`MASTER_SUMMARY_SHEET.md`** | ১০ বিষয়ের সব key table, সূত্র, Top 40 ভুল |
+| **`EXAM_DAY_SHEET.md`** | উত্তর লেখার format · ১৫ প্রশ্নের তৈরি উত্তর · সময়ের ভাগ |
+
+## 🔴 Tier 1 — Sample paper-এ সরাসরি এসেছে (৬টি)
+| ফাইল | প্রশ্ন | Module |
+|---|---|---|
+| **`Networking_Complete.md`** | 4/15 | 11 |
+| **`Database_SQL_Complete.md`** | 4/15 | 7 |
+| **`Programming_OOP_Complete.md`** | 3/15 | 8 |
+| **`OS_SoftwareEngineering_Complete.md`** | 2/15 | 6+4 |
+| **`DLD_NumberSystem_Complete.md`** | 1/15 | 8 |
+| **`English_Composition_Complete.md`** | Section 2 | 7 প্রবন্ধ |
+
+## 🟡 Tier 2 — DS, Algo, ML (৬টি)
+| ফাইল | Module |
+|---|---|
+| `CSE_220_Data_Structures.md` | 11 |
+| `CSE_221_Algorithms.md` | 6 |
+| `Algorithm_Steps_and_DryRun.md` | ৪০+ algorithm-এর ধাপ ও dry run |
+| `Algorithm_Supplement.md` | Shell/Bucket/Tim Sort · Jump/Interpolation Search · KMP · Union-Find |
+| `ML_DL_Basics.md` | 6 |
+| `ML_DL_Part2.md` | 9 |
+
+## 📋 পরিকল্পনা (২টি)
+| ফাইল | কী আছে |
+|---|---|
+| `INDEX.md` | এই ফাইল |
+| `STUDY_PLAN.md` | ১২ ঘণ্টার ভাগ · কী বাদ দেবে · Emergency List |
+
+---
+---
+
+# ✅ Topic Checklist
+
+## 1️⃣ NETWORKING — `Networking_Complete.md`
+- ☐ Network types (PAN/LAN/MAN/WAN) · Topology · Mesh = n(n−1)/2
+- ☐ **OSI 7 layer · TCP/IP 4 layer · PDU** ⭐⭐⭐
+- ☐ Transmission mode · Media · Multiplexing · Switching
+- ☐ Error detection: Parity · Checksum · **CRC** *(dry run)*
+- ☐ **IPv4 · Classes · Private IP · MAC vs IP** ⭐⭐⭐
+- ☐ Binary ↔ Decimal conversion *(dry run)*
+- ☐ **SUBNETTING** — Network/Broadcast/Host range *(৪টি dry run)* ⭐⭐⭐
+- ☐ **CIDR & VLSM** *(সম্পূর্ণ VLSM design dry run)* ⭐⭐⭐
+- ☐ **IPv6** — সংক্ষিপ্তকরণ *(dry run)* ⭐⭐⭐
+- ☐ **TCP vs UDP · Three-way handshake · Ports**
+- ☐ Devices (Hub/Switch/Router) · DNS/DHCP/NAT/ARP
+- ☐ **802.11 standards** ⭐
+
+## 2️⃣ DATABASE & SQL — `Database_SQL_Complete.md`
+- ☐ DBMS vs File System · 3-level architecture · DDL/DML/DQL/DCL/TCL
+- ☐ **Keys — Super/Candidate/Primary/Foreign** *(dry run)* ⭐⭐⭐
+- ☐ **SQL: CREATE DATABASE / CREATE TABLE / SELECT WHERE** ⭐⭐⭐
+- ☐ DELETE vs TRUNCATE vs DROP · WHERE vs HAVING
+- ☐ Aggregate · GROUP BY · Query চলার ক্রম
+- ☐ **JOIN — INNER/LEFT/RIGHT/FULL/CROSS** *(dry run)* ⭐
+- ☐ **Normalization — UNF→1NF→2NF→3NF** *(dry run)* ⭐
+- ☐ ER Model · Cardinality · ER→Table *(dry run)*
+- ☐ **ACID** · Transaction · Indexing
+
+## 3️⃣ PROGRAMMING & OOP — `Programming_OOP_Complete.md`
+- ☐ Data types · **Operator precedence** · `i++` vs `++i` *(dry run)*
+- ☐ Integer vs float division · Modulus
+- ☐ **`fmod()` · `round()` · `ceil()` · `floor()`** ⭐⭐⭐
+- ☐ **Short-circuit evaluation** ⭐⭐⭐
+- ☐ **Loop tracing — Q8-এর সম্পূর্ণ dry run** ⭐⭐⭐
+- ☐ Pointer · Call by value vs reference · Storage class
+- ☐ **OOP ৪ স্তম্ভ** · Class vs Object
+- ☐ **Overloading vs Overriding** ⭐⭐⭐
+- ☐ Abstract class vs Interface · Access modifiers
+- ☐ **Platform independence — Bytecode + JVM** ⭐⭐⭐
+- ☐ Exception handling · String
+
+## 4️⃣ OPERATING SYSTEMS — `OS_SoftwareEngineering_Complete.md` (Part A)
+- ☐ OS types
+- ☐ **Process vs Thread · Multithreading** ⭐⭐⭐
+- ☐ Process states · PCB · Context switching
+- ☐ **Scheduling — FCFS · SJF · Round Robin** *(৩টি dry run + Gantt chart)*
+- ☐ **Deadlock ৪ শর্ত** · Banker's · Deadlock vs Starvation
+- ☐ Paging vs Segmentation · Virtual memory
+- ☐ **Page replacement — FIFO/LRU** *(dry run)*
+- ☐ Semaphore · Mutex · Race condition
+
+## 5️⃣ SOFTWARE ENGINEERING — `OS_SoftwareEngineering_Complete.md` (Part B)
+- ☐ **SDLC ৬ ধাপ** ⭐⭐⭐
+- ☐ **Models — Waterfall · Iterative · Spiral · Agile · V-Model**
+- ☐ Black Box vs White Box · Testing levels
+- ☐ Verification vs Validation · Cohesion vs Coupling
+
+## 6️⃣ NUMBER SYSTEM & DLD — `DLD_NumberSystem_Complete.md`
+- ☐ **Binary ↔ Decimal (ভগ্নাংশ সহ)** *(dry run)* ⭐⭐⭐
+- ☐ **Q5 সমাধান — (1011.1101)₂ = 11.8125** ⭐⭐⭐
+- ☐ Binary ↔ Octal ↔ Hexadecimal
+- ☐ 1's ও 2's complement · Binary বিয়োগ *(dry run)*
+- ☐ **৭টি Gate — প্রতীক ও truth table** · Universal gate
+- ☐ Boolean algebra · **De Morgan's Theorem**
+- ☐ **K-Map** *(dry run)* · SOP vs POS
+- ☐ **Half Adder · Full Adder** *(circuit diagram)*
+- ☐ MUX · DEMUX · Encoder · Decoder *(diagram)*
+- ☐ Flip-flops · Counter · Combinational vs Sequential
+
+## 7️⃣ DATA STRUCTURES — `CSE_220_Data_Structures.md`
+- ☐ Data Structure · Data Objects · **Classification** · **ADT** · Primitive Ops · **Performance**
+- ☐ **Array** · Operations · Types (1D/2D/Multi)
+- ☐ **Linked List** · Types · **Array vs Linked List**
+- ☐ **Stack** · Applications · Infix→Postfix
+- ☐ **Queue** · Types (Simple/Circular/Priority/Deque)
+- ☐ **Tree** · Binary Tree · **Traversal** · **BST** · AVL · **Heap**
+- ☐ **Hashing** · Collision · Chaining vs Probing
+- ☐ **Graph** · Matrix vs List
+- ☐ Priority Queue · Set · Dictionary · Compound
+- ☐ **Recursion**
+- ☐ Memory Management
+
+## 8️⃣ ALGORITHMS — `CSE_221_Algorithms.md`
+- ☐ Algorithm ৫ বৈশিষ্ট্য · **Asymptotic (O, Ω, Θ)** · Order of growth
+- ☐ Recurrence · **Master Theorem**
+- ☐ **Divide & Conquer · Greedy · DP · Backtracking** ⭐⭐⭐
+- ☐ **Sorting (৭টি) — Master Table · Stable/In-place**
+- ☐ **Searching — Linear · Binary**
+- ☐ **Graph — BFS · DFS · Dijkstra · Bellman-Ford · Floyd · Prim · Kruskal · Topological**
+- ☐ Amortized · **NP-Complete** · GCD · Primality
+
+## 9️⃣ ALGORITHM STEPS — `Algorithm_Steps_and_DryRun.md`
+- ☐ A. Searching (2) · B. Sorting (7) · C. Stack/Queue (4)
+- ☐ D. Linked List (5) · E. Tree (5) · F. Heap (3) · G. Hashing (2)
+- ☐ H. Graph (8) · I. DP/Greedy (6) · J. Backtracking · K. Number (3)
+
+## 🔟 ALGORITHM SUPPLEMENT — `Algorithm_Supplement.md` 🔵
+- ☐ Shell · Bucket · Tim Sort
+- ☐ Jump · Interpolation · Exponential · Ternary Search
+- ☐ KMP · Rabin-Karp
+- ☐ Union-Find · SCC · A*
+
+## 1️⃣1️⃣ ML & DL — `ML_DL_Basics.md` + `ML_DL_Part2.md`
+**Part 1:**
+- ☐ AI ⊃ ML ⊃ DL · **ML-এর ৪ ধরন** · Common algorithms
+- ☐ Overfitting/Underfitting · **Precision/Recall/F1**
+- ☐ Neural Network · Activation · Backpropagation
+- ☐ CNN · RNN · LSTM · Transformer
+
+**Part 2:** 🔵
+- ☐ **Parameter vs Hyperparameter** · Feature engineering
+- ☐ **Bagging vs Boosting** · সব formula
+- ☐ Confusion Matrix *(সংখ্যা দিয়ে)* · CNN detail
+- ☐ Transfer Learning · NLP · LLM · Tools
+
+## 1️⃣2️⃣ ENGLISH — `English_Composition_Complete.md`
+- ☐ **পাঁচ ধাপের টেমপ্লেট** ⭐⭐⭐
+- ☐ ২০০ শব্দের অনুভূতি · Linking words
+- ☐ **৭টি Model Essay** (AI · শিক্ষা · সামাজিক মাধ্যম · প্রযুক্তি · Remote work · জলবায়ু · উচ্চশিক্ষা)
+- ☐ **Sentence Bank**
+- ☐ সময় পরিকল্পনা · সাধারণ ভুল
+
+---
+---
+
+# 📊 Coverage Summary
+
+| # | বিষয় | ফাইল আছে | Module | প্রশ্ন |
+|---|---|---|---|---|
+| 1 | Networking | ✅ | 11 | **4/15** |
+| 2 | Database & SQL | ✅ | 7 | **4/15** |
+| 3 | Programming & OOP | ✅ | 8 | **3/15** |
+| 4 | Operating Systems | ✅ | 6 | **1/15** |
+| 5 | Software Engineering | ✅ | 4 | **1/15** |
+| 6 | Number System & DLD | ✅ | 8 | **1/15** |
+| 7 | Data Structures | ✅ | 11 | — |
+| 8 | Algorithms | ✅ | 6 | — |
+| 9 | Algorithm Steps | ✅ | 11 | — |
+| 10 | Algorithm Supplement | ✅ | 4 | — |
+| 11 | ML & DL | ✅ | 15 | — |
+| 12 | English Composition | ✅ | 7 প্রবন্ধ | **Section 2** |
+| ★ | Master Summary | ✅ | 10 বিষয় | — |
+| ★ | Exam Day Sheet | ✅ | Format + উত্তর | — |
+
+**সব বিষয় কভার হয়েছে। কোনো ফাঁক নেই।**
+
+---
+
+# ⚠️ বাদ দেওয়া হয়েছে (ইচ্ছাকৃতভাবে)
+
+| Course | কেন |
+|---|---|
+| CSE 250/251/350 Electronics · 460 VLSI · 461 Robotics | Admission paper-এ আসে না |
+| CSE 423 Graphics · 428 Image · 424 Pattern · 429 Multimedia | আসে না |
+| CSE 330 Numerical · 430 DSP · 462 Fault Tolerance | খুব কম আসে |
+| CSE 340 Architecture · 331 Automata · 230 Discrete Math | **সময় থাকলে** — RISC vs CISC, Cache, Compiler vs Interpreter, DFA/NFA টুকু |
+
+---
+
+> **এখন কী করবে:**
+> `MASTER_SUMMARY_SHEET.md` → তারপর `EXAM_DAY_SHEET.md` → তারপর ঘুম।
+> বাকি ফাইলগুলো কেবল আটকে গেলে খুলবে।
