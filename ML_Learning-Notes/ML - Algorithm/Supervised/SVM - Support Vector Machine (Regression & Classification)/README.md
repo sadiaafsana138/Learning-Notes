@@ -378,3 +378,7 @@ R²   = 1 - [ Σ(yᵢ - ŷᵢ)² / Σ(yᵢ - ȳ)² ]        (ȳ = mean of true y
 ## 16. One-Paragraph Exam-Ready Summary
 
 SVM একটা margin-maximizing supervised algorithm যেটা classification-এ widest street (SVC) আর regression-এ epsilon-tube (SVR) হিসেবে কাজ করে; hyperplane হলো `w·x+b=0`, margin `= 2/||w||`, আর সেটা maximize করতে গিয়ে আমরা minimize করি `(1/2)||w||² + C·Σ hinge_loss` (SVC) বা `(1/2)||w||² + C·Σ(ξᵢ+ξᵢ*)` with epsilon-insensitive loss (SVR) — only the **support vectors** (points on/inside the margin, or on/outside the tube) actually matter, everything else has zero contribution via the dual `αᵢ=0`. `C` trades off margin width vs error tolerance; the **kernel trick** (`K(xᵢ,xⱼ)=φ(xᵢ)·φ(xⱼ)`, most commonly RBF `exp(-γ‖x-x'‖²)`) lets a linear-looking optimization bend around non-linear data without explicit feature engineering. SVM is scale-sensitive (always `StandardScaler` first), doesn't scale well to huge datasets, gives no native probabilities, but is strong on small/medium, high-dimensional, clear-margin problems — contrast with logistic regression (probability-maximizing log-loss, every point matters) and trees/forests (axis-aligned splits, no scaling needed, better on messy tabular data).
+
+## Further reading
+
+- [An Introduction to Support Vector Regression (SVR) — Medium](https://medium.com/@nandiniverma78988/an-introduction-to-support-vector-regression-svr-in-machine-learning-681d541a829a) *(from `Support Vector Regressor.docx` in this folder)*

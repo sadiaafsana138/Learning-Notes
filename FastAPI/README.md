@@ -65,3 +65,7 @@ def root():
 ## Reference
 
 Official documentation: https://fastapi.tiangolo.com
+
+## Full text version
+
+`fastapi_cheatsheet.html` is interactive but GitHub only shows its raw markup, not the rendered page. **[`fastapi_cheatsheet.md`](./fastapi_cheatsheet.md)** has the same 16 sections as plain markdown, readable directly on GitHub with no download needed.

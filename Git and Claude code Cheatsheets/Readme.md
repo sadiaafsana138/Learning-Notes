@@ -134,3 +134,12 @@ Perfect for:
 Made with ❤️ for developers learning modern tools faster and easier.
 
 ---
+
+## 📄 Full text versions
+
+The `.html` files are interactive, but GitHub only shows their raw markup, not the rendered page. Plain-markdown transcriptions with the same content, readable directly on GitHub:
+
+- **[`git-github-cheatsheet.md`](./git-github-cheatsheet.md)**
+- **[`claude-code-cheatsheet.md`](./claude-code-cheatsheet.md)**
+
+---

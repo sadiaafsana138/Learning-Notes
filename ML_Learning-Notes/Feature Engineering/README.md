@@ -132,3 +132,29 @@ End-to-end pipeline combining imputation + encoding + scaling in one place, appl
 - For categorical imputation of high-missing-rate columns (like Cabin at ~77%), prefer `strategy='constant', fill_value='Missing', add_indicator=True` over mode imputation.
 - Z-score outlier detection assumes a roughly normal distribution — use IQR for skewed data.
 - `LabelEncoder` is for the **target only**. For features, use `OrdinalEncoder` (which accepts 2D input and supports an explicit `categories=` order).
+
+---
+
+## Statistical background — why Z-score and IQR work
+
+*(transcribed from the two slide decks in this folder — `Understanding Data Distribution of a Dataset.pptx` and `Outlier Detection & Handling.pptx` — so the content is readable here without opening PowerPoint)*
+
+**The Normal (bell curve) distribution** has three properties: it's symmetric (no skew), its mean/median/mode all sit at the same central point, and the total area under the curve is 1.0.
+
+**The Empirical Rule (68-95-99.7)** — for roughly-normal data:
+
+| Range | % of data inside |
+|---|---|
+| mean ± 1σ | 68% |
+| mean ± 2σ | 95% |
+| mean ± 3σ | 99.7% |
+
+This is *why* the Z-score outlier threshold in this cheatsheet is `\|z\| > 3` — beyond 3 standard deviations, only 0.3% of normal data should exist, so anything out there is flagged as unusual.
+
+**Z-score worked example:** exam score 1200, mean (μ) = 1000, std (σ) = 100 → `z = (1200 - 1000) / 100 = 2.0`. A z of 2.0 means you scored better than ~97.5% of people (from the empirical rule: 95% sits within ±2σ, so ~2.5% lies above +2σ).
+
+**IQR vs Z-score:** IQR (`Q1`, `Q3`, middle 50% of the data) doesn't require a normal distribution — it's based on medians/percentiles, so it stays robust even when the data is skewed or already has extreme values. That's the folder's rule of thumb: **Z-score when data looks normal, IQR when it's skewed.**
+
+**Why outliers matter:** a single extreme value skews the mean, confuses models trying to learn general patterns, and — in fraud/medical contexts — can *be* the actual insight rather than noise to remove.
+
+**The pragmatic approach:** don't blindly pick one method. Try keeping, deleting, and capping (Winsorizing) outliers, then compare model results — the "right" choice is often empirical, not theoretical.

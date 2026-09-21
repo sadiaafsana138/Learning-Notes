@@ -1,0 +1,3 @@
+# Jupyter autosave checkpoints — not source content, safe to ignore
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
