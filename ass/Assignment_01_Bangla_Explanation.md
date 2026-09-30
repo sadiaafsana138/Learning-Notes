@@ -15,6 +15,17 @@
 
 ---
 
+## কোন Question-এর জন্য কোন Module (DL_Learning_Notes) পড়বে
+
+| Question | সম্পর্কিত Module | ফাইল |
+|---|---|---|
+| Q1 Part A, Q3 (Sigmoid/BCE) | Mod 5 | `Activation Funciton.pdf`, `Binary Cross Entropy.pdf` |
+| Q1 Part B (linearly non-separable ডেটায় সমস্যা) | Mod 1, Mod 6 | `non_linearity.pdf` (Mod 1), `Main Idea.pdf`, `MLP Notation.pdf` (Mod 6) |
+| Q4 (Forward Pass) | Mod 2 | `2_perceptron.ipynb` |
+| Q5 (Gradient Descent) | Mod 4 | `gradient descent.pdf`, `Loss Function.pdf` |
+
+---
+
 ## Question 1 (Theory, 15 Marks)
 
 ### Part A — Activation function কেন লাগে, আর Sigmoid কেন output-এ ব্যবহার হয়
