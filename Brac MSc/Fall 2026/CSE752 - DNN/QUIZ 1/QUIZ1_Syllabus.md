@@ -6,13 +6,15 @@
 
 ---
 
+> 📌 **ছাপার ভুল ও সঠিক মানের জন্য `QUIZ1_Errata_Correct_Values.md` দেখো (পড়ার সময় ওটার মান ধরো)।**
+
 ## 0. Scope (sir-এর notice অনুযায়ী)
 
 **প্রশ্ন আসবে শুধু এই ৫টা ফাইল থেকে:**
 
 | # | ফাইল | কী আছে (verified) |
 |---|---|---|
-| 1 | `Deep_Learning_Quiz_Bank_L-2_L-3.pdf` (8 page) | 19 Short Q, **19 T/F** (header-এ "25" লেখা, আসলে 19টা), 11 Math, **5 Graph** (header-এ "10" লেখা, আসলে 5টা) |
+| 1 | `Deep_Learning_Quiz_Bank_L-2_L-3.pdf` (8 page) | 19 Short Q, **19 T/F** + 6 generated (header-এ 25), 11 Math, **5 Graph** + 5 generated (header-এ 10) → `Generated_Missing_TF_and_Graphs.md` |
 | 2 | `Deep_Learning_Chapter6_Quiz_Bank.pdf` (9 page) | 19 Short Q (A1–A19), 16 T/F (B1–B16), 16 Math (C1–C16), **6 Graph** (D1–D6) + formula sheet |
 | 3 | `merged_L2_GD-LR-B-W-MSE-ActF-FB Prop.pdf` (24 page) | p1–6 Gradient Descent + Linear Regression; p7–12 Linear Regression (feature/weight/bias/MSE); p13–19 Activation Functions + nonlinear learning; p20–24 Forward & Back Propagation |
 | 4 | `Merged-KL-XOR-Grad-Arch.pdf` (38 page) | p1–8 KL/CE/Logistic/SGD; p9–18 Ch6 notes (feedforward, XOR, ReLU); p19–27 Gradient-based learning, output units, ReLU; p28–38 Architecture, UAT, chain rule, backprop |
@@ -157,6 +159,8 @@
 
 ## 3. True/False (10 × 1 mark) — trap list
 
+> L-2/L-3 bank-এ header-এ 25 T/F, কিন্তু আছে 19। বাকি 6টা (T/F 20–25) আমি generate করেছি: `Generated_Missing_TF_and_Graphs.md`। নিচের শেষ ৬ সারি সেগুলো (Generated চিহ্নিত)।
+
 | Statement | উত্তর |
 |---|---|
 | Target = model-এর input attribute | False (feature input; target true value) |
@@ -186,6 +190,12 @@
 | Deeper সবসময় better/সহজে optimize | False |
 | Backprop নিজেই optimizer | False |
 | Hidden ReLU z<0 → gradient path blocked | True |
+| *(Generated)* Linear regression = single neuron, identity activation | True |
+| *(Generated)* Linear layers stack (no activation) y=x² represent করতে পারে | False |
+| *(Generated)* ½(ŷ−y)² → ∂L/∂ŷ=ŷ−y | True |
+| *(Generated)* errors 0,0,0,−1 → MSE=1 | False (0.25) |
+| *(Generated)* h₂=0 হলে ∂L/∂v₂=0 | True |
+| *(Generated)* Output activation task অনুযায়ী (linear/sigmoid/softmax) | True |
 
 ## 4. Math (2 × 5 marks)
 
@@ -214,11 +224,13 @@ f(x)=x², f′(x)=2x, x₀=4, η=0.1, x_new = x_old − η·2x_old (= 0.8·x_old
 | 2 | 2.5600 | 5.1200 | 6.5536 |
 | 3 | 2.0480 | 4.0960 | 4.1943 |
 | 4 | 1.6384 | 3.2768 | 2.6844 |
-| 5 | 1.3107 | 2.6214 | 1.7189 |
-| 6 | 1.0486 | 2.0972 | 1.1005 |
+| 5 | 1.3107 | 2.6214 | 1.7180 *(image: 1.7189)* |
+| 6 | 1.0486 | 2.0972 | 1.0995 *(image: 1.1005)* |
 | 7 | 0.8389 | 1.6777 | 0.7037 |
-| 8 | 0.6711 | 1.3422 | 0.4503 |
-| 9 | 0.5369 | 1.0737 | 0.2883 |
+| 8 | 0.6711 | 1.3422 | 0.4504 *(image: 0.4503)* |
+| 9 | 0.5369 | 1.0737 | 0.2882 *(image: 0.2883)* |
+
+⚠️ **Image-এর ছোট ভুল:** `f_x_gradient_descent.webp`-এ f(x₅), f(x₆), f(x₈), f(x₉) একটু ভুল ছাপা (1.7189, 1.1005, 0.4503, 0.2883)। সঠিক মান (x এর exact value থেকে): **1.7180, 1.0995, 0.4504, 0.2882**। xₜ আর f′(xₜ) কলামে কোনো ভুল নেই; x₀…x₄ ও f(x₀…x₄) মেলে। Exam-এ নিজে হিসাব করলে exact মান লেখো, আর sir-এর মান আলাদা হলে ছোট rounding পার্থক্য বলে ধরো।
 
 Minimum x*=0, f(0)=0। **নিজে হাতে x₁…x₄ বের করা practice করো**, সংখ্যা না বদলে (যেমন অন্য x₀ বা η দিলে) করতে পারবে কি না দেখো.
 
@@ -242,10 +254,20 @@ Minimum x*=0, f(0)=0। **নিজে হাতে x₁…x₄ বের কর
 |---|---|---|
 | D1 | ReLU, x∈[−4,4] | (−4,0),(−2,0),(0,0),(1,1),(2,2),(4,4) |
 | D2 | Sigmoid | z=−2→0.1192, 0→0.5, 1→0.7311, 2→0.8808 |
-| D3 | BCE y=1, L=−ln p | (0.1,2.3026),(0.2,1.6094),(0.3,1.2040),(0.4,0.9163),(0.5,0.6931),(0.6,0.5108),(0.7,0.3567),(0.8,0.2231),(0.9,0.1053); নামতে থাকা curve |
+| D3 | BCE y=1, L=−ln p | (0.1,2.3026),(0.2,1.6094),(0.3,1.2040),(0.4,0.9163),(0.5,0.6931),(0.6,0.5108),(0.7,0.3567),(0.8,0.2231),(0.9,0.1054); নামতে থাকা curve |
 | D4 | XOR 4 points | (0,0)→0,(0,1)→1,(1,0)→1,(1,1)→0; আলাদা symbol; কোনো এক line আলাদা করে না |
 | D5 | AND points | শুধু (1,1)→1; linearly separable |
 | D6 | OR points | শুধু (0,0)→0; linearly separable |
+
+**Missing Ex. 6–10 (bank-এ নাম আছে, PDF-এ নেই → আমি generate করেছি, `Generated_Missing_TF_and_Graphs.md` + `Generated_Graphs_6-10.png`):**
+
+| # | Graph | Key points |
+|---|---|---|
+| G6 | Bias effect: ŷ=2x vs ŷ=2x+5 *(generated; merged_L2 p4–5-এর bias ব্যাখ্যা থেকে)* | parallel; (0,0) ও (0,5); (1,2)/(1,7); (2,4)/(2,9) |
+| G7 | Softmax bar chart, logits [2,1,0] | 0.665, 0.245, 0.090; sum=1 |
+| G8 | BCE y=1, −ln p | (0.1,2.3026) … (0.9,0.1054); নামতে থাকা curve |
+| G9 | GD loss vs iteration t | 16.00, 10.24, 6.55, 4.19, 2.68, 1.72, 1.10, 0.70, 0.45, 0.29 |
+| G10 | One SGD step loss before/after | 0.6931 → 0.5759; p 0.5000 → 0.5622 |
 
 **Merged PDF-এ আঁকা figure (bank-এ exercise না, কিন্তু graph হিসেবে আসতে পারে):**
 
@@ -255,14 +277,14 @@ Minimum x*=0, f(0)=0। **নিজে হাতে x₁…x₄ বের কর
 | M2 | **Residual দৃশ্য** (merged_L2 p4) | ŷ=wx+b রেখা, data point (xᵢ,yᵢ), dashed vertical rᵢ (G3-এর মতো) |
 | M3 | **XOR 4 corner** (merged-KL p13) | (0,0)=0,(1,0)=1,(0,1)=1,(1,1)=0; কোনো single line আলাদা করে না (D4-এর মতো) |
 
-**Sir-এর নতুন (announcement):**
+**Sir-এর নতুন (announcement), sketch ফাইল: `image (2).webp` = ReLU(z) (z∈[−4,4], নেগেটিভে 0, (1,1),(2,2),(3,3),(4,4)), `image (1).webp` = ReLU′(z):**
 
 | # | Graph | Key points |
 |---|---|---|
-| R1 | ReLU(z) (forward) | z∈[−4,4]; নেগেটিভে 0; positive-এ y=z |
+| R1 | ReLU(z) (forward) — sir-এর sketch: `image (2).webp` | z∈[−4,4]; নেগেটিভে 0; positive-এ y=z |
 | R2 ⭐ | **ReLU′(z)** (backward) | z∈[−4,4]; z≤0 → y=0 (z=0-তে dot, ReLU′(0)=0); z>0 → y=1 (y-axis-এ 1 mark); z=0-তে jump। ছবি: `ReLU_and_derivative.png`, sir-এর স্কেচ: `image (1).webp` |
 
-> **Extra (bank-এ নেই):** Bias effect (ŷ=2x vs ŷ=2x+5, parallel line)। Merged PDF-এর bias ব্যাখ্যা থেকে, optional practice.
+> Bias effect এখন G6 হিসেবে generated Ex. 6-এ আছে (উপরে)।
 
 ---
 
@@ -300,7 +322,7 @@ Calculator values: ln0.7=−0.3567, ln0.3=−1.2040, ln0.6=−0.5108, ln0.4=−0
 
 1. **Day 1:** Part A → `merged_L2…pdf` + `Quiz_Bank_L-2_L-3` Part I–III
 2. **Day 2:** Part B → `Merged-KL-XOR-Grad-Arch.pdf` + `Chapter6_Quiz_Bank` Section A–C
-3. **Day 3:** **Graph practice** — G1–G5, D1–D6, M1 (BCE দুই curve), R1–R2 সব হাতে এঁকে (pencil, graph paper) + GD table হাতে
+3. **Day 3:** **Graph practice** — G1–G5, G6–G10 (generated), D1–D6, M1 (BCE দুই curve), R1–R2 সব হাতে এঁকে (pencil, graph paper) + GD table হাতে
 4. **Day 4:** T/F trap list + Math (4.1, 4.2) আবার + formula sheet
 
 ## 8. মনে রাখার বিষয়
