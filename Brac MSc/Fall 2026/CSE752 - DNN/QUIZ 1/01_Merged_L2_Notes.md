@@ -1,261 +1,711 @@
-# PDF 1 — merged_L2 (Gradient Descent · Linear Regression · Bias/MSE · Activation · Fwd/Back Prop)
+# PDF 1 — Linear Regression, Activation Function ও Forward/Back Propagation
 
-> **Source:** `merged_L2_GD-LR-B-W-MSE-ActF-FB Prop.pdf` (24 page, লেখক: Refai Arafat Rossi, Oct 2026)
-> পুরো PDF পড়ে topic-wise note। প্রতিটা সংখ্যা computer দিয়ে আবার হিসাব করে মিলানো।
-> Syllabus tag (A1…B10) = `QUIZ1_Syllabus.md`-এর topic।
+> **Source:** `merged_L2_GD-LR-B-W-MSE-ActF-FB Prop.pdf` (24 page) · লেখক: Refai Arafat Rossi · October 2026
+> **এই file-এর উদ্দেশ্য:** PDF-এর প্রতিটা page-এর প্রতিটা point এখানে আছে। এই file পড়লে PDF আলাদা করে পড়ার দরকার নেই।
+> **Syllabus tag** (A1, A2 …) = `QUIZ1_Syllabus.md`-এর topic।
+> সব সংখ্যা computer দিয়ে আবার হিসাব করে মিলানো।
 
-## 0. PDF-এর গঠন (page map)
+---
+
+## 0. PDF-এর গঠন (কোন page-এ কী)
 
 | Page | কী আছে | Syllabus |
 |---|---|---|
-| p1–6 | Linear Regression deck (feature, weight, bias, residual, MSE, GD rule) *(deck-এর title "Gradient Descent – Linear regression")* | A1–A4 |
-| p7–12 | **একই content আবার** (Linear Regression deck-এর দ্বিতীয় copy) | A1–A4 |
-| p13–19 | Activation Functions & Nonlinear Learning (ReLU, sigmoid, softmax, bias–variance, numerical forward+backprop) | A5, A6, A7 |
-| p20–24 | Forward & Back Propagation (output-layer parameters v₁, v₂, c, numerical example) | A7 |
+| p1–6 | **Deck 1:** Linear Regression (Feature, Weight, Bias, Residual, MSE, GD rule) | A1–A4 |
+| p7–12 | **Deck 1-এর দ্বিতীয় copy** (হুবহু একই content, শুধু page ভাগ আলাদা) | A1–A4 |
+| p13–19 | **Deck 2:** Activation Function ও Nonlinear Learning (ReLU, Sigmoid, Softmax, Bias–Variance, numerical example) | A5, A6, A7 |
+| p20–24 | **Deck 3:** Forward ও Back Propagation (Output-layer parameter v₁, v₂, c) | A7 |
 
-> ⚠️ p1–6 আর p7–12 প্রায় হুবহু এক। একবার পড়লেই হবে।
-> ⚠️ **Fwd/Back prop-এর numerical math (p15–17, p20–24) notice অনুযায়ী আসবে না।** শুধু concept পড়ো। নিচে বুঝে রাখার জন্য ধাপগুলো দেওয়া আছে।
+> ⚠️ **p7–12 = p1–6-এর repeat।** নিচে একবারই লেখা হয়েছে।
+> ⚠️ **Forward/Backprop-এর numerical math (Part 2-এর §2.9–2.11 ও Part 3) notice অনুযায়ী exam-এ আসবে না।** শুধু concept। তবু বোঝার জন্য সব ধাপ রাখা আছে।
 
 ---
 
-## 1. Linear Regression (p1–6)
+# PART 1 — Linear Regression: Features, Weights, Bias ও MSE (p1–6)
 
-### 1.1 Problem
-Model training time (minutes) predict করব দুই feature দিয়ে:
-- x₁ = training epochs-এর সংখ্যা
-- x₂ = batch size (এক unit = 16 samples)
+## 1. Problem: Deep Learning Model-এর Training Time predict করা `[A2]`
 
-Learned model: **ŷ = w₁x₁ + w₂x₂ + b**, উদাহরণ w₁=2, w₂=3, b=5 → **ŷ = 2x₁ + 3x₂ + 5**
+> **Source:** p1 · Chapter 5.1.4 (Goodfellow, *Deep Learning*) · Master's Level Lecture Deck
 
-### 1.2 ML Task: Regression বনাম Classification `[A1]`
-| | Output | উদাহরণ |
+**PDF-এর statement:**
+> "Suppose we want to estimate how many minutes a model will take to train based on two observed features."
+
+**বাংলা অর্থ:** ধরো, একটা Deep Learning model train হতে কত মিনিট লাগবে সেটা আমরা অনুমান করতে চাই। এর জন্য দুটো observed feature আছে।
+
+### Given Features
+
+| Symbol | Meaning (PDF) | বাংলা |
 |---|---|---|
-| Regression | continuous (ŷ ∈ ℝ) | training time (minutes), housing price ($), GPU temperature (°C) |
-| Classification | discrete label | Cat vs Dog, Benign vs Malignant |
+| $x_1$ | Number of training epochs | কত epoch ধরে train হবে |
+| $x_2$ | Batch size measured in units of 16 samples | batch size, এক unit = 16 sample |
 
-### 1.3 Feature, Target, Feature vector `[A2]`
-- **Feature (x):** model-এর input attribute (x₁=epochs, x₂=batch units)
-- **Target (y):** true ground-truth value (observed training time)
-- উদাহরণ: x₁=10, x₂=4, y=37 → ŷ = 2(10)+3(4)+5 = 20+12+5 = **37** → Error y−ŷ = 0 (perfect)
-- **Feature vector** x = [x₁, x₂]ᵀ = [10, 4]ᵀ; n feature হলে x ∈ ℝⁿ। প্রতি sample একটা বিন্দু n-dimensional space-এ।
+উদাহরণ: batch size 64 sample হলে $x_2 = 64/16 = 4$।
 
-### 1.4 Weight, Bias, Parameters `[A2]`
-- **Weight wⱼ** = এক unit xⱼ বাড়লে ŷ কত বদলায় (অন্য feature fixed)
-  - w₁=2 → 1 epoch বাড়লে +2 মিনিট; w₂=3 → 1 batch unit বাড়লে +3 মিনিট
-- ⚠️ **বড় weight ≠ বেশি important feature।** Scale matters (যেমন age in years বনাম income in dollars)। তুলনার আগে feature normalization দরকার।
-- **Bias b** = additive parameter, input-নিরপেক্ষভাবে output shift করে
-- **Parameters θ = {w₁, …, wₙ, b}** = সব learnable মান; weight ও bias হলো θ-র subset
+### Model Equation
 
-### 1.5 Vector notation ও Neuron view `[A2]`
-- w = [w₁,w₂]ᵀ, x = [x₁,x₂]ᵀ, **wᵀx = w₁x₁ + w₂x₂** → **ŷ = wᵀx + b**
-- **Linear regression = একটা neuron, identity activation (f(z)=z)**
-  - Artificial neuron: z = wᵀx + b, a = f(z)
-  - Linear regression: ŷ = wᵀx + b (f = identity)
-- (wᵀx + b) হলো deep network-এর layer-এর মৌলিক building block।
+PDF: "We decide to model the relationship using a **Linear Regression Model**":
 
-### 1.6 Dataset evaluation ও MSE `[A3]`
-ŷ = 2x₁ + 3x₂ + 5, 4টা experiment:
+$$\hat y = w_1x_1 + w_2x_2 + b$$
 
-| Exp | Epochs x₁ | Batch x₂ | Actual y | Predicted ŷ | Error (y−ŷ) | Squared |
-|---|---|---|---|---|---|---|
-| A | 2 | 2 | 15 | 2(2)+3(2)+5 = 15 | 0 | 0 |
-| B | 4 | 3 | 22 | 2(4)+3(3)+5 = 22 | 0 | 0 |
-| C | 6 | 4 | 29 | 2(6)+3(4)+5 = 29 | 0 | 0 |
-| D | 8 | 5 | 35 | 2(8)+3(5)+5 = **36** | **−1** | **1** |
+| Symbol | Meaning (PDF) | বাংলা |
+|---|---|---|
+| $\hat y$ | predicted training time (minutes) | অনুমান করা training time |
+| $w_1, w_2$ | weights | feature-এর weight |
+| $b$ | bias | অতিরিক্ত যোগ হওয়া parameter |
 
-**MSE = (1/m) Σ (ŷ⁽ⁱ⁾ − y⁽ⁱ⁾)² = (0+0+0+1)/4 = 0.25**
+**বাংলা অর্থ:** Model প্রতিটা feature-কে তার weight দিয়ে গুণ করে, সব যোগ করে, শেষে bias যোগ করে।
 
-কেন square?
-- +2 আর −2 cancel হয়ে 0 হয়ে যেত (square করলে হয় না)
-- বড় error বেশি শাস্তি পায় (1² = 1 বনাম 5² = 25)
-- MSE = 0 মানে সব prediction ঠিক
+### Learned Model Example
 
-### 1.7 Residual ও geometric meaning `[A3]`
-- **r⁽ⁱ⁾ = y⁽ⁱ⁾ − ŷ⁽ⁱ⁾** = actual আর predicted-এর **vertical distance**
-- Point রেখার **নিচে** থাকলে r negative; উপরে থাকলে positive
-- Linear regression এমন w, b খোঁজে যাতে সব point-এর squared vertical distance-এর গড় সবচেয়ে কম।
-- (PDF p4-এ residual-এর ছবি আঁকার code ছাপা হয়ে গেছে, figure render হয়নি। Concept: রেখা ŷ = wx+b, একটা point (x⁽ⁱ⁾, y⁽ⁱ⁾), তার নিচে/উপরে dashed লাল vertical রেখা r⁽ⁱ⁾।)
+PDF: "Suppose our algorithm has learned parameters $w_1 = 2,\ w_2 = 3,\ b = 5$"
 
-### 1.8 Bias কেন লাগে `[A2]`
-- **Bias ছাড়া (b=0):** ŷ = wx **অবশ্যই (0,0) দিয়ে যায়।** x=0 তে target y=5 হলে model পুরোপুরি ব্যর্থ।
-- **Bias সহ:** ŷ = wx + b রেখাকে উপরে/নিচে shift করে (affine transformation)।
-- 1D রেখা ŷ=wx+b: **w = slope, b = y-intercept**
-- 2D plane ŷ = w₁x₁+w₂x₂+b: w₁,w₂ = orientation; b = plane-এর উচ্চতা (elevation)
+General equation-এ বসালে:
 
-### 1.9 Terminology table (p5)
-Task = hyperparameter দিয়ে runtime predict · Feature = input attribute · Feature Vector = এক sample-এর সব input · Target = ground truth · Prediction ŷ = wᵀx+b · Weight = multiplicative parameter · Bias = additive parameter · Parameters θ={w,b} · Residual r=y−ŷ · MSE = dataset-এর গড় squared error
+$$\boxed{\hat y = 2x_1 + 3x_2 + 5}$$
 
-### 1.10 Parameter learning = optimization `[A4]`
-আমরা আগে থেকে সেরা w, b জানি না → **random initialization** → **Gradient Descent** দিয়ে optimize।
-- Loss: J(w₁,w₂,b) = (1/m) Σ ((w₁x₁⁽ⁱ⁾ + w₂x₂⁽ⁱ⁾ + b) − y⁽ⁱ⁾)²
-- Update: **wⱼ ← wⱼ − η ∂J/∂wⱼ**, **b ← b − η ∂J/∂b**
-- Flow: Input x → Prediction ŷ → MSE Loss J → Gradients ∇J → Parameter Updates
-- Goal: w*, b* = argmin MSE(w, b)
-
-### 1.11 Student exercises (p5)
-- **Ex.1:** ŷ = 3x₁+2x₂+4, x=[5,3], y=25 → ŷ = 15+6+4 = **25**, e=0, e²=0
-- **Ex.2:** একই model, x=[6,4], y=32 → ŷ = 18+8+4 = **30**, e = 32−30 = **2**, e² = **4**
-
-### 1.12 Final summary (p6): Linear model → Deep Network
-1. Linear regression (single identity neuron): ŷ = wᵀx + b
-2. Single non-linear neuron: a = f(wᵀx + b)
-3. Multi-layer deep NN: h⁽¹⁾=f₁(W⁽¹⁾x+b⁽¹⁾), h⁽²⁾=f₂(W⁽²⁾h⁽¹⁾+b⁽²⁾), …, ŷ=f_L(W⁽ᴸ⁾h⁽ᴸ⁻¹⁾+b⁽ᴸ⁾)
-
-**Takeaway:** deep network = (wᵀx+b) অনেক layer-এ stack, মাঝে nonlinear activation।
+### এখানে কী শিখলে?
+- Linear regression = feature × weight-এর যোগফল + bias।
+- Training-এর পর $w$ আর $b$-এর মান ঠিক হয়ে যায় (এখানে 2, 3, 5)।
 
 ---
 
-## 2. Activation Functions ও Nonlinear Learning (p13–19)
+## 2. Machine Learning Task কী? `[A1]`
 
-### 2.1 কেন Neural Network? (Electricity demand) `[A2, A5]`
-- ঠান্ডা দিনে (heating) আর গরম দিনে (AC) demand বাড়ে; আরামদায়ক দিনে সবচেয়ে কম → **U-shape**
-- Input x = temperature deviation, target y = অতিরিক্ত demand; ground truth **y = x²**
+> **Source:** p1–2
 
-| x | −2 | −1 | 0 | 1 | 2 |
+**PDF-এর definition:**
+> "A machine learning task specifies what the model is supposed to do."
+
+**বাংলা অর্থ:** Task মানে model-এর কী কাজ করার কথা সেটা ঠিক করা।
+
+এই problem-এ PDF বলছে: "the task is mapping inputs to continuous real values":
+
+$$\boxed{x \longrightarrow \hat y \in \mathbb{R}}$$
+
+($\mathbb{R}$ = বাস্তব সংখ্যার সেট)
+
+### 2.1 Regression Task ($\hat y \in \mathbb{R}$)
+PDF: "Output is a **continuous variable**"
+
+উদাহরণ (PDF): Model training time (minutes) · Housing prices ($) · GPU operating temperature (°C)
+
+### 2.2 Classification Task ($\hat y \in \{0, 1, \ldots\}$)
+PDF: "Output is a **discrete categorical label**"
+
+উদাহরণ (PDF): Image identification (Cat vs. Dog) · Medical diagnosis (Benign vs. Malignant)
+
+### তুলনা
+
+| | Regression | Classification |
+|---|---|---|
+| Output | continuous number | discrete category/label |
+| উদাহরণ | training time, price, temperature | Cat/Dog, Benign/Malignant |
+
+**এই problem কোন task?** → **Regression**, কারণ model training time (minutes) predict করে, যা continuous real value।
+
+### Exam-ready Q&A
+**Q. Regression ও Classification-এর পার্থক্য কী?**
+A. Regression continuous numerical value predict করে (যেমন training time)। Classification discrete class label predict করে (যেমন benign বনাম malicious)।
+
+**Q. Problem 1 কেন Regression?**
+A. কারণ output training time (minutes), যা continuous real value।
+
+---
+
+## 3. Feature ও Target `[A2]`
+
+> **Source:** p2 ("3 & 4. Features and Targets")
+
+| Term | PDF definition | বাংলা |
+|---|---|---|
+| **Feature ($x$)** | An input variable/attribute passed to the model to aid prediction | model-এ যে input দেওয়া হয় |
+| **Target ($y$)** | The true ground-truth value we aim to predict | আসল মান, যেটা predict করতে চাই |
+
+এই problem-এ: $x_1$ = number of epochs, $x_2$ = batch-size units; $y$ = actual observed training time (minutes)।
+
+### Example Instance (PDF)
+10 epoch, 4 batch unit, ground truth $y = 37$ minutes:
+
+$$\hat y = 2(10) + 3(4) + 5 = 20 + 12 + 5 = 37$$
+
+Error $= y - \hat y = 37 - 37 = 0$ → **perfect prediction**
+
+---
+
+## 4. Feature Vector `[A2]`
+
+> **Source:** p2 ("5. What Is a Feature Vector?")
+
+**PDF:** "Instead of handling variables individually, we package inputs into a **feature vector** $\mathbf{x}$"
+
+$$\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 10 \\ 4 \end{bmatrix}$$
+
+General $n$-dimensional feature vector: $\mathbf{x} = [x_1, x_2, \ldots, x_n]^T \in \mathbb{R}^n$
+
+**PDF:** "Each sample in a dataset is represented mathematically as a point in $n$-dimensional vector space."
+
+**বাংলা অর্থ:** প্রতিটা sample-এর সব feature একটা vector-এ রাখা হয়; প্রতিটা sample $n$-মাত্রার space-এর একটা বিন্দু।
+
+---
+
+## 5. Weight-এর মানে ও Feature Scale `[A2]`
+
+> **Source:** p2–3 ("6 & 7. Weights and Feature Interpretation")
+
+Model: $\hat y = 2x_1 + 3x_2 + 5$ ($w_1 = 2,\ w_2 = 3$)
+
+**PDF:** "A weight $w_j$ represents the expected change in output $\hat y$ per unit change in $x_j$, holding all other features fixed."
+
+| Weight | মানে |
+|---|---|
+| $w_1 = 2$ | +1 epoch → predicted time **+2 minutes** |
+| $w_2 = 3$ | +1 batch-size unit → predicted time **+3 minutes** |
+
+### ⚠️ Important Nuance: Weight Magnitude vs. Feature Scale
+**PDF:** "A larger weight does NOT automatically imply a more important feature! Scale matters (e.g., $x_1$ = age in years vs. $x_2$ = income in dollars). Feature normalization is required before comparing weight magnitudes directly."
+
+**বাংলা অর্থ:** বড় weight মানেই বেশি গুরুত্বপূর্ণ feature না। Feature-এর scale আলাদা হলে weight তুলনা করা যায় না; আগে normalize করতে হয়।
+
+### Exam-ready Q&A
+**Q. Weight কী বোঝায়?** A. অন্য feature fixed রেখে একটা feature এক unit বাড়লে prediction কত বদলায়।
+**Q. বড় weight কি বেশি important feature?** A. না, scale-এর উপর নির্ভর করে; তুলনার আগে normalization লাগে।
+
+---
+
+## 6. Parameters ও Weights `[A2]`
+
+> **Source:** p3 ("8 & 9. Parameters vs. Weights")
+
+**Model Parameters ($\theta$):** "The set of all learnable values adjusted by training algorithms"
+
+$$\theta = \{w_1, w_2, \ldots, w_n, b\}$$
+
+**Structural Decomposition (PDF):**
+- **Weights ($w_j$):** parameters multiplying features or activations
+- **Bias ($b$):** additive parameter shifting output independent of inputs
+
+PDF: "Weights and biases are specific subsets of model parameters $\theta$."
+
+---
+
+## 7. Vector Notation ও Neuron View `[A2]`
+
+> **Source:** p3 ("10. Vector Notation", "11 & 12. Linear Regression as an Artificial Neuron")
+
+### 7.1 Vector notation
+$\mathbf{w} = [w_1, w_2]^T$, $\mathbf{x} = [x_1, x_2]^T$
+
+$$\mathbf{w}^T\mathbf{x} = w_1x_1 + w_2x_2$$
+
+$$\boxed{\hat y = \mathbf{w}^T\mathbf{x} + b}$$
+
+PDF: "This linear combination is the exact foundational building block used in deep neural network layers."
+
+### 7.2 Linear Regression = একটা Neuron
+| | Formula |
+|---|---|
+| Linear Regression | $\hat y = \mathbf{w}^T\mathbf{x} + b$ |
+| Artificial Neuron | $z = \mathbf{w}^T\mathbf{x} + b,\quad a = f(z)$ |
+
+**PDF:** "Linear regression is simply a single neuron with an **identity activation function** ($f(z) = z$)."
+
+Diagram (PDF-এ TikZ code ছাপা, figure নেই): $x_1, x_2$ → weight $w_1, w_2$ দিয়ে weighted sum $\sum$ → সাথে bias $+b$ → output $\hat y$।
+
+### Exam-ready Q&A
+**Q. Linear regression আর artificial neuron-এর সম্পর্ক কী?**
+A. Linear regression = একটা neuron যার activation identity ($f(z) = z$)।
+
+---
+
+## 8. Dataset Evaluation ও MSE `[A3]`
+
+> **Source:** p4 ("13–17. Dataset Evaluation Example", "18–21. MSE")
+
+PDF: Model $\hat y = 2x_1 + 3x_2 + 5$ চারটা experiment-এ:
+
+| Exp | Epochs $x_1$ | Batch $x_2$ | Actual $y$ | Predicted $\hat y$ | Error $(y - \hat y)$ | Squared Error |
+|---|---|---|---|---|---|---|
+| A | 2 | 2 | 15 | $2(2)+3(2)+5 = 15$ | 0 | 0 |
+| B | 4 | 3 | 22 | $2(4)+3(3)+5 = 22$ | 0 | 0 |
+| C | 6 | 4 | 29 | $2(6)+3(4)+5 = 29$ | 0 | 0 |
+| D | 8 | 5 | 35 | $2(8)+3(5)+5 = 36$ | **−1** | **1** |
+
+PDF: "Exp D exhibits a prediction discrepancy ($\hat y = 36$ vs. $y = 35$). We need a quantitative metric to measure overall dataset error."
+
+### Mean Squared Error (MSE)
+
+$$MSE = \frac{1}{m}\sum_{i=1}^{m}\left(\hat y^{(i)} - y^{(i)}\right)^2$$
+
+**MSE Calculation (PDF):**
+
+$$MSE = \frac{0 + 0 + 0 + 1}{4} = \boxed{0.25}$$
+
+PDF: "An MSE of 0 represents perfect prediction across all samples."
+
+### কেন residual square করি? (PDF)
+- Positive আর negative error cancel হতে দেয় না ($+2 + (-2) = 0$)
+- বড় deviation-কে অনেক বেশি শাস্তি দেয় ($1^2 = 1$ বনাম $5^2 = 25$)
+
+### Exam-ready Q&A
+**Q. MSE-তে square কেন?** A. Sign cancel হয় না, আর বড় error বেশি penalty পায়।
+**Q. উপরের dataset-এর MSE কত?** A. $(0+0+0+1)/4 = 0.25$।
+
+---
+
+## 9. Residual ও Geometric Meaning `[A3]`
+
+> **Source:** p4 ("25 & 26. Residuals and Geometric Interpretation")
+
+**Residual Definition (PDF):** $r^{(i)}$ = sample $i$-এর actual value $y^{(i)}$ আর predicted value $\hat y^{(i)}$-এর **vertical distance**:
+
+$$\boxed{r^{(i)} = y^{(i)} - \hat y^{(i)}}$$
+
+| Residual | মানে |
+|---|---|
+| $r > 0$ | model কম predict করেছে (point রেখার উপরে) |
+| $r < 0$ | model বেশি predict করেছে (point রেখার নিচে) |
+
+**Key Concept (PDF):** "Linear regression finds parameters $w, b$ that minimize the average sum of these squared vertical distances across all data points."
+
+Figure (PDF-এ code ছাপা): রেখা $\hat y = wx + b$; একটা point $(x^{(i)}, y^{(i)})$; দুটোর মাঝে লাল dashed vertical রেখা = $r^{(i)}$।
+
+---
+
+## 10. Bias কেন লাগে `[A2]`
+
+> **Source:** p4 ("27–30. Geometric Meaning and Necessity of Bias") + p5
+
+PDF প্রশ্ন: "Why do we need an explicit bias term $b$?"
+
+| | Equation | কী হয় |
+|---|---|---|
+| **Without bias ($b = 0$)** | $\hat y = wx$ | রেখা **(0,0) দিয়ে যেতে বাধ্য**। $x=0$-তে target $y=5$ হলে model পুরোপুরি ব্যর্থ। |
+| **With bias ($b \neq 0$)** | $\hat y = wx + b$ | affine transformation; রেখা/hyperplane উপরে-নিচে shift করে। |
+
+**Geometric (PDF, p5):**
+- **1D Line** $\hat y = wx + b$: $w$ = slope, $b$ = y-intercept
+- **2D Plane** $\hat y = w_1x_1 + w_2x_2 + b$: $w_1, w_2$ = orientation; $b$ = plane-এর elevation (উচ্চতা)
+
+### Exam-ready Q&A
+**Q. Bias কেন দরকার?** A. Bias ছাড়া $\hat y = wx$ origin দিয়ে যেতে বাধ্য; bias line/plane-কে shift করে non-zero intercept দেয়।
+
+---
+
+## 11. Terminology Summary Table `[A2, A3]`
+
+> **Source:** p5 ("35. Terminology Summary Table")
+
+| Term | Meaning in Linear Regression Context |
+|---|---|
+| Task | Predict training runtime given model hyperparameters |
+| Feature | Individual input attribute ($x_1$ = epochs, $x_2$ = batch units) |
+| Feature Vector ($\mathbf{x}$) | Vector packaging all input variables for a single sample |
+| Target ($y$) | Ground-truth true real-world observation |
+| Prediction ($\hat y$) | Output generated by model $\mathbf{w}^T\mathbf{x} + b$ |
+| Weight ($w$) | Multiplicative parameters defining feature contributions |
+| Bias ($b$) | Additive parameter enabling affine shift of predictions |
+| Parameters ($\theta$) | Set of all learnable variables ($\theta = \{w, b\}$) |
+| Residual ($r$) | Raw prediction error ($y - \hat y$) |
+| MSE | Mean Squared Error measuring performance over dataset |
+
+---
+
+## 12. Parameter শেখা = Optimization (Gradient Descent) `[A4]`
+
+> **Source:** p5 ("32 & 33. Framing Parameter Learning via Optimization")
+
+**PDF:** "We don't know ideal weights $\mathbf{w}$ and bias $b$ beforehand. We start with **random parameter initializations** and optimize via **Gradient Descent**."
+
+**Loss Function to Minimize:**
+
+$$J(w_1, w_2, b) = \frac{1}{m}\sum_{i=1}^{m}\left(\left(w_1x_1^{(i)} + w_2x_2^{(i)} + b\right) - y^{(i)}\right)^2$$
+
+**Gradient Updates:**
+
+$$\boxed{w_j \leftarrow w_j - \eta\frac{\partial J}{\partial w_j}, \qquad b \leftarrow b - \eta\frac{\partial J}{\partial b}}$$
+
+**Flow (PDF):** Input $x$ → Prediction $\hat y$ → MSE Loss $J$ → Gradients $\nabla J$ → Parameter Updates
+
+**Optimization Goal (p6):** $w^*, b^* = \arg\min_{w,b} MSE(w, b)$
+
+> GD-র নিয়ম, step ও সংখ্যার হিসাব Part 4-এ (Gradient Descent math)।
+
+---
+
+## 13. Student Exercises `[A2, A3]`
+
+> **Source:** p5 ("36 & 37. Student Classroom Exercises")
+
+Model: $\hat y = 3x_1 + 2x_2 + 4$
+
+**Exercise 1 (Zero Error):** $\mathbf{x} = [5, 3]^T$, actual $y = 25$.
+
+$$\hat y = 3(5) + 2(3) + 4 = 15 + 6 + 4 = 25,\quad e = 25 - 25 = 0,\quad e^2 = 0$$
+
+**Exercise 2 (Non-Zero Error):** $\mathbf{x} = [6, 4]^T$, actual $y = 32$.
+
+$$\hat y = 3(6) + 2(4) + 4 = 18 + 8 + 4 = 30,\quad e = 32 - 30 = 2,\quad e^2 = 4$$
+
+---
+
+## 14. Core Equations ও Final Summary `[A2–A4]`
+
+> **Source:** p5–6 ("38. Core Equations to Remember", "39. Final Summary")
+
+**Core Equations (PDF):**
+1. **Linear Regression Prediction:** $\hat y = \mathbf{w}^T\mathbf{x} + b$ (Prediction = Weights × Features + Bias)
+2. **MSE Objective Function:** $MSE = \frac{1}{m}\sum_{i=1}^{m}(\hat y^{(i)} - y^{(i)})^2$
+3. **Optimization Goal:** $w^*, b^* = \arg\min_{w,b} MSE(w, b)$
+
+**Final Summary: Linear Model → Deep Neural Network (Progression of Model Complexity):**
+1. **Linear Regression (Single Identity Neuron):** $\hat y = \mathbf{w}^T\mathbf{x} + b$
+2. **Single Non-Linear Neuron:** $a = f(\mathbf{w}^T\mathbf{x} + b)$
+3. **Multi-Layer Deep Neural Network:**
+   $h^{(1)} = f_1(W^{(1)}x + b^{(1)})$, $h^{(2)} = f_2(W^{(2)}h^{(1)} + b^{(2)})$, …, $\hat y = f_L(W^{(L)}h^{(L-1)} + b^{(L)})$
+
+**Final Conceptual Takeaway (PDF):** "Deep networks are constructed by stacking the fundamental linear regression operation ($\mathbf{w}^T\mathbf{x} + b$) across multiple layers interleaved with non-linear activation functions."
+
+---
+
+# PART 2 — Activation Functions ও Nonlinear Learning (p13–19)
+
+> **Deck title:** "Nonlinear Learning From Activation Functions to Backpropagation" · Chapter 6: Nonlinear Learning
+
+## 15. কেন Neural Network? (Electricity Demand) `[A2, A5]`
+
+> **Source:** p13 ("1. Problem: Electricity Demand vs. Temperature")
+
+PDF: একজন electricity grid operator প্রতিদিনের power generation plan করছেন।
+- **Cold days:** electric heating-এর কারণে demand বাড়ে
+- **Hot days:** air conditioning-এর কারণে demand বাড়ে
+- **Comfortable days:** moderate temperature-এ demand সবচেয়ে কম
+
+**Mathematical Formulation:**
+- Input $x$: comfortable baseline থেকে temperature deviation
+- Target $y$: additional electricity demand
+- Illustrative ground truth: $y = x^2$
+
+| Temp Deviation ($x$) | −2 | −1 | 0 | 1 | 2 |
 |---|---|---|---|---|---|
-| y = x² | 4 | 1 | 0 | 1 | 4 |
+| Demand ($y = x^2$) | 4 | 1 | 0 | 1 | 4 |
 
-- **Model A — Linear regression** ŷ=wx+b: শুধু সরলরেখা; U-curve (y=x²) পারে না।
-- **Model B — Single-layer NN** h=f(wx+b): nonlinear activation টুকরো signal মিলিয়ে curve approximate করে।
-- **Model C — Deep NN** h⁽ˡ⁾=f(W⁽ˡ⁾h⁽ˡ⁻¹⁾+b⁽ˡ⁾): hierarchical, জটিল representation।
-- Takeaway: linear model parabola ধরতে পারে না; nonlinear activation-সহ hidden layer পারে (universal approximation)।
+(Graph: **U-shape parabola**, minimum $(0,0)$।)
 
-### 2.2 ReLU ও Sigmoid `[A5]`
-Neuron: z = wx+b, তারপর a = f(z)।
+## 16. Model A, B, C `[A2, A5]`
 
-**ReLU(z) = max(0, z)**
-- ReLU(−3)=0, ReLU(2.5)=2.5
-- Hidden layer-এর standard choice (সহজ derivative, gradient saturation এড়ায়)
-- Derivative: z>0 → 1, z<0 → 0
+> **Source:** p13–14 ("2. Why Do We Need a Neural Network?")
 
-**Sigmoid σ(z) = 1/(1+e⁻ᶻ)**
-- σ(0)=0.5, σ(2)≈0.881, σ(−2)≈0.119
-- ℝ → (0,1); binary classification output-এর standard choice
+| Model | Equation | বৈশিষ্ট্য |
+|---|---|---|
+| **A: Linear Regression** | $\hat y = wx + b$ | Limitation: শুধু straight line fit করে। $y = x^2$-এর মতো U-shaped curve-এ **পুরোপুরি ব্যর্থ**। |
+| **B: Single-Layer NN** | $h = f(wx + b)$ | Non-linear activation $f(\cdot)$ piecewise signal মিলিয়ে curve approximate করে। |
+| **C: Deep NN** | $h^{(l)} = f(W^{(l)}h^{(l-1)} + b^{(l)})$ | অনেক stacked layer → hierarchical, জটিল functional representation। |
 
-### 2.3 Architecture (1-hidden-layer regression) `[A7]`
-- Hidden 1: z₁ = w₁x+b₁, h₁ = ReLU(z₁)
-- Hidden 2: z₂ = w₂x+b₂, h₂ = ReLU(z₂)
-- Output: **ŷ = v₁h₁ + v₂h₂ + c**
-- Matrix form: z⁽¹⁾=W⁽¹⁾x+b⁽¹⁾, h⁽¹⁾=ReLU(z⁽¹⁾), ŷ=W⁽²⁾h⁽¹⁾+b⁽²⁾
+**Takeaway (PDF):** "A linear model cannot capture parabolic demand. Hidden layers with non-linear activations provide universal approximation capabilities."
 
-### 2.4 Numerical forward + backprop + update (p15–17) — ⚠️ exam-এ math আসবে না, concept বোঝার জন্য
-**Setup:** x=1, y=1; w₁=1,b₁=0; w₂=0.5,b₂=0.5; v₁=v₂=0.2, c=0
+## 17. ReLU ও Sigmoid `[A5]`
 
+> **Source:** p14 ("3. Activation Functions: ReLU and Sigmoid")
+
+Neuron: $z = wx + b$, তারপর activation $a = f(z)$।
+
+### Rectified Linear Unit (ReLU)
+
+$$\boxed{ReLU(z) = \max(0, z)}$$
+
+- $ReLU(-3) = 0$
+- $ReLU(2.5) = 2.5$
+- Hidden layer-এর standard choice (**simple derivative, avoids gradient saturation**)
+
+### Sigmoid Activation
+
+$$\boxed{\sigma(z) = \frac{1}{1 + e^{-z}}}$$
+
+- $\sigma(0) = 0.5$
+- $\sigma(2) \approx 0.881$, $\sigma(-2) \approx 0.119$
+- Maps $\mathbb{R} \to (0, 1)$; binary classification output-এর standard choice
+
+### Graph: ReLU ও Sigmoid
+
+| | Key points | আকৃতি |
+|---|---|---|
+| **ReLU** ($z \in [-4,4]$) | $(-4,0), (-2,0), (0,0), (1,1), (2,2), (3,3), (4,4)$ | negative-এ flat $y=0$; positive-এ $y=z$ |
+| **ReLU′** ($z \in [-4,4]$) | $z<0 \to 0$; $z>0 \to 1$; $z=0$: convention 0 | দুই flat রেখা, $z=0$-তে jump |
+| **Sigmoid** | $(-2, 0.119), (0, 0.5), (2, 0.881)$ | S-curve, 0 আর 1 asymptote |
+
+## 18. Network Architecture (Electricity Demand) `[A7]`
+
+> **Source:** p14–15 ("4. Network Architecture for Electricity Demand")
+
+**1-Hidden-Layer Regression Network (এক input $x$, দুই hidden unit):**
+- Hidden 1: $z_1 = w_1x + b_1,\quad h_1 = ReLU(z_1)$
+- Hidden 2: $z_2 = w_2x + b_2,\quad h_2 = ReLU(z_2)$
+- Output: $\hat y = v_1h_1 + v_2h_2 + c$
+
+**Vector/Matrix form:** $z^{(1)} = W^{(1)}x + b^{(1)}$, $h^{(1)} = ReLU(z^{(1)})$, $\hat y = W^{(2)}h^{(1)} + b^{(2)}$
+
+Diagram (code ছাপা): $x$ → দুটো hidden node $h_1, h_2$ (edge-এ $w_1,b_1$ ও $w_2,b_2$) → output $\hat y$ (edge-এ $v_1$ ও $v_2, c$)।
+
+---
+
+## 19. ⚠️ Numerical Forward Pass → Loss → Backprop → Update (p15–17)
+
+> **Source:** p15–17 ("5 & 6. Part B — Numerical Forward Pass Example" … "10. Verifying Improvement")
+> **Notice অনুযায়ী এই math exam-এ আসবে না।** Concept ও ধাপ বোঝার জন্য রাখা।
+
+**Training Instance:** $x = 1$, True target $y = 1$
+**Initial Parameters:** $w_1 = 1,\ b_1 = 0$ | $w_2 = 0.5,\ b_2 = 0.5$ | $v_1 = 0.2,\ v_2 = 0.2,\ c = 0$
+
+### 19.1 Forward pass
 | ধাপ | হিসাব | ফল |
 |---|---|---|
-| z₁, h₁ | (1)(1)+0 = 1, ReLU(1) | h₁ = 1 |
-| z₂, h₂ | (0.5)(1)+0.5 = 1, ReLU(1) | h₂ = 1 |
-| ŷ | 0.2(1)+0.2(1)+0 | **0.4** |
-| error e = ŷ−y | 0.4−1.0 | −0.6 |
-| Loss L = ½(ŷ−y)² | ½(0.36) | **0.18** |
+| Hidden Neuron 1 | $z_1 = (1)(1) + 0 = 1$, $h_1 = ReLU(1)$ | $h_1 = 1$ |
+| Hidden Neuron 2 | $z_2 = (0.5)(1) + 0.5 = 1$, $h_2 = ReLU(1)$ | $h_2 = 1$ |
+| Output | $\hat y = (0.2)(1) + (0.2)(1) + 0$ | $\hat y = 0.4$ |
+| Prediction error | $e = \hat y - y = 0.4 - 1.0$ | $-0.6$ (underpredict) |
 
-**Backprop (chain rule):**
-- ∂L/∂ŷ = ŷ−y = −0.6
-- ∂L/∂v₁ = (−0.6)(h₁) = −0.6; ∂L/∂v₂ = −0.6; ∂L/∂c = −0.6
-- ∂L/∂h₁ = (−0.6)(v₁) = −0.12; ∂L/∂z₁ = −0.12·ReLU′(1) = −0.12; ∂L/∂w₁ = −0.12·x = −0.12; ∂L/∂b₁ = −0.12
+### 19.2 Loss (half-squared error, single sample)
+$$L = \tfrac{1}{2}(\hat y - y)^2 = \tfrac{1}{2}(0.4 - 1.0)^2 = \tfrac{1}{2}(0.36) = \boxed{0.18}$$
 
-**GD update (η=0.1, θ_new = θ_old − η ∂L/∂θ):**
-- w₁ = 1.0 − 0.1(−0.12) = **1.012**; w₂ = 0.5 + 0.012 = **0.512**; b₁ = 0 + 0.012 = **0.012**; b₂ = 0.5 + 0.012 = **0.512**
-- v₁ = 0.2 + 0.06 = **0.26**; v₂ = **0.26**; c = 0 + 0.06 = **0.06**
+General MSE: $MSE = \frac{1}{m}\sum_{i=1}^m(\hat y_i - y_i)^2$। PDF: "The factor of $\frac12$ cancels out neatly during derivative operations."
 
-**Verify (নতুন forward):** z₁ = 1.012+0.012 = 1.024 = z₂; ŷ_new = 0.26(1.024)+0.26(1.024)+0.06 = **0.5925**; L_new = ½(0.5925−1)² = **0.0830**
+### 19.3 Backpropagation (chain rule) — p16
+PDF: "Backpropagation propagates error backward from output to input to calculate $\frac{\partial L}{\partial\theta}$."
 
-| | আগে | পরে | |
-|---|---|---|---|
-| ŷ | 0.4000 | 0.5925 | target 1.0-এর কাছে |
-| L | 0.1800 | 0.0830 | **53.9% কমেছে** |
+- **Step 1** (output): $\frac{\partial L}{\partial \hat y} = \hat y - y = 0.4 - 1.0 = -0.6$
+- **Step 2** (output weights/bias):
+  - $\frac{\partial L}{\partial v_1} = \frac{\partial L}{\partial \hat y}\frac{\partial \hat y}{\partial v_1} = (-0.6)(h_1) = -0.6$
+  - $\frac{\partial L}{\partial v_2} = (-0.6)(h_2) = -0.6$, $\quad\frac{\partial L}{\partial c} = (-0.6)(1) = -0.6$
+- **Step 3** (hidden layer $w_1, b_1$):
+  - $\frac{\partial L}{\partial h_1} = \frac{\partial L}{\partial \hat y}v_1 = (-0.6)(0.2) = -0.12$
+  - $\frac{\partial L}{\partial z_1} = \frac{\partial L}{\partial h_1}\cdot ReLU'(1) = (-0.12)(1) = -0.12$
+  - $\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial z_1}x = (-0.12)(1) = -0.12$, $\quad\frac{\partial L}{\partial b_1} = -0.12$
 
-### 2.5 Capacity ও Bias–Variance `[A6]`
-| | Capacity | E_train / E_test | সমস্যা |
-|---|---|---|---|
-| Underfitting | খুব কম | দুটোই high | High systematic bias |
-| Optimal | সঠিক | দুটোই low | Good generalization |
-| Overfitting | খুব বেশি | E_train≈0, E_test high | High variance |
-
-**Expected error = Bias² + Variance + Irreducible noise**
-
-### 2.6 Classification: Sigmoid + BCE `[A5, B4]`
-- Binary target y ∈ {0,1}
-- p = σ(z); z=2.0 → p = 1/(1+e⁻²) ≈ **0.881** (class 1-এর probability 88.1%)
-- **BCE: L = −[y log p + (1−y) log(1−p)]**
-- y=1 → L = −log p; p=0.881 → L = −log(0.881) ≈ **0.127** (সঠিক ও confident prediction-এ কম loss)
-
-### 2.7 Task অনুযায়ী Output activation ও Loss (p18) `[A5]`
-| Task | Output activation | Output range | Loss |
-|---|---|---|---|
-| Continuous regression | Linear / Identity f(z)=z | (−∞, ∞) | MSE |
-| Binary classification | Sigmoid σ(z) | (0, 1) | Binary Cross-Entropy (BCE) |
-| Multiclass classification | Softmax pᵢ | [0,1], Σpᵢ=1 | Categorical Cross-Entropy |
-
-**Golden Rule:** hidden layer-এ nonlinear activation (যেমন ReLU) representation শেখে; **output activation task type ঠিক করে।**
-
-### 2.8 Softmax ও Categorical CE `[A5]`
-K-class (যেমন MRI tumor: Glioma, Meningioma, Pituitary): **pᵢ = e^zᵢ / Σⱼ e^zⱼ**
-- Logits z=[2.0, 1.0, 0.0]ᵀ → e²≈7.389, e¹≈2.718, e⁰=1, sum=11.107
-- **p = [0.665, 0.245, 0.090]**
-- True class 2 (y=[0,1,0]ᵀ): **L_CCE = −log(p₂) = −log(0.245) ≈ 1.407**
-
-### 2.9 Core equations (p18–19)
-z=wᵀx+b · ReLU(z)=max(0,z) · σ(z)=1/(1+e⁻ᶻ) · pᵢ=e^zᵢ/Σe^zⱼ · MSE=(1/m)Σ(ŷᵢ−yᵢ)² · θ←θ−η∇θL
-
-**End-to-end learning loop:** Input x → Forward pass (ŷ) → Loss L → Backprop (∇θL) → Gradient update (θ)
-- Forward pass = prediction বানায়
-- Loss = target-এর সাথে ফারাক মাপে
-- Backprop = chain rule দিয়ে প্রতি parameter-এর gradient (error attribution)
-- Gradient Descent = parameter update করে loss কমায়
-
----
-
-## 3. Forward & Back Propagation — Output-layer parameters (p20–24) `[A7]`
-
-### 3.1 মূল ভুল ধারণা এড়াও
-**Output-layer weight v₁, v₂ এবং bias c, hidden parameter (w₁,w₂,b₁,b₂) থেকে *হিসাব করে বের হয় না*।**
-
-| | Parameters | কাজ |
+### 19.4 Gradient Descent update ($\eta = 0.1$, $\theta_{new} = \theta_{old} - \eta\frac{\partial L}{\partial \theta}$)
+| Layer | Update | নতুন মান |
 |---|---|---|
-| Hidden layer | w₁,w₂ (input→hidden weight); b₁,b₂ (hidden bias) | x → h transformation |
-| Output layer | v₁,v₂ (hidden→output weight); c (output bias) | h → ŷ transformation |
+| Hidden | $w_1 = 1.0 - (0.1)(-0.12)$ | **1.012** |
+| Hidden | $w_2 = 0.5 - (0.1)(-0.12)$ | **0.512** |
+| Hidden | $b_1 = 0.0 - (0.1)(-0.12)$ | **0.012** |
+| Hidden | $b_2 = 0.5 - (0.1)(-0.12)$ | **0.512** |
+| Output | $v_1 = 0.2 - (0.1)(-0.6)$ | **0.26** |
+| Output | $v_2 = 0.2 - (0.1)(-0.6)$ | **0.26** |
+| Output | $c = 0.0 - (0.1)(-0.6)$ | **0.06** |
 
-v₁, v₂, c হলো **স্বাধীন, learnable parameter**: শুরুতে random/ছোট মানে initialize হয়, backprop দিয়ে optimize হয়। (Forward pass শুরু করতে এদের numeric মান লাগেই।)
+### 19.5 Verifying Improvement (Forward Pass 2) — p16–17
+- $z_1 = (1.012)(1) + 0.012 = 1.024$, $h_1 = 1.024$
+- $z_2 = (0.512)(1) + 0.512 = 1.024$, $h_2 = 1.024$
+- New prediction $\hat y_{new} = 0.26(1.024) + 0.26(1.024) + 0.06 = \mathbf{0.5925}$
+- New loss $L_{new} = \frac12(0.5925 - 1.0)^2 = \mathbf{0.0830}$
 
-### 3.2 Numerical example (p20–24) — ⚠️ exam-এ math আসবে না
-**Setup:** x₁=3, x₂=−1; w₁=1, w₂=2; b₁=b₂=1; target y=1.0 (1-to-1 connection, বোঝার সুবিধার জন্য। সাধারণ fully connected 2→2 layer-এ 4টা weight থাকে।)
-
-**Step 1 — hidden outputs:**
-- z₁ = 1(3)+1 = 4 → **h₁ = 4**
-- z₂ = 2(−1)+1 = −1 → **h₂ = ReLU(−1) = 0** (deactivated)
-- h = [4, 0]ᵀ
-
-**Step 2 — output:** ŷ = v₁h₁ + v₂h₂ + c = 4v₁ + c (v₂ কিছুই contribute করে না কারণ h₂=0; c baseline shift করে)
-
-**Step 3 — initial v₁=0.2, v₂=0.2, c=0:** ŷ = 4(0.2)+0(0.2)+0 = **0.8**; e = 0.8−1.0 = −0.2; **L = ½(0.04) = 0.02**
-
-**Step 4 — Backprop (output parameter):**
-- ∂L/∂ŷ = ŷ−y = −0.2
-- ∂L/∂v₁ = (ŷ−y)h₁ = (−0.2)(4) = **−0.8**
-- ∂L/∂v₂ = (ŷ−y)h₂ = (−0.2)(0) = **0.0**
-- ∂L/∂c = ŷ−y = **−0.2**
-
-**Step 5 — Update (η=0.1):** v₁ = 0.2−0.1(−0.8) = **0.28**; v₂ = 0.2−0 = **0.20** (অপরিবর্তিত!); c = 0−0.1(−0.2) = **0.02**
-
-**Step 6 — Verify:** ŷ_new = 0.28(4)+0.20(0)+0.02 = **1.14**; e_new = +0.14; L_new = ½(0.14)² = **0.0098**
-
-| | আগে | পরে | |
+| Quantity | Before Update | After Update | Improvement |
 |---|---|---|---|
-| ŷ | 0.8000 | 1.1400 | target 1.0-এর দিকে |
-| L | 0.0200 | 0.0098 | **51.0% কমেছে** |
-
-### 3.3 শিক্ষণীয় বিষয়
-1. **Parameter separation:** input→hidden (wᵢ,bᵢ) feature representation (hᵢ) ঠিক করে; output layer (vᵢ,c) ঠিক করে সেগুলো কীভাবে মিশে ŷ হয়।
-2. **Trainable:** output parameter স্বাধীন learnable, input weight থেকে derive হয় না।
-3. **Gradient masking:** neuron-এর activation 0 (h₂=0) হলে তার outgoing weight-এর gradient 0 (∂L/∂v₂=0) → ওই connection-এর update সাময়িকভাবে থামে। **Inactive neuron error পেছনে পাঠায় না।**
-4. **Core learning loop:** Inputs x → Hidden h → Output ŷ → Loss L → Gradients ∇L → Updates θ_new
+| Prediction $\hat y$ | 0.4000 | 0.5925 | Closer to target 1.0 |
+| Half-Squared Loss $L$ | 0.1800 | 0.0830 | **Reduced by 53.9%** |
 
 ---
 
-## 4. Gradient Descent math — GD problem ও PNG
+## 20. Capacity ও Bias–Variance Trade-off `[A6]`
 
-> PDF 1-এর GD rule (p5: wⱼ←wⱼ−η∂J/∂wⱼ) + `f_x_gradient_descent.webp`-এর সম্পূর্ণ সমাধান:
+> **Source:** p17 ("11 & 12. Part C — Bias–Variance Trade-off")
+
+| | Capacity | $E_{train}$ / $E_{test}$ | ফল |
+|---|---|---|---|
+| **Underfitting** | Model capacity খুব কম | $E_{train}$ High, $E_{test}$ High | High systematic bias |
+| **Optimal Capacity** | Balanced complexity | $E_{train}$ Low, $E_{test}$ Low | Good generalization |
+| **Overfitting** | Capacity অতিরিক্ত বেশি | $E_{train} \approx 0$, $E_{test}$ High | High variance |
+
+**Expected Generalization Error Decomposition:**
+
+$$\text{Expected Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Noise}$$
+
+### Exam-ready Q&A
+**Q. Underfit ও overfit কী?** A. Underfit: capacity কম, train ও test দুটোতেই error বেশি। Overfit: capacity বেশি, train error ≈ 0 কিন্তু test error বেশি।
+
+---
+
+## 21. Classification: Sigmoid ও Binary Cross-Entropy `[A5, B4]`
+
+> **Source:** p17 ("13. Part D — Classification: Sigmoid & Binary Cross-Entropy")
+
+Task regression থেকে **binary classification** ($y \in \{0, 1\}$)-এ।
+
+**Step 1 — Logit → Probability (Sigmoid):**
+$$p = \sigma(z) = \frac{1}{1 + e^{-z}},\quad z = 2.0:\ p = \frac{1}{1 + e^{-2}} \approx 0.881\ (88.1\%\text{ prob of Class 1})$$
+
+**Step 2 — Binary Cross-Entropy (BCE):**
+$$L_{BCE} = -[y\log p + (1-y)\log(1-p)]$$
+- True label $y = 1$: $L = -\log(p)$
+- $p = 0.881$: $L = -\log(0.881) \approx \mathbf{0.127}$ (সঠিক ও confident prediction-এ কম loss)
+
+(PDF-এ "log" লেখা; এখানে natural log।)
+
+---
+
+## 22. Task অনুযায়ী Output Layer `[A5]`
+
+> **Source:** p18 (table + "15. Summary: Task vs. Output Layer Selection")
+
+| Task Type | Output Activation | Output Range | Loss Function |
+|---|---|---|---|
+| Continuous Regression | Linear / Identity ($f(z) = z$) | $(-\infty, \infty)$ | Mean Squared Error (MSE) |
+| Binary Classification | Sigmoid ($\sigma(z)$) | $(0, 1)$ | Binary Cross-Entropy (BCE) |
+| Multiclass Classification | Softmax ($p_i$) | $[0, 1]$, $\sum p_i = 1$ | Categorical Cross-Entropy |
+
+**Golden Rule (PDF):** "Hidden layers use non-linear activations (e.g., ReLU) to learn representations; the output activation function is dictated strictly by the task type."
+
+---
+
+## 23. Softmax ও Categorical Cross-Entropy `[A5]`
+
+> **Source:** p18 ("14. Multiclass Classification: Softmax Categorical Cross-Entropy")
+
+K-class classification (PDF উদাহরণ: MRI tumor diagnosis — Glioma, Meningioma, Pituitary)।
+
+**1. Softmax Activation Function:** raw logits $\mathbf{z} = [z_1, \ldots, z_K]^T$ → probability:
+
+$$\boxed{p_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}}$$
+
+**Numerical Example:** logits $\mathbf{z} = [2.0, 1.0, 0.0]^T$
+- $e^{2.0} \approx 7.389,\ e^{1.0} \approx 2.718,\ e^{0.0} = 1.0$; Sum $= 11.107$
+- $\mathbf{p} = [\frac{7.389}{11.107}, \frac{2.718}{11.107}, \frac{1.0}{11.107}] = \boxed{[0.665,\ 0.245,\ 0.090]}$
+
+**2. Categorical Cross-Entropy Loss:** True class = category 2 ($\mathbf{y} = [0,1,0]^T$):
+
+$$L_{CCE} = -\log(p_2) = -\log(0.245) \approx \boxed{1.407}$$
+
+---
+
+## 24. Core Equations ও End-to-End Loop `[A5, A7]`
+
+> **Source:** p18–19 ("16. Core Equations Cheat Sheet", "17. Final Picture")
+
+1. Neuron pre-activation: $z = \mathbf{w}^T\mathbf{x} + b$
+2. ReLU: $ReLU(z) = \max(0, z)$
+3. Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$
+4. Softmax: $p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$
+5. MSE: $MSE = \frac{1}{m}\sum(\hat y_i - y_i)^2$
+6. Gradient Descent update: $\theta \leftarrow \theta - \eta\nabla_\theta L$
+
+**The End-to-End Learning Loop (PDF):**
+
+Input $x$ → **Forward Pass** ($\hat y$) → **Loss** $L$ → **Backprop** ($\nabla_\theta L$) → **Gradient Update** ($\theta$)
+
+**Final Summary Takeaway (PDF):**
+- **Forward Pass:** generates model predictions
+- **Loss Function:** ground-truth target-এর সাথে ফারাক মাপে
+- **Backpropagation:** calculus chain rule দিয়ে প্রতিটা parameter-এ error gradient attribute করে
+- **Gradient Descent:** loss কমাতে parameter update করে
+
+---
+
+# PART 3 — Forward ও Back Propagation: Output-Layer Parameters (p20–24)
+
+> **Deck title:** "Output Layer Parameters and Backpropagation — Understanding Trainable Weights $v_1, v_2, c$ and Gradient Updates" `[A7]`
+
+## 25. Output-Layer Parameter বোঝা
+
+> **Source:** p20 ("1. Clarifying Output-Layer Parameters")
+
+**⚠️ Core Misconception to Avoid (PDF):** "Output-layer weights $v_1, v_2$ and bias $c$ are **NOT** calculated or derived from input-to-hidden parameters ($w_1, w_2, b_1, b_2$)."
+
+| Layer | Parameters | কাজ |
+|---|---|---|
+| **Hidden-Layer** | $w_1, w_2$: input-to-hidden weights · $b_1, b_2$: hidden neuron biases | transformation: $x \to h$ |
+| **Output-Layer** | $v_1, v_2$: hidden-to-output weights · $c$: output neuron bias | transformation: $h \to \hat y$ |
+
+**Takeaway (PDF):** "$v_1, v_2, c$ are independent, learnable model parameters. They are initialized randomly (or with small values) at the start of training and optimized via backpropagation."
+
+### Exam-ready Q&A
+**Q. $v_1, v_2$ কি $w_1, w_2$ থেকে বের করা হয়?** A. না। এরা স্বাধীন learnable parameter; শুরুতে random/ছোট মানে initialize হয়, backprop দিয়ে শেখা হয়।
+
+---
+
+## 26. ⚠️ Numerical Example (p20–24) — exam-এ math আসবে না
+
+> **Source:** p20–23 ("2. Problem Setup" … "8. Step 6: Verifying Updated Output Performance")
+
+### Setup
+Simplified feedforward network:
+- Input features: $x_1 = 3,\ x_2 = -1$
+- Hidden weights: $w_1 = 1,\ w_2 = 2$; Hidden biases: $b_1 = 1,\ b_2 = 1$
+- Ground truth target: $y = 1.0$
+- $h_1 = ReLU(w_1x_1 + b_1)$, $h_2 = ReLU(w_2x_2 + b_2)$
+
+**Architectural Note (PDF):** "In a fully connected layer with 2 inputs and 2 hidden units, there are normally 4 input-to-hidden weights ($W \in \mathbb{R}^{2\times2}$). Here we use a 1-to-1 connection mapping for step-by-step clarity."
+
+### Step 1 — Hidden-layer outputs
+- Neuron 1: $z_1 = (1)(3) + 1 = 4$ → $h_1 = \max(0, 4) = \mathbf{4}$
+- Neuron 2: $z_2 = (2)(-1) + 1 = -1$ → $h_2 = \max(0, -1) = \mathbf{0}$ (deactivated)
+- Hidden representation: $\mathbf{h} = [4, 0]^T$
+
+### Step 2 — Output parameters কোথায় আসে
+Output: $\hat y = v_1h_1 + v_2h_2 + c$। $h_1 = 4,\ h_2 = 0$ বসালে $\hat y = 4v_1 + c$।
+
+Key Observations (PDF):
+- $v_1$ active feature ($h_1 = 4$)-কে scale করে
+- $v_2$ prediction-এ **0** contribute করে, কারণ $h_2 = 0$ (ReLU deactivated)
+- $c$ baseline output shift করে
+
+**Why Initialize Early? (PDF):** "Forward propagation cannot complete without numerical values for $v_1, v_2, c$. We pick initial estimates to start the training loop."
+
+### Step 3 — Forward pass loss ($v_1 = 0.2,\ v_2 = 0.2,\ c = 0.0$)
+1. $\hat y = 4(0.2) + 0(0.2) + 0 = \mathbf{0.8}$
+2. $e = \hat y - y = 0.8 - 1.0 = -0.2$
+3. $L = \frac12(\hat y - y)^2 = \frac12(-0.2)^2 = \frac12(0.04) = \mathbf{0.02}$
+
+### Step 4 — Backprop: output parameter gradient
+$$\frac{\partial L}{\partial \hat y} = \hat y - y = 0.8 - 1.0 = -0.2$$
+
+| Gradient | হিসাব | মান |
+|---|---|---|
+| $\frac{\partial L}{\partial v_1}$ | $(\hat y - y)h_1 = (-0.2)(4)$ | **−0.8** |
+| $\frac{\partial L}{\partial v_2}$ | $(\hat y - y)h_2 = (-0.2)(0)$ | **0.0** |
+| $\frac{\partial L}{\partial c}$ | $(\hat y - y)(1)$ | **−0.2** |
+
+### Step 5 — Gradient Descent update ($\eta = 0.1$)
+- $v_{1,new} = 0.2 - 0.1(-0.8) = 0.2 + 0.08 = \mathbf{0.28}$
+- $v_{2,new} = 0.2 - 0.1(0.0) = \mathbf{0.20}$ **(Unchanged!)**
+- $c_{new} = 0.0 - 0.1(-0.2) = 0.0 + 0.02 = \mathbf{0.02}$
+
+### Step 6 — Verify
+- Hidden activations: $h_1 = 4,\ h_2 = 0$
+- $\hat y_{new} = (0.28)(4) + (0.20)(0) + 0.02 = 1.12 + 0 + 0.02 = \mathbf{1.14}$
+- Target $y = 1.0$ → $e_{new} = 1.14 - 1.0 = +0.14$
+- $L_{new} = \frac12(0.14)^2 = \mathbf{0.0098}$
+
+| Metric | Initial Pass | Updated Pass | Change |
+|---|---|---|---|
+| Prediction $\hat y$ | 0.8000 | 1.1400 | Moved toward target 1.0 |
+| Loss $L$ | 0.0200 | 0.0098 | **Reduced by 51.0%** |
+
+**Insight on Inactive Neurons (PDF):** "$v_2$ receives zero gradient update because its corresponding hidden neuron $h_2 = 0$. Inactive neurons transmit no error information back to their incoming weights."
+
+### Complete Architecture & Data Flow (p23)
+Summary equation: $\hat y = v_1 \cdot ReLU(w_1x_1 + b_1) + v_2 \cdot ReLU(w_2x_2 + b_2) + c$
+
+Diagram: $x_1 = 3$ → $h_1 = 4$ (edge: $w_1 = 1, b_1 = 1$); $x_2 = -1$ → $h_2 = 0$ (edge: $w_2 = 2, b_2 = 1$); $h_1 \to \hat y$ ($v_1 = 0.28$), $h_2 \to \hat y$ ($v_2 = 0.20$), dashed bias $c = 0.02 \to \hat y$।
+
+---
+
+## 27. Summary Takeaways for Students `[A7]`
+
+> **Source:** p23–24 ("10. Summary Takeaways for Students")
+
+1. **Parameter Separation:** input-to-hidden parameter ($w_i, b_i$) feature representation ($h_i$) ঠিক করে। output-layer parameter ($v_i, c$) ঠিক করে সেই representation কীভাবে মিশে final prediction ($\hat y$) হবে।
+2. **Trainable Nature:** output parameter স্বাধীন learnable quantity, training-এর আগে initialize হয়; input weight থেকে গাণিতিকভাবে derive হয় না।
+3. **Gradient Masking by Activations:** neuron-এর activation zero ($h_2 = 0$) হলে তার outgoing weight-এর gradient zero ($\frac{\partial L}{\partial v_2} = 0$) → ওই connection-এর update সাময়িকভাবে থামে।
+4. **The Core Learning Loop:** Inputs $x$ → Hidden $h$ → Output $\hat y$ → Loss $L$ → Gradients $\nabla L$ → Updates $\theta_{new}$
+
+### Exam-ready Q&A
+**Q. Forward propagation কী calculate করে?** A. Input থেকে hidden হয়ে output পর্যন্ত pre-activation, activation, prediction ও loss।
+**Q. Backpropagation কী করে?** A. Chain rule দিয়ে loss থেকে পেছনের দিকে প্রতিটা parameter-এর gradient বের করে।
+**Q. Backprop আর GD কি এক?** A. না। Backprop gradient *calculate* করে; GD সেই gradient দিয়ে parameter *update* করে।
+**Q. $h_2 = 0$ হলে $v_2$-এর কী হয়?** A. $\partial L/\partial v_2 = (\hat y - y)h_2 = 0$, তাই $v_2$ update হয় না।
+
+---
+
+# PART 4 — Gradient Descent math (PNG problem) `[A4]`
 
 > এটা sir-এর notice-এর **Gradient Descent math problem (PNG)**। Exam-এ নিশ্চিত আসার মতো। নিচের সব হিসাব computer দিয়ে মিলানো।
 
@@ -340,42 +790,44 @@ Minimum x* = 0, f(0) = 0।
 
 ---
 
-## 5. Graph table (এই PDF-এ ও PDF-এর topic-এর graph)
+# PART 5 — Graph table
 
-> এই PDF-এর figure সব TikZ code ছাপা (render হয়নি): residual diagram (p4), neuron/network diagram (p3, p15, p23)। Data graph নেই। নিচে topic অনুযায়ী যে graph আসতে পারে:
+> এই PDF-এর figure সব TikZ code ছাপা (render হয়নি): residual (p4), neuron/network diagram (p3, p15, p23)। নিচে এই PDF-এর topic-এ যে graph আসতে পারে:
 
-| Graph | Key points | Curve/বৈশিষ্ট্য | Syllabus | কোথায় |
+| Graph | Key points | আকৃতি | Syllabus | কোথায় |
 |---|---|---|---|---|
-| f(x)=x², x∈[−2,2] | (−2,4),(−1,1),(0,0),(1,1),(2,4) | U-shape, minimum (0,0), y-axis symmetric | A4 | p13 table; PDF 2 Ex.1 |
-| GD on x² | x₀=4, 3.2, 2.56, 2.048, 1.6384 (f=16, 10.24, 6.5536, 4.1943, 2.6844) | dot curve-এর উপর, তীর বাম দিকে, ধাপ ছোট হচ্ছে | A4 | PNG; PDF 2 Ex.2 |
-| Residual: ŷ=wx+b, point (xⁱ,yⁱ) | উদাহরণ ŷ=x+1, observed (2,2), predicted (2,3), r=−1 | dashed vertical, point রেখার নিচে → r negative | A3 | p4; PDF 2 Ex.3 |
-| Bias effect: ŷ=2x vs ŷ=2x+5 | (0,0) ও (0,5); (1,2)/(1,7); (2,4)/(2,9) | parallel রেখা; একটা origin দিয়ে যায়, অন্যটা y-axis কাটে 5-এ | A2 | p4 (concept); *ছবি PDF-এ নেই* |
-| ReLU, z∈[−4,4] | (−4,0),(−2,0),(0,0),(1,1),(2,2),(3,3),(4,4) | negative → flat 0; positive → y=z | A5 | p14; PDF 2 Ex.4 |
-| ReLU′(z), z∈[−4,4] | z≤0 → 0; z>0 → 1 | z=0-তে jump; dot | A5 | sir-এর sketch `image (1).webp` |
-| Sigmoid | (−2,0.119),(0,0.5),(2,0.881) | S-curve (0,1)-এর মধ্যে | A5 | p14; PDF 2 Ex.5 |
-| Softmax bar, logits [2,1,0] | 0.665, 0.245, 0.090 | সবচেয়ে বড় logit-এর bar উঁচু; যোগফল 1 | A5 | p18 (generated bar) |
-| BCE y=1: −ln p | (0.1,2.3026) … (0.9,0.1054) | নামতে থাকা curve | B4 | PDF 3/PDF 4 |
+| $f(x) = x^2$, $x \in [-2,2]$ | $(-2,4), (-1,1), (0,0), (1,1), (2,4)$ | U-shape, minimum $(0,0)$, y-axis symmetric | A4 | p13 table; PDF 2 Ex.1 |
+| GD on $x^2$ | $x_0 = 4, 3.2, 2.56, 2.048, 1.6384$ ($f = 16, 10.24, 6.5536, 4.1943, 2.6844$) | curve-এর উপর dot, তীর বাম দিকে, ধাপ ছোট | A4 | PNG; PDF 2 Ex.2 |
+| Residual | $\hat y = x+1$, observed $(2,2)$, predicted $(2,3)$, $r = -1$ | dashed vertical; point রেখার নিচে → $r$ negative | A3 | p4; PDF 2 Ex.3 |
+| Bias effect | $\hat y = 2x$ vs $2x+5$: $(0,0)$ ও $(0,5)$; $(1,2)/(1,7)$; $(2,4)/(2,9)$ | parallel; একটা origin দিয়ে, অন্যটা y-axis কাটে 5-এ | A2 | p4 (concept); ছবি PDF-এ নেই |
+| ReLU | $(-4,0),(-2,0),(0,0),(1,1),(2,2),(3,3),(4,4)$ | negative-এ flat 0; positive-এ $y=z$ | A5 | p14; PDF 2 Ex.4 |
+| ReLU′ | $z<0 \to 0$; $z>0 \to 1$ | $z=0$-তে jump | A5 | sir-এর sketch |
+| Sigmoid | $(-2,0.119),(0,0.5),(2,0.881)$ | S-curve (0,1)-এর মধ্যে | A5 | p14; PDF 2 Ex.5 |
+| Softmax bar, logits $[2,1,0]$ | 0.665, 0.245, 0.090 | সবচেয়ে বড় logit-এর bar উঁচু; যোগফল 1 | A5 | p18 (generated bar) |
+| BCE $y=1$: $-\ln p$ | $(0.1, 2.3026) \ldots (0.9, 0.1054)$ | নামতে থাকা curve | B4 | PDF 3/4 |
 
 ---
 
-## 6. Syllabus match (এই PDF → syllabus topic)
+# PART 6 — Syllabus match ও যাচাই
 
-| Syllabus | এই PDF-এর page |
+## Syllabus match
+
+| Syllabus | এই PDF-এর section / page |
 |---|---|
-| A1 ML Task | p2 (§1.2) |
-| A2 Linear Regression | p1–5 (feature, weight, bias, parameters, neuron view) |
-| A3 Residual & MSE | p4 (table, MSE=0.25, residual) |
-| A4 Gradient Descent | p5 (rule), PNG, §4 |
-| A5 Activation (ReLU, Sigmoid, Softmax) | p14, 17–18 |
-| A6 Capacity/Bias–Variance | p17 |
-| A7 Forward & Backprop (concept) | p16, p20–24 |
-| B4 BCE | p17 (§2.6) |
+| A1 ML Task | §2 (p1–2) |
+| A2 Linear Regression | §1, 3–7, 10–11, 13–14 (p1–6) |
+| A3 Residual ও MSE | §8–9, 13 (p4–5) |
+| A4 Gradient Descent | §12, Part 4 (p5–6, PNG) |
+| A5 Activation (ReLU, Sigmoid, Softmax) | §15–17, 21–24 (p13–14, 17–19) |
+| A6 Capacity/Bias–Variance | §20 (p17) |
+| A7 Forward/Backprop (concept) | §18–19, 25–27 (p14–16, 20–24) |
+| B4 BCE | §21 (p17) |
 
-## 7. সংখ্যা-যাচাই ও ছাপার ভুল
-- p4 MSE = 0.25 ✓ · Exercise 1,2 (25/30, e²=0/4) ✓ · p15 ŷ=0.4, L=0.18 ✓ · p16 updates (1.012, 0.512, 0.012, 0.512, 0.26, 0.06) ✓
-- p17 ŷ_new=0.5925, L_new=0.0830 ✓ (0.08303), reduction 53.9% ✓
-- p17 BCE: −log(0.881)=0.1267≈0.127 ✓ · p18 softmax [0.665,0.245,0.090] ✓, −log(0.245)=1.407 ✓
-- p22–23: ŷ=0.8, L=0.02, ∂L/∂v₁=−0.8, v₁=0.28, ŷ_new=1.14, L_new=0.0098 ✓; reduction 51.0% ✓
-- **ছাপা সমস্যা (সংখ্যার ভুল না):** TikZ diagram code ও "0.5" উপ-শিরোনামের চিহ্ন text হিসেবে ছাপা হয়ে গেছে (p3, p4, p15, p23)। এতে কোনো সংখ্যা/সূত্র ভুল হয়নি।
-- **ছোট অসঙ্গতি:** p15-এ log (প্রকৃতপক্ষে ln, natural log) লেখা; BCE-তে natural log ধরো।
-- **Deck-এর title:** "Gradient Descent – Linear regression" কিন্তু p1–6-এ GD-র নতুন কিছু নেই, শুধু Linear regression + শেষে GD rule/flow।
+## সংখ্যা-যাচাই (computer দিয়ে)
+- MSE $= 0.25$ ✓ · Exercise 1: $\hat y = 25$ ✓; Exercise 2: $\hat y = 30$, $e^2 = 4$ ✓
+- p15 forward: $\hat y = 0.4$, $L = 0.18$ ✓ · p16 updates (1.012, 0.512, 0.012, 0.512, 0.26, 0.26, 0.06) ✓
+- p17: $\hat y_{new} = 0.5925$ (exact 0.59248), $L_{new} = 0.0830$ ✓, reduction 53.9% ✓
+- BCE $-\log(0.881) = 0.1267 \approx 0.127$ ✓ · softmax $[0.665, 0.245, 0.090]$ ✓; $-\log(0.245) = 1.407$ ✓
+- p22–23: $\hat y = 0.8$, $L = 0.02$, $\partial L/\partial v_1 = -0.8$, $v_1 = 0.28$, $\hat y_{new} = 1.14$, $L_{new} = 0.0098$ ✓, reduction 51.0% ✓
+
+**ছাপার সমস্যা (সংখ্যার ভুল না):** TikZ diagram code ও "0.5" উপ-শিরোনামের চিহ্ন text হিসেবে ছাপা (p3, p4, p15, p23)। Deck-এর title "Gradient Descent – Linear regression" হলেও p1–6-এ নতুন GD content নেই (শুধু শেষে GD rule/flow)। BCE-তে "log" = natural log।

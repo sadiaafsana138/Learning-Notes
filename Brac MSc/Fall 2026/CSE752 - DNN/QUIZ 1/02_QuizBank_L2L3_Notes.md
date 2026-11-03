@@ -62,79 +62,117 @@
 
 **1. What is the difference between regression and classification?**  `[Syllabus: A1]`
 
-**উত্তর:** Regression predicts a continuous numerical value, such as training time. Classification predicts a discrete class label, such as benign versus malicious.
+**PDF-এর উত্তর (exact):** Regression predicts a continuous numerical value, such as training time. Classification predicts a discrete class label, such as benign versus malicious.
+
+**বাংলা অর্থ:** Regression continuous numerical value predict করে (যেমন training time)। Classification discrete class label predict করে (যেমন benign বনাম malicious)।
 
 **2. What is a feature, and what is a target?**  `[Syllabus: A2]`
 
-**উত্তর:** A feature is an input attribute supplied to the model; the target is the true value the model is intended to predict. For the training-time example, epochs and batch-size units are features, while observed training minutes are the target.
+**PDF-এর উত্তর (exact):** A feature is an input attribute supplied to the model; the target is the true value the model is intended to predict. For the training-time example, epochs and batch-size units are features, while observed training minutes are the target.
+
+**বাংলা অর্থ:** Feature = model-কে দেওয়া input attribute; Target = যে আসল মান predict করতে চাই। উদাহরণে epochs ও batch-size unit = feature, observed training minutes = target।
 
 **3. What does a weight mean in linear regression?**  `[Syllabus: A2]`
 
-**উত্তর:** A weight describes the predicted change in output for a one-unit change in its feature, holding other features fixed. In ŷ = 2x₁ + 3x₂ + 5, the model adds 2 predicted minutes per extra epoch and 3 per batch-size unit.
+**PDF-এর উত্তর (exact):** A weight describes the predicted change in output for a one-unit change in its feature, holding other features fixed. In ŷ = 2x₁ + 3x₂ + 5, the model adds 2 predicted minutes per extra epoch and 3 per batch-size unit.
+
+**বাংলা অর্থ:** Weight বলে: অন্য feature fixed রেখে এক unit feature বাড়লে output কত বদলায়। ŷ = 2x₁+3x₂+5 তে প্রতি epoch-এ +2 মিনিট, প্রতি batch unit-এ +3 মিনিট।
 
 **4. Why include a bias term?**  `[Syllabus: A2]`
 
-**উত্তর:** The bias shifts the line or plane independently of the input. Without bias, the linear model ŷ=wx is forced through the origin; with bias, it can have a nonzero intercept.
+**PDF-এর উত্তর (exact):** The bias shifts the line or plane independently of the input. Without bias, the linear model ŷ=wx is forced through the origin; with bias, it can have a nonzero intercept.
+
+**বাংলা অর্থ:** Bias line/plane-কে input-নিরপেক্ষভাবে shift করে। Bias ছাড়া ŷ=wx অবশ্যই origin দিয়ে যায়; bias থাকলে nonzero intercept হতে পারে।
 
 **5. What is a feature vector?**  `[Syllabus: A2]`
 
-**উত্তর:** It packages all features for one observation into a vector, such as x=[x₁,x₂]ᵀ. It provides a compact way to write the prediction as ŷ=wᵀx+b.
+**PDF-এর উত্তর (exact):** It packages all features for one observation into a vector, such as x=[x₁,x₂]ᵀ. It provides a compact way to write the prediction as ŷ=wᵀx+b.
+
+**বাংলা অর্থ:** Feature vector = এক observation-এর সব feature একটা vector-এ, x=[x₁,x₂]ᵀ। এতে prediction ŷ=wᵀx+b সংক্ষেপে লেখা যায়।
 
 **6. What are model parameters?**  `[Syllabus: A2]`
 
-**উত্তর:** They are learnable values adjusted during training. In these simple models, the parameters include the weights and bias, written θ={w₁,w₂,…,b}.
+**PDF-এর উত্তর (exact):** They are learnable values adjusted during training. In these simple models, the parameters include the weights and bias, written θ={w₁,w₂,…,b}.
+
+**বাংলা অর্থ:** Parameters = training-এ শেখা/বদলানো মান: weights ও bias, θ={w₁,w₂,…,b}।
 
 **7. What is a residual? Why does its sign matter?**  `[Syllabus: A3]`
 
-**উত্তর:** The residual is r=y−ŷ, the actual value minus the prediction. A positive residual means the model predicted too low; a negative residual means it predicted too high.
+**PDF-এর উত্তর (exact):** The residual is r=y−ŷ, the actual value minus the prediction. A positive residual means the model predicted too low; a negative residual means it predicted too high.
+
+**বাংলা অর্থ:** Residual r = y − ŷ (actual − predicted)। r positive → model কম predict করেছে; r negative → বেশি predict করেছে।
 
 **8. Why does MSE square the residuals?**  `[Syllabus: A3]`
 
-**উত্তর:** Squaring prevents positive and negative errors from cancelling and makes large deviations count more heavily. MSE is nonnegative and equals zero when every prediction matches its target.
+**PDF-এর উত্তর (exact):** Squaring prevents positive and negative errors from cancelling and makes large deviations count more heavily. MSE is nonnegative and equals zero when every prediction matches its target.
+
+**বাংলা অর্থ:** Square করলে positive ও negative error cancel হয় না, আর বড় error বেশি গুরুত্ব পায়। MSE ≥ 0; সব prediction ঠিক হলে MSE = 0।
 
 **9. What does gradient descent do?**  `[Syllabus: A4]`
 
-**উত্তর:** It updates parameters in the direction opposite the loss gradient: θ_new=θ_old−η∇θL. The learning rate η controls the step size.
+**PDF-এর উত্তর (exact):** It updates parameters in the direction opposite the loss gradient: θ_new=θ_old−η∇θL. The learning rate η controls the step size.
+
+**বাংলা অর্থ:** Gradient Descent loss gradient-এর উল্টো দিকে parameter বদলায়: θ_new = θ_old − η∇L। η = learning rate = step size।
 
 **10. What does the derivative tell us in gradient descent?**  `[Syllabus: A4]`
 
-**উত্তর:** The derivative gives the local slope of the objective. For f(x)=x², f′(x)=2x; at positive x, the slope is positive, so subtracting a positive gradient moves x toward zero.
+**PDF-এর উত্তর (exact):** The derivative gives the local slope of the objective. For f(x)=x², f′(x)=2x; at positive x, the slope is positive, so subtracting a positive gradient moves x toward zero.
+
+**বাংলা অর্থ:** Derivative = local slope। f(x)=x²-এ f′(x)=2x; x positive হলে slope positive, তাই বিয়োগ করলে x 0-এর দিকে সরে।
 
 **11. What is the role of the learning rate?**  `[Syllabus: A4]`
 
-**উত্তর:** It scales each gradient step. In the provided f(x)=x² example, starting at x₀=4 with η=0.1 gives x₁=4−0.1(8)=3.2.
+**PDF-এর উত্তর (exact):** It scales each gradient step. In the provided f(x)=x² example, starting at x₀=4 with η=0.1 gives x₁=4−0.1(8)=3.2.
+
+**বাংলা অর্থ:** Learning rate প্রতি gradient step-কে scale করে। x₀=4, η=0.1: x₁ = 4 − 0.1(8) = 3.2।
 
 **12. How does ReLU behave?**  `[Syllabus: A5]`
 
-**উত্তর:** ReLU(z)=max(0,z). It outputs zero for a negative input and passes a positive input through unchanged; examples include ReLU(−3)=0 and ReLU(2.5)=2.5.
+**PDF-এর উত্তর (exact):** ReLU(z)=max(0,z). It outputs zero for a negative input and passes a positive input through unchanged; examples include ReLU(−3)=0 and ReLU(2.5)=2.5.
+
+**বাংলা অর্থ:** ReLU(z)=max(0,z): negative input → 0; positive input অপরিবর্তিত। ReLU(−3)=0, ReLU(2.5)=2.5।
 
 **13. What is a potential limitation of ReLU during backpropagation?**  `[Syllabus: A5, A7]`
 
-**উত্তর:** For a negative pre-activation, the ReLU derivative is zero. The gradient through that unit is blocked for that sample, so its incoming parameters may receive no update through that path.
+**PDF-এর উত্তর (exact):** For a negative pre-activation, the ReLU derivative is zero. The gradient through that unit is blocked for that sample, so its incoming parameters may receive no update through that path.
+
+**বাংলা অর্থ:** Negative pre-activation-এ ReLU derivative 0, তাই ওই sample-এর জন্য ওই unit দিয়ে gradient blocked; incoming parameter ওই path-এ update পায় না।
 
 **14. What does sigmoid do, and where is it useful?**  `[Syllabus: A5]`
 
-**উত্তর:** Sigmoid maps a real-valued logit to a probability strictly between 0 and 1. The notes use it for binary classification, where one value represents the probability of class 1.
+**PDF-এর উত্তর (exact):** Sigmoid maps a real-valued logit to a probability strictly between 0 and 1. The notes use it for binary classification, where one value represents the probability of class 1.
+
+**বাংলা অর্থ:** Sigmoid real-valued logit-কে strictly 0 ও 1-এর মাঝে probability-তে নেয়। Binary classification-এ class 1-এর probability হিসেবে ব্যবহার।
 
 **15. Why is sigmoid(0)=0.5?**  `[Syllabus: A5]`
 
-**উত্তর:** Substituting z=0 gives 1/(1+e⁰)=1/(1+1)=0.5. A zero logit therefore gives equal probability to the two binary outcomes.
+**PDF-এর উত্তর (exact):** Substituting z=0 gives 1/(1+e⁰)=1/(1+1)=0.5. A zero logit therefore gives equal probability to the two binary outcomes.
+
+**বাংলা অর্থ:** z=0 বসালে σ(0) = 1/(1+e⁰) = 1/2 = 0.5; zero logit মানে দুই binary outcome-এর সমান probability।
 
 **16. What is the difference between hidden-layer and output-layer parameters?**  `[Syllabus: A7]`
 
-**উত্তর:** In the simple two-hidden-unit example, w₁,w₂,b₁,b₂ control the feature transformations x→h. Output weights v₁,v₂ and output bias c combine h₁,h₂ into ŷ; these are independent trainable parameters.
+**PDF-এর উত্তর (exact):** In the simple two-hidden-unit example, w₁,w₂,b₁,b₂ control the feature transformations x→h. Output weights v₁,v₂ and output bias c combine h₁,h₂ into ŷ; these are independent trainable parameters.
+
+**বাংলা অর্থ:** Hidden params (w₁,w₂,b₁,b₂) x→h রূপান্তর ঠিক করে; output params (v₁,v₂,c) h→ŷ। দুটোই স্বাধীন trainable parameter।
 
 **17. What does forward propagation calculate?**  `[Syllabus: A7]`
 
-**উত্তর:** It moves from inputs through the hidden layer to the output, calculating pre-activations, activations, prediction and loss. It produces the values needed to start the backward calculation.
+**PDF-এর উত্তর (exact):** It moves from inputs through the hidden layer to the output, calculating pre-activations, activations, prediction and loss. It produces the values needed to start the backward calculation.
+
+**বাংলা অর্থ:** Forward propagation input→hidden→output গিয়ে pre-activation, activation, prediction ও loss হিসাব করে; backward শুরুর মান যোগায়।
 
 **18. What does backpropagation calculate?**  `[Syllabus: A7]`
 
-**উত্তর:** It applies the chain rule from the loss backward through the output and hidden layers to calculate each parameter’s gradient. An optimizer such as gradient descent uses those gradients to update the parameters.
+**PDF-এর উত্তর (exact):** It applies the chain rule from the loss backward through the output and hidden layers to calculate each parameter’s gradient. An optimizer such as gradient descent uses those gradients to update the parameters.
+
+**বাংলা অর্থ:** Backpropagation chain rule দিয়ে loss থেকে পেছনের দিকে প্রতি parameter-এর gradient বের করে। GD-এর মতো optimizer সেই gradient দিয়ে update করে।
 
 **19. Why is the chain rule essential to backpropagation?**  `[Syllabus: A7]`
 
-**উত্তর:** A parameter affects the loss through intermediate computations. The chain rule multiplies local derivatives along that path, allowing the loss derivative to be computed efficiently.
+**PDF-এর উত্তর (exact):** A parameter affects the loss through intermediate computations. The chain rule multiplies local derivatives along that path, allowing the loss derivative to be computed efficiently.
+
+**বাংলা অর্থ:** Parameter loss-কে মধ্যবর্তী ধাপ দিয়ে প্রভাবিত করে। Chain rule পথ বরাবর local derivative গুণ করে loss-derivative দক্ষভাবে বের করে.
 
 ## 4. Part II — True/False with reasons (19)
 
@@ -142,79 +180,117 @@
 
 **1. Linear regression normally predicts a continuous numerical target.**  `[Syllabus: A2]`
 
-→ True. For example: training time, housing prices and temperature.
+→ **PDF-এর উত্তর (exact):** True. For example: training time, housing prices and temperature.
+
+**বাংলা ব্যাখ্যা:** সঠিক। Regression continuous numerical target predict করে (training time, price, temperature)।
 
 **2. In supervised learning, the target is the input attribute passed to the model.**  `[Syllabus: A2]`
 
-→ False. The feature is the input attribute; the target is the true value to predict.
+→ **PDF-এর উত্তর (exact):** False. The feature is the input attribute; the target is the true value to predict.
+
+**বাংলা ব্যাখ্যা:** ভুল। Input attribute = feature; target = আসল মান।
 
 **3. A larger weight always means its feature is more important.**  `[Syllabus: A2]`
 
-→ False. Weights depend on feature scale; normalization can be needed before comparing magnitudes.
+→ **PDF-এর উত্তর (exact):** False. Weights depend on feature scale; normalization can be needed before comparing magnitudes.
+
+**বাংলা ব্যাখ্যা:** ভুল। Weight feature-এর scale-এর উপর নির্ভর করে; magnitude তুলনার আগে normalization লাগে।
 
 **4. The model ŷ=wx with no bias must pass through (0,0).**  `[Syllabus: A2]`
 
-→ True. At x=0, the prediction is zero.
+→ **PDF-এর উত্তর (exact):** True. At x=0, the prediction is zero.
+
+**বাংলা ব্যাখ্যা:** সঠিক। x=0 হলে prediction 0।
 
 **5. In the simple linear model, weights and bias are learnable parameters.**  `[Syllabus: A2]`
 
-→ True. Training adjusts these values to reduce the objective.
+→ **PDF-এর উত্তর (exact):** True. Training adjusts these values to reduce the objective.
+
+**বাংলা ব্যাখ্যা:** সঠিক। Training এই মানগুলো বদলে objective কমায়।
 
 **6. Squaring residuals allows positive and negative errors to cancel.**  `[Syllabus: A3]`
 
-→ False. Squaring makes each contribution nonnegative and prevents sign cancellation.
+→ **PDF-এর উত্তর (exact):** False. Squaring makes each contribution nonnegative and prevents sign cancellation.
+
+**বাংলা ব্যাখ্যা:** ভুল। Square-এ প্রতিটা অবদান non-negative, sign cancel হয় না।
 
 **7. MSE is zero when every prediction equals its target.**  `[Syllabus: A3]`
 
-→ True. Every squared residual is zero, so their mean is zero.
+→ **PDF-এর উত্তর (exact):** True. Every squared residual is zero, so their mean is zero.
+
+**বাংলা ব্যাখ্যা:** সঠিক। সব squared residual 0 হলে গড়ও 0।
 
 **8. Gradient descent updates parameters by adding the gradient.**  `[Syllabus: A4]`
 
-→ False. It subtracts the gradient: θ_new=θ_old−η∇θL.
+→ **PDF-এর উত্তর (exact):** False. It subtracts the gradient: θ_new=θ_old−η∇θL.
+
+**বাংলা ব্যাখ্যা:** ভুল। Gradient descent gradient **বিয়োগ** করে।
 
 **9. For f(x)=x², the derivative is f′(x)=2x.**  `[Syllabus: A4]`
 
-→ True. Differentiating x² gives 2x.
+→ **PDF-এর উত্তর (exact):** True. Differentiating x² gives 2x.
+
+**বাংলা ব্যাখ্যা:** সঠিক। x²-এর derivative 2x।
 
 **10. With x₀=4 and η=0.1 for f(x)=x², the first gradient-descent value is 3.2.**  `[Syllabus: A4]`
 
-→ True. The gradient is 8, so x₁=4−0.1×8=3.2.
+→ **PDF-এর উত্তর (exact):** True. The gradient is 8, so x₁=4−0.1×8=3.2.
+
+**বাংলা ব্যাখ্যা:** সঠিক। gradient 8, তাই x₁ = 4 − 0.8 = 3.2।
 
 **11. ReLU(−3)=−3.**  `[Syllabus: A5]`
 
-→ False. ReLU returns max(0,z), so ReLU(−3)=0.
+→ **PDF-এর উত্তর (exact):** False. ReLU returns max(0,z), so ReLU(−3)=0.
+
+**বাংলা ব্যাখ্যা:** ভুল। ReLU(−3) = max(0,−3) = 0।
 
 **12. For a positive input, ReLU passes the value through unchanged.**  `[Syllabus: A5]`
 
-→ True. When z>0, ReLU(z)=z and its derivative is 1.
+→ **PDF-এর উত্তর (exact):** True. When z>0, ReLU(z)=z and its derivative is 1.
+
+**বাংলা ব্যাখ্যা:** সঠিক। z>0 হলে ReLU(z)=z, derivative 1।
 
 **13. For z<0, the ReLU derivative is zero.**  `[Syllabus: A5]`
 
-→ True. The inactive negative branch has zero derivative.
+→ **PDF-এর উত্তর (exact):** True. The inactive negative branch has zero derivative.
+
+**বাংলা ব্যাখ্যা:** সঠিক। Negative branch-এর derivative 0।
 
 **14. The sigmoid function outputs exactly 0 or 1 for finite logits.**  `[Syllabus: A5]`
 
-→ False. For finite z, sigmoid lies strictly between 0 and 1.
+→ **PDF-এর উত্তর (exact):** False. For finite z, sigmoid lies strictly between 0 and 1.
+
+**বাংলা ব্যাখ্যা:** ভুল। Finite z-এ sigmoid strictly 0 ও 1-এর মাঝে।
 
 **15. Sigmoid(0)=0.5.**  `[Syllabus: A5]`
 
-→ True. σ(0)=1/(1+e⁰)=1/2.
+→ **PDF-এর উত্তর (exact):** True. σ(0)=1/(1+e⁰)=1/2.
+
+**বাংলা ব্যাখ্যা:** সঠিক। σ(0)=1/2।
 
 **16. Softmax probabilities across classes should sum to 1.**  `[Syllabus: A5]`
 
-→ True. Softmax normalizes the exponentiated logits into a probability distribution.
+→ **PDF-এর উত্তর (exact):** True. Softmax normalizes the exponentiated logits into a probability distribution.
+
+**বাংলা ব্যাখ্যা:** সঠিক। Softmax exponentiated logit normalize করে যোগফল 1 করে।
 
 **17. Softmax is used for mutually exclusive multiclass classification.**  `[Syllabus: A5]`
 
-→ True. The example distinguishes one class among several alternatives.
+→ **PDF-এর উত্তর (exact):** True. The example distinguishes one class among several alternatives.
+
+**বাংলা ব্যাখ্যা:** সঠিক। Mutually exclusive multiclass-এর জন্য softmax।
 
 **18. The output weights v₁ and v₂ are calculated from hidden weights w₁ and w₂.**  `[Syllabus: A7]`
 
-→ False. The output weights are separate learnable parameters; they are initialized and trained independently.
+→ **PDF-এর উত্তর (exact):** False. The output weights are separate learnable parameters; they are initialized and trained independently.
+
+**বাংলা ব্যাখ্যা:** ভুল। v₁,v₂ স্বাধীন learnable parameter, w₁,w₂ থেকে হিসাব হয় না।
 
 **19. Backpropagation and gradient descent are two names for the same operation.**  `[Syllabus: A7]`
 
-→ False. Backpropagation calculates gradients; gradient descent uses them to update parameters. 
+→ **PDF-এর উত্তর (exact):** False. Backpropagation calculates gradients; gradient descent uses them to update parameters. 
+
+**বাংলা ব্যাখ্যা:** ভুল। Backprop gradient বের করে; GD সেই gradient দিয়ে update করে।
 
 ## 5. Part III — Mathematical Problems (11), solution সহ
 
@@ -230,6 +306,8 @@
 
 **Why it matters:** The prediction is a numerical output; no activation is applied in this linear model.
 
+**শিখলে: Linear model-এ সোজা মান বসাও; কোনো activation নেই।**
+
 ### Problem 2. Residual and squared error  `[Syllabus: A3]`
 
 **Given / Find:** Use the model in Problem 1. If the actual target is y=17, find r=y−ŷ and r².
@@ -241,6 +319,8 @@
 - Squared error = r² = 2² = 4.
 
 **Why it matters:** A positive residual means the prediction was below the actual target.
+
+**শিখলে: r = y − ŷ; r positive মানে prediction actual-এর চেয়ে কম।**
 
 ### Problem 3. First gradient-descent step  `[Syllabus: A4]`
 
@@ -254,6 +334,8 @@
 
 **Why it matters:** The positive gradient causes x to move left toward the minimum at zero.
 
+**শিখলে: GD-র এক step: f′(x)=2x, x₁ = x₀ − η·f′(x₀)। Positive gradient x-কে বামে নেয়।**
+
 ### Problem 4. Calculate ReLU outputs  `[Syllabus: A5]`
 
 **Given / Find:** Calculate ReLU(−3), ReLU(0), and ReLU(2.5).
@@ -264,6 +346,8 @@
 - ReLU(−3)=0; ReLU(0)=0; ReLU(2.5)=2.5.
 
 **Why it matters:** The negative branch is zero; positive values pass through unchanged.
+
+**শিখলে: ReLU = max(0,z); negative → 0, positive অপরিবর্তিত।**
 
 ### Problem 5. Easy forward pass: hidden units and output  `[Syllabus: A7 (forward pass)]`
 
@@ -277,6 +361,8 @@
 
 **Why it matters:** The source notes call c₁ and c₂ output weights v₁ and v₂; here c₁≡v₁ and c₂≡v₂ to match the requested notation.
 
+**শিখলে: Forward pass: z → h = ReLU(z) → ŷ = v₁h₁+v₂h₂+c। (⚠️ notice অনুযায়ী fwd/back math কম আসার কথা।)**
+
 ### Problem 6. Half-squared loss from the forward pass  `[Syllabus: A3, A7 (forward pass)]`
 
 **Given / Find:** For ŷ=0.4 and target y=1, calculate L=½(ŷ−y)².
@@ -287,6 +373,8 @@
 - L=½(0.36)=0.18.
 
 **Why it matters:** The half factor makes the derivative of this single-sample loss equal to ŷ−y.
+
+**শিখলে: Half-squared loss L = ½(ŷ−y)²; ½ থাকায় derivative ŷ−y হয়।**
 
 ### Problem 7. Inactive ReLU  `[Syllabus: A5, A7 (forward pass)]`
 
@@ -300,6 +388,8 @@
 
 **Why it matters:** The second hidden unit is inactive for this input, so its outgoing-weight gradient is zero for this example.
 
+**শিখলে: z<0 হলে h=0; ওই hidden unit ŷ-এ কিছু যোগ করে না, তার outgoing weight-এর gradient 0।**
+
 ### Problem 8. Sigmoid probability  `[Syllabus: A5]`
 
 **Given / Find:** Calculate σ(0) and approximately calculate σ(2), using σ(z)=1/(1+e^(−z)).
@@ -311,6 +401,8 @@
 
 **Why it matters:** Sigmoid converts a logit into a number between 0 and 1.
 
+**শিখলে: σ(0)=0.5; σ(2)≈0.881; sigmoid logit-কে 0–1-এ আনে।**
+
 ### Problem 9. Binary cross-entropy  `[Syllabus: B4]`
 
 **Given / Find:** For predicted class-1 probability p=0.8, calculate BCE for (a) true label y=1 and (b) true label y=0. Use natural logs.
@@ -321,6 +413,8 @@
 - For y=0: L=−ln(1−0.8)=−ln(0.2)≈1.6094.
 
 **Why it matters:** The same probability can have very different loss depending on which label is correct.
+
+**শিখলে: একই p-এ BCE নির্ভর করে true label y-এর উপর (y=1 → −ln p; y=0 → −ln(1−p))।**
 
 ### Problem 10. Softmax probability vector  `[Syllabus: A5]`
 
@@ -335,6 +429,8 @@
 
 **Why it matters:** Softmax forms a normalized probability distribution across mutually exclusive classes.
 
+**শিখলে: Softmax = e^z / Σe^z; probability-র যোগফল 1।**
+
 ### Problem 11. Categorical cross-entropy for class 2  `[Syllabus: B6]`
 
 **Given / Find:** Use the softmax result [0.665,0.245,0.090] and true one-hot label [0,1,0]. Calculate the categorical cross- entropy.
@@ -346,6 +442,8 @@
 - L≈1.407.
 
 **Why it matters:** The loss depends on the probability assigned to the true class, not just which class has the largest probability. 
+
+**শিখলে: Categorical CE = −ln(true class-এর probability); সবচেয়ে বড় probability নয়, true class-এরটা গুরুত্বপূর্ণ।**
 
 ## Gradient Descent — Math (PNG `f_x_gradient_descent.webp` + bank Problem 3)
 

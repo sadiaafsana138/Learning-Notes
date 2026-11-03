@@ -36,145 +36,215 @@
 
 **A1. What does entropy measure in a target distribution?**  `[Syllabus: B3]`
 
-**উত্তর:** Entropy H(P) measures uncertainty in the target distribution itself. For P = (0.7, 0.3), H(P) = -[0.7 ln(0.7) + 0.3 ln(0.3)] = 0.6109 nats.
+**PDF-এর উত্তর (exact):** Entropy H(P) measures uncertainty in the target distribution itself. For P = (0.7, 0.3), H(P) = -[0.7 ln(0.7) + 0.3 ln(0.3)] = 0.6109 nats.
+
+**বাংলা অর্থ:** Entropy H(P) target distribution-এর নিজের অনিশ্চয়তা মাপে। P=(0.7,0.3) হলে H(P)=0.6109 nats।
 
 **A2. How are cross-entropy and KL divergence different?**  `[Syllabus: B3]`
 
-**উত্তর:** Cross-entropy H(P,Q) is the average information cost when the model distribution Q represents outcomes from target P. KL divergence D_KL(P||Q) is the extra information cost caused by the mismatch between P and Q.
+**PDF-এর উত্তর (exact):** Cross-entropy H(P,Q) is the average information cost when the model distribution Q represents outcomes from target P. KL divergence D_KL(P||Q) is the extra information cost caused by the mismatch between P and Q.
+
+**বাংলা অর্থ:** Cross-entropy H(P,Q) = target P-এর outcome-কে model Q দিয়ে লিখলে গড় information cost। KL D_KL(P‖Q) = P ও Q-এর অমিলের কারণে **extra** cost।
 
 **A3. State the key relationship between entropy, cross-entropy, and KL divergence.**  `[Syllabus: B3]`
 
-**উত্তর:** H(P,Q) = H(P) + D_KL(P||Q). The target entropy is fixed when P is fixed, so minimizing cross-entropy also minimizes the KL divergence.
+**PDF-এর উত্তর (exact):** H(P,Q) = H(P) + D_KL(P||Q). The target entropy is fixed when P is fixed, so minimizing cross-entropy also minimizes the KL divergence.
+
+**বাংলা অর্থ:** H(P,Q) = H(P) + D_KL(P‖Q)। P fixed হলে H(P) constant, তাই CE minimize করলে KL-ও minimize হয়।
 
 **A4. What happens to KL divergence when the predicted distribution equals the target distribution?**  `[Syllabus: B3]`
 
-**উত্তর:** If Q = P, then D_KL(P||Q) = 0. Cross-entropy then equals the target entropy H(P); the entropy does not disappear.
+**PDF-এর উত্তর (exact):** If Q = P, then D_KL(P||Q) = 0. Cross-entropy then equals the target entropy H(P); the entropy does not disappear.
+
+**বাংলা অর্থ:** Q = P হলে D_KL = 0। তখন cross-entropy = H(P) (entropy হারায় না, থেকে যায়)।
 
 **A5. Why is logistic regression used for classification despite its name?**  `[Syllabus: B4]`
 
-**উত্তর:** It calculates a linear score z = wᵀx + b and applies sigmoid to estimate P(y=1|x). That probability can be thresholded to predict one of two classes.
+**PDF-এর উত্তর (exact):** It calculates a linear score z = wᵀx + b and applies sigmoid to estimate P(y=1|x). That probability can be thresholded to predict one of two classes.
+
+**বাংলা অর্থ:** Logistic regression linear score z = wᵀx + b বের করে sigmoid দিয়ে P(y=1|x) estimate করে; threshold দিয়ে দুই class-এর একটা বাছা হয়। তাই classification।
 
 **A6. What does the sigmoid function do in logistic regression?**  `[Syllabus: B4]`
 
-**উত্তর:** σ(z) = 1/(1+e^(-z)) transforms a real-valued score into a probability strictly between zero and one for finite z.
+**PDF-এর উত্তর (exact):** σ(z) = 1/(1+e^(-z)) transforms a real-valued score into a probability strictly between zero and one for finite z.
+
+**বাংলা অর্থ:** σ(z) = 1/(1+e^(−z)) real score-কে finite z-এ strictly 0 ও 1-এর মাঝে probability-তে নেয়।
 
 **A7. What does binary cross-entropy represent?**  `[Syllabus: B4]`
 
-**উত্তর:** L(y,p) = -[y ln(p) + (1-y) ln(1-p)] is the negative log-likelihood of a Bernoulli output distribution. The training objective is to minimize it.
+**PDF-এর উত্তর (exact):** L(y,p) = -[y ln(p) + (1-y) ln(1-p)] is the negative log-likelihood of a Bernoulli output distribution. The training objective is to minimize it.
+
+**বাংলা অর্থ:** BCE L = −[y ln p + (1−y) ln(1−p)] = Bernoulli output-এর negative log-likelihood। Training-এ এটা minimize করা হয়।
 
 **A8. What information does a gradient provide?**  `[Syllabus: B5]`
 
-**উত্তর:** A gradient describes how the loss changes with each trainable parameter. Its sign and magnitude indicate the local direction and sensitivity of the loss to parameter changes.
+**PDF-এর উত্তর (exact):** A gradient describes how the loss changes with each trainable parameter. Its sign and magnitude indicate the local direction and sensitivity of the loss to parameter changes.
+
+**বাংলা অর্থ:** Gradient বলে প্রতি parameter বদলালে loss কীভাবে বদলায়। Sign ও magnitude locally direction ও sensitivity দেয়।
 
 **A9. How does SGD use a gradient?**  `[Syllabus: B5]`
 
-**উত্তর:** SGD updates parameters using θ_new = θ_old - ηĝ, where ĝ is an estimated gradient and η is the learning rate. It moves in the direction opposite to the estimated gradient.
+**PDF-এর উত্তর (exact):** SGD updates parameters using θ_new = θ_old - ηĝ, where ĝ is an estimated gradient and η is the learning rate. It moves in the direction opposite to the estimated gradient.
+
+**বাংলা অর্থ:** SGD: θ_new = θ_old − η·ĝ। ĝ = estimated gradient; estimated gradient-এর **উল্টো** দিকে যায়।
 
 **A10. What is the difference between forward propagation and backpropagation?**  `[Syllabus: A7]`
 
-**উত্তর:** Forward propagation computes hidden activations, logits, output probabilities, and loss from input to output. Backpropagation starts from the loss derivative and propagates gradients backward through the network.
+**PDF-এর উত্তর (exact):** Forward propagation computes hidden activations, logits, output probabilities, and loss from input to output. Backpropagation starts from the loss derivative and propagates gradients backward through the network.
+
+**বাংলা অর্থ:** Forward propagation: input থেকে hidden activation, logits, output probability ও loss হিসাব। Backpropagation: loss-derivative থেকে শুরু করে পেছনে gradient পাঠানো।
 
 **A11. What does a basic neuron compute?**  `[Syllabus: B1]`
 
-**উত্তর:** It forms a weighted sum plus a bias, z = wᵀx + b, then applies an activation a = f(z). Weights control feature contributions; the bias shifts the pre-activation.
+**PDF-এর উত্তর (exact):** It forms a weighted sum plus a bias, z = wᵀx + b, then applies an activation a = f(z). Weights control feature contributions; the bias shifts the pre-activation.
+
+**বাংলা অর্থ:** Neuron: weighted sum + bias, z = wᵀx + b; তারপর a = f(z)। Weight = feature-এর অবদান; bias = pre-activation shift।
 
 **A12. What is a feedforward network?**  `[Syllabus: B1]`
 
-**উত্তর:** It processes information from input to output without recurrent loops. A simple network transforms x into hidden representation h and then into output y.
+**PDF-এর উত্তর (exact):** It processes information from input to output without recurrent loops. A simple network transforms x into hidden representation h and then into output y.
+
+**বাংলা অর্থ:** Feedforward network input থেকে output-এ যায়, recurrent loop নেই। সরল network x → h → y।
 
 **A13. Why can a single perceptron not learn XOR?**  `[Syllabus: B2]`
 
-**উত্তর:** A single perceptron has a straight-line decision boundary for two inputs. XOR’s positive and negative labels alternate across the four corners, so no one straight line separates them.
+**PDF-এর উত্তর (exact):** A single perceptron has a straight-line decision boundary for two inputs. XOR’s positive and negative labels alternate across the four corners, so no one straight line separates them.
+
+**বাংলা অর্থ:** Perceptron-এর decision boundary সরলরেখা। XOR-এর label চার কোণে alternate করে, তাই এক সরলরেখা আলাদা করতে পারে না।
 
 **A14. How can a hidden layer represent XOR?**  `[Syllabus: B2]`
 
-**উত্তর:** It defines h1 = x1 OR x2 and h2 = x1 AND x2, then y = h1 AND NOT(h2). The hidden units create an intermediate representation that makes the final decision possible.
+**PDF-এর উত্তর (exact):** It defines h1 = x1 OR x2 and h2 = x1 AND x2, then y = h1 AND NOT(h2). The hidden units create an intermediate representation that makes the final decision possible.
+
+**বাংলা অর্থ:** h₁ = x₁ OR x₂, h₂ = x₁ AND x₂, y = h₁ AND NOT h₂। Hidden unit intermediate representation বানায় যাতে শেষ সিদ্ধান্ত সম্ভব হয়।
 
 **A15. Why are nonlinear activation functions necessary?**  `[Syllabus: A5]`
 
-**উত্তর:** A nonlinear activation such as ReLU allows the network to represent nonlinear relationships.
+**PDF-এর উত্তর (exact):** A nonlinear activation such as ReLU allows the network to represent nonlinear relationships.
+
+**বাংলা অর্থ:** ReLU-এর মতো nonlinear activation network-কে nonlinear সম্পর্ক represent করতে দেয়।
 
 **A16. Why is ReLU commonly used for hidden units?**  `[Syllabus: B7]`
 
-**উত্তর:** ReLU(x) = max(0,x) is simple and computationally inexpensive. For positive inputs its derivative is one, so it avoids the positive-side saturation associated with sigmoid and tanh.
+**PDF-এর উত্তর (exact):** ReLU(x) = max(0,x) is simple and computationally inexpensive. For positive inputs its derivative is one, so it avoids the positive-side saturation associated with sigmoid and tanh.
+
+**বাংলা অর্থ:** ReLU(x)=max(0,x): সহজ, সস্তা। Positive input-এ derivative 1, তাই sigmoid/tanh-এর positive-side saturation নেই।
 
 **A17. What is a limitation of ReLU?**  `[Syllabus: B7]`
 
-**উত্তর:** For a negative pre-activation, ReLU outputs zero and its derivative is zero. If a unit stays in that region for all its inputs, it may stop updating through that path; this is called the dying ReLU problem.
+**PDF-এর উত্তর (exact):** For a negative pre-activation, ReLU outputs zero and its derivative is zero. If a unit stays in that region for all its inputs, it may stop updating through that path; this is called the dying ReLU problem.
+
+**বাংলা অর্থ:** Negative pre-activation-এ ReLU output 0 ও derivative 0। কোনো unit সব input-এ negative থাকলে ওই path-এ update বন্ধ; একে dying ReLU বলে।
 
 **A18. When is sigmoid appropriate, and when is softmax appropriate?**  `[Syllabus: B6]`
 
-**উত্তর:** Sigmoid represents a Bernoulli output for a binary target. Softmax represents a probability distribution over mutually exclusive classes, with all class probabilities summing to one.
+**PDF-এর উত্তর (exact):** Sigmoid represents a Bernoulli output for a binary target. Softmax represents a probability distribution over mutually exclusive classes, with all class probabilities summing to one.
+
+**বাংলা অর্থ:** Sigmoid binary target (Bernoulli) এর জন্য। Softmax mutually exclusive multiclass-এর probability distribution, সব probability-র যোগফল 1।
 
 **A19. How are gradient, Jacobian, backpropagation, and an optimizer related?**  `[Syllabus: B10]`
 
-**উত্তর:** A gradient is for a scalar loss; a Jacobian records how vector outputs change with vector inputs. Backpropagation applies the chain rule and local Jacobians efficiently to calculate gradients; SGD or another optimizer then updates parameters. 
+**PDF-এর উত্তর (exact):** A gradient is for a scalar loss; a Jacobian records how vector outputs change with vector inputs. Backpropagation applies the chain rule and local Jacobians efficiently to calculate gradients; SGD or another optimizer then updates parameters. 
+
+**বাংলা অর্থ:** Gradient scalar loss-এর জন্য; Jacobian vector output-এর derivative matrix। Backprop chain rule ও local Jacobian দিয়ে gradient বের করে; SGD/optimizer সেই gradient দিয়ে parameter update করে।
 
 ## 3. Section B — True/False with reasons (16)
 
 **B1. KL divergence is always symmetric: D_KL(P||Q) = D_KL(Q||P).**  `[Syllabus: B3]`
 
-→ **FALSE** — exchanging P and Q generally changes the value.
+→ **PDF-এর উত্তর (exact): FALSE** — exchanging P and Q generally changes the value.
+
+**বাংলা ব্যাখ্যা:** Symmetric না; P ও Q বদলালে মান সাধারণত বদলায়।
 
 **B2. KL divergence is non-negative and equals zero when P = Q.**  `[Syllabus: B3]`
 
-→ **TRUE** — Matching target and model distributions removes the mismatch.
+→ **PDF-এর উত্তর (exact): TRUE** — Matching target and model distributions removes the mismatch.
+
+**বাংলা ব্যাখ্যা:** KL ≥ 0 এবং P=Q হলে 0 (অমিল নেই)।
 
 **B3. For fixed target P, minimizing cross-entropy is equivalent to minimizing KL divergence.**  `[Syllabus: B3]`
 
-→ **TRUE** — H(P,Q) = H(P) + D_KL(P||Q), and H(P) is constant with respect to the model parameters.
+→ **PDF-এর উত্তর (exact): TRUE** — H(P,Q) = H(P) + D_KL(P||Q), and H(P) is constant with respect to the model parameters.
+
+**বাংলা ব্যাখ্যা:** H(P,Q)=H(P)+KL, H(P) model parameter-এর উপর নির্ভর করে না।
 
 **B4. The entropy of a one-hot target distribution is zero.**  `[Syllabus: B3]`
 
-→ **TRUE** — A one-hot target assigns probability one to the true class and zero to the others.
+→ **PDF-এর উত্তর (exact): TRUE** — A one-hot target assigns probability one to the true class and zero to the others.
+
+**বাংলা ব্যাখ্যা:** One-hot target সব probability সঠিক class-এ দেয়, তাই অনিশ্চয়তা 0।
 
 **B5. Logistic regression uses a linear score followed by sigmoid to estimate a binary -class probability.**  `[Syllabus: B4]`
 
-→ **TRUE** — as p = σ(wᵀx+b).
+→ **PDF-এর উত্তর (exact): TRUE** — as p = σ(wᵀx+b).
+
+**বাংলা ব্যাখ্যা:** p = σ(wᵀx+b) দিয়ে binary class probability।
 
 **B6. For every finite logit z, sigmoid outputs exactly 0 or exactly 1.**  `[Syllabus: A5]`
 
-→ **FALSE** — For finite z, sigmoid lies strictly between zero and one.
+→ **PDF-এর উত্তর (exact): FALSE** — For finite z, sigmoid lies strictly between zero and one.
+
+**বাংলা ব্যাখ্যা:** Finite z-এ sigmoid exact 0 বা 1 হয় না, strictly মাঝামাঝি।
 
 **B7. When the true label is y=1, binary cross-entropy simplifies to -ln(p).**  `[Syllabus: B4]`
 
-→ **TRUE** — Substituting y=1 into the binary cross-entropy formula leaves -ln(p).
+→ **PDF-এর উত্তর (exact): TRUE** — Substituting y=1 into the binary cross-entropy formula leaves -ln(p).
+
+**বাংলা ব্যাখ্যা:** y=1 বসালে BCE সরল হয়ে −ln(p)।
 
 **B8. ReLU returns zero for a negative input and passes a positive input through unchanged.**  `[Syllabus: A5, B7]`
 
-→ **TRUE** — ReLU(x)=max(0,x).
+→ **PDF-এর উত্তর (exact): TRUE** — ReLU(x)=max(0,x).
+
+**বাংলা ব্যাখ্যা:** ReLU(x)=max(0,x): negative → 0, positive অপরিবর্তিত।
 
 **B9. XOR is linearly separable, so a single perceptron can learn it.**  `[Syllabus: B2]`
 
-→ **FALSE** — XOR is not linearly separable; a single straight boundary cannot separate its classes.
+→ **PDF-এর উত্তর (exact): FALSE** — XOR is not linearly separable; a single straight boundary cannot separate its classes.
+
+**বাংলা ব্যাখ্যা:** XOR linearly separable না; single straight boundary দুই class আলাদা করতে পারে না।
 
 **B10. Softmax is the natural complete output distribution when multiple mutually exclusive classes are possible.**  `[Syllabus: B6]`
 
-→ **TRUE** — It returns one probability per class and the probabilities sum to one.
+→ **PDF-এর উত্তর (exact): TRUE** — It returns one probability per class and the probabilities sum to one.
+
+**বাংলা ব্যাখ্যা:** Softmax প্রতি class-এর জন্য একটা probability দেয়, যোগফল 1।
 
 **B11. A single sigmoid output and a three-class Softmax output have identical output structures.**  `[Syllabus: B6]`
 
-→ **FALSE** — Sigmoid gives one positive-class probability; Softmax gives one probability for each mutually exclusive class.
+→ **PDF-এর উত্তর (exact): FALSE** — Sigmoid gives one positive-class probability; Softmax gives one probability for each mutually exclusive class.
+
+**বাংলা ব্যাখ্যা:** Sigmoid = 1টা positive-class probability; softmax = প্রতি class-এর 1টা।
 
 **B12. The fully connected 2–2–3 MLP has 15 trainable parameters.**  `[Syllabus: B8]`
 
-→ **TRUE** — There are 4 input-to-hidden weights + 2 hidden biases + 6 hidden-to-output weights + 3 output biases = 15.
+→ **PDF-এর উত্তর (exact): TRUE** — There are 4 input-to-hidden weights + 2 hidden biases + 6 hidden-to-output weights + 3 output biases = 15.
+
+**বাংলা ব্যাখ্যা:** 4 (in→hidden weight) + 2 (hidden bias) + 6 (hidden→out weight) + 3 (out bias) = 15।
 
 **B13. The universal approximation theorem guarantees that gradient descent will find the exact desired parameters.**  `[Syllabus: B9]`
 
-→ **FALSE** — The theorem concerns representational capability; it does not guarantee that a training algorithm finds the right parameters.
+→ **PDF-এর উত্তর (exact): FALSE** — The theorem concerns representational capability; it does not guarantee that a training algorithm finds the right parameters.
+
+**বাংলা ব্যাখ্যা:** UAT representational capability নিয়ে; GD সঠিক parameter পাবে তার গ্যারান্টি দেয় না।
 
 **B14. It claims that deeper networks are always better and easier to optimize.**  `[Syllabus: B9]`
 
-→ **FALSE** — Depth and width must be selected and evaluated; deeper networks are not always better or easier to optimize.
+→ **PDF-এর উত্তর (exact): FALSE** — Depth and width must be selected and evaluated; deeper networks are not always better or easier to optimize.
+
+**বাংলা ব্যাখ্যা:** Depth/width বেছে evaluate করতে হয়; deeper সবসময় better বা সহজে optimize হয় না।
 
 **B15. Backpropagation itself is the parameter-update optimizer.**  `[Syllabus: B10]`
 
-→ **FALSE** — Backpropagation calculates gradients; SGD or another optimizer uses them to update parameters.
+→ **PDF-এর উত্তর (exact): FALSE** — Backpropagation calculates gradients; SGD or another optimizer uses them to update parameters.
+
+**বাংলা ব্যাখ্যা:** Backprop gradient calculate করে; SGD/optimizer update করে।
 
 **B16. If a hidden ReLU pre-activation is negative, its local ReLU derivative is zero and that gradient path is blocked for the current input.**  `[Syllabus: B7, A7]`
 
-→ **TRUE** — it gives ReLU′(z)=0 for z<0. 
+→ **PDF-এর উত্তর (exact): TRUE** — it gives ReLU′(z)=0 for z<0. 
+
+**বাংলা ব্যাখ্যা:** Negative pre-activation → ReLU′(z)=0, ওই input-এর জন্য gradient path blocked।
 
 ## 4. Section C — Mathematical problems with worked solutions (16)
 
@@ -189,6 +259,8 @@
 - Using ln(0.7) ≈ -0.3567 and ln(0.3) ≈ -1.2040: H(P) ≈ 0.2497 + 0.3612 = 0.6109 nats.
 - Answer: 0.6109 nats.
 
+**শিখলে: Entropy সূত্রে P বসাও, ln মান ব্যবহার করে যোগ। H(P)=0.6109।**
+
 ### C2.  `[Syllabus: B3]`
 
 **Q:** For target P=(0.7,0.3) and model Q=(0.6,0.4), calculate cross-entropy.
@@ -200,6 +272,8 @@
 - Using ln(0.6) ≈ -0.5108 and ln(0.4) ≈ -0.9163: H(P,Q) ≈ 0.3576 + 0.2749 = 0.6325 nats.
 - Answer: 0.6325 nats.
 
+**শিখলে: Cross-entropy-তে **Q-এর** ln নাও, P দিয়ে weight করো। H(P,Q)=0.6325।**
+
 ### C3.  `[Syllabus: B3]`
 
 **Q:** Using P=(0.7,0.3) and Q=(0.6,0.4), calculate KL divergence and verify the identity.
@@ -208,6 +282,8 @@
 
 - D_KL(P||Q) = Σᵢ P(i) ln[P(i)/Q(i)].
 - D_KL = 0.7 ln(0.7/0.6) + 0.3 ln(0.3/0.4) ≈ 0.1079 - 0.0863 = 0.0216 nats.
+
+**শিখলে: KL-এ ln(P/Q); দুটো পদ আলাদা চিহ্নের। 0.6109 + 0.0216 = 0.6325 মিলিয়ে identity যাচাই।**
 
 ### C4.  `[Syllabus: B3]`
 
@@ -220,6 +296,8 @@
 - At p=0.95: L = -ln(0.95) ≈ 0.0513 nats.
 - The second loss is smaller because the model assigns a higher probability to the correct class.
 
+**শিখলে: One-hot হলে L = −ln(p); p বাড়লে loss কমে (0.70 → 0.3567, 0.95 → 0.0513)।**
+
 ### C5.  `[Syllabus: B4]`
 
 **Q:** Logistic regression receives x=2 with w=0 and b=0. Calculate z and p.
@@ -229,6 +307,8 @@
 - Linear score: z=wx+b=(0)(2)+0=0.
 - Sigmoid: p=1/(1+e^(-z))=1/(1+e⁰)=1/2=0.5.
 - Answer: z=0 and p=0.50, an uncertain binary prediction.
+
+**শিখলে: w=b=0 হলে z=0, p=σ(0)=0.5 (অনিশ্চিত)।**
 
 ### C6.  `[Syllabus: B4]`
 
@@ -241,6 +321,8 @@
 - p=0.10: L=-ln(0.10)≈2.3026 nats.
 - The confidently wrong prediction p=0.10 receives the much larger loss.
 
+**শিখলে: y=1-এ L=−ln p; confidently wrong p=0.10 হলে loss 2.3026, p=0.80-এ 0.2231।**
+
 ### C7.  `[Syllabus: B5]`
 
 **Q:** For x=2, y=1, w=0, b=0, p=0.5, calculate the gradients and one SGD update with η=0.1.
@@ -251,6 +333,8 @@
 - Weight gradient: (0.5-1)(2)=-1. Bias gradient: 0.5-1=-0.5.
 - w_new = 0 - 0.1(-1)=0.10. b_new = 0 - 0.1(-0.5)=0.05.
 - Answer: gradients are -1 and -0.5; updated parameters are w=0.10 and b=0.05.
+
+**শিখলে: Sigmoid+BCE gradient p−y: ∂L/∂w=(p−y)x, ∂L/∂b=p−y; SGD এক step।**
 
 ### C8.  `[Syllabus: B5]`
 
@@ -263,6 +347,8 @@
 - Because y=1, L_new=-ln(0.5622)≈0.5759 nats.
 - Comparison: loss falls from 0.6931 to 0.5759 nats; attack probability rises from 50.00% to about 56.22%.
 
+**শিখলে: Update-এর পর p বেড়ে 0.5622, loss কমে 0.6931 → 0.5759।**
+
 ### C9.  `[Syllabus: B1]`
 
 **Q:** A neuron has x₁=2, x₂=3, w₁=0.5, w₂=0.2, b=1. Find its pre-activation z.
@@ -272,6 +358,8 @@
 - z=w₁x₁+w₂x₂+b.
 - z=(0.5)(2)+(0.2)(3)+1=1+0.6+1=2.6.
 - Answer: z=2.6.
+
+**শিখলে: Neuron-এর z = w₁x₁ + w₂x₂ + b।**
 
 ### C10.  `[Syllabus: A5]`
 
@@ -283,6 +371,8 @@
 - ReLU(-3)=0; ReLU(0)=0; ReLU(2.7)=2.7.
 - Rule: negative inputs become zero; positive inputs pass through unchanged.
 
+**শিখলে: ReLU(−3)=0, ReLU(0)=0, ReLU(2.7)=2.7।**
+
 ### C11.  `[Syllabus: B7]`
 
 **Q:** For x₁=2 and x₂=1, calculate the two hidden scores z₁=x₁+x₂-1 and z₂=x₁-x₂, then apply ReLU.
@@ -292,6 +382,8 @@
 - z₁=2+1-1=2. z₂=2-1=1.
 - h₁=ReLU(2)=2; h₂=ReLU(1)=1.
 - Answer: hidden representation h=[2,1]ᵀ.
+
+**শিখলে: Hidden score z → ReLU → h; এখানে h=[2,1]ᵀ।**
 
 ### C12.  `[Syllabus: B4]`
 
@@ -303,6 +395,8 @@
 - L=-ln(0.7311)≈0.3133 nats.
 - Answer: p≈0.7311 and L≈0.3133 nats.
 
+**শিখলে: Logit z=1 → p=σ(1)=0.7311; y=1-এ L=−ln p=0.3133।**
+
 ### C13.  `[Syllabus: B6]`
 
 **Q:** Calculate the Softmax probabilities for logits [0,2,1] for Benign, DDoS, and Port scan.
@@ -312,6 +406,8 @@
 - Exponentials: e⁰=1, e²≈7.389, e¹≈2.718; sum≈11.107.
 - P(Benign)=1/11.107≈0.090; P(DDoS)=7.389/11.107≈0.665; P(Port scan)=2.718/11.107≈0.245.
 - The probabilities sum to approximately 1.000. The largest is DDoS.
+
+**শিখলে: Softmax = e^z/Σe^z; [0,2,1] → [0.090, 0.665, 0.245] (যোগফল ≈1)।**
 
 ### C14.  `[Syllabus: B6]`
 
@@ -323,6 +419,8 @@
 - Softmax + cross-entropy gives δ=p-y.
 - δ≈[0.090031, 0.665241-1, 0.244728]ᵀ = [0.090031, -0.334759, 0.244728]ᵀ.
 
+**শিখলে: Softmax+CE-তে logit gradient δ = p − y; এখানে [0.0900, −0.3348, 0.2447]।**
+
 ### C15.  `[Syllabus: B8]`
 
 **Q:** Count trainable parameters in a fully connected 2–2–3 MLP with biases.
@@ -333,6 +431,8 @@
 - Hidden-to-output: 2×3=6 weights + 3 output biases = 9 parameters.
 - Total = 6+9=15 trainable parameters.
 
+**শিখলে: Parameter = Σ(in×out + out); 2–2–3 → 6 + 9 = 15।**
+
 ### C16.  `[Syllabus: B10]`
 
 **Q:** Let u=2x and L=u². Use the chain rule to calculate dL/dx at x=3.
@@ -342,6 +442,8 @@
 - At x=3, u=2(3)=6.
 - dL/du=2u=12 and du/dx=2.
 - dL/dx=(dL/du)(du/dx)=12×2=24.
+
+**শিখলে: Chain rule: dL/dx = (dL/du)(du/dx) = 12 × 2 = 24।**
 
 ## Gradient Descent — Math (PNG `f_x_gradient_descent.webp` + bank Problem 3)
 
@@ -448,6 +550,15 @@ Minimum x* = 0, f(0) = 0।
 - **D4 XOR:** square-এর চার কোণ; (0,0)=0, (1,1)=0 একই symbol; (0,1)=1, (1,0)=1 আরেক symbol; কোনো এক সরলরেখা দুই class আলাদা করতে পারে না (PDF figure-এ 0=লাল, 1=নীল)।
 - **D5 AND:** শুধু (1,1)=1, বাকি তিনটা 0; একটা রেখা দিয়ে আলাদা করা যায়।
 - **D6 OR:** শুধু (0,0)=0, বাকি তিনটা 1; একটা রেখা দিয়ে আলাদা করা যায়।
+
+**বাংলায় সার:**
+
+- D1: ReLU: x<0-তে flat y=0, x≥0-তে y=x। Mark: (−4,0),(−2,0),(0,0),(1,1),(2,2),(4,4)।
+- D2: Sigmoid: S-আকার 0–1-এর মাঝে; z=0-তে 0.5; mark: z=−2→0.1192, 0→0.5, 1→0.7311, 2→0.8808।
+- D3: BCE (y=1): L=−ln p, p বাড়লে loss কমে; p→0-এ অনেক বড়, p=1-এ 0।
+- D4: XOR: চার কোণে label alternate (দুই symbol); কোনো এক সরলরেখা দুই class আলাদা করে না।
+- D5: AND: শুধু (1,1)=1, বাকি তিনটা 0; একটা রেখা দিয়ে আলাদা করা যায় (linearly separable)।
+- D6: OR: শুধু (0,0)=0, বাকি তিনটা 1; একটা রেখা দিয়ে আলাদা করা যায় (linearly separable)।
 
 ### Merged PDF 3-এ আঁকা figure (bank-এ exercise না, graph হিসেবে আসতে পারে)
 
