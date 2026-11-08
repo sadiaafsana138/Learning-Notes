@@ -77,6 +77,11 @@
 - **এই paper-এ:** Table S1; best-of-family S6-এ।
 - **খেয়াল:** DRF-ই সাধারণত শক্ত baseline (S6-এ DRF সবচেয়ে ভালো single)।
 
+## Drop-out loss
+*(page 07)*
+- **সহজ মানে:** feature বাদ/shuffle করলে model-এর error যতটা বাড়ে।
+- **খেয়াল:** DALEX-এ default type="raw"; এখানে "difference" (loss − baseline loss)।
+
 ## Ecological (aggregate) correlation
 *(page 05)*
 - **সহজ মানে:** group-গড়ের (যেমন union-গড়) correlation, individual-এর নয়; সাধারণত বেশি দেখায়।
@@ -86,6 +91,11 @@
 *(page 06)*
 - **সহজ মানে:** 1 − Var(error)/Var(y); R²-এর মতো, কিন্তু গড় ভুল (bias) বাদ দেয়।
 - **উদাহরণ:** `work/worked_examples2.out`: R² 0.820, EVar 0.827 (bias −66.7 থাকায়)।
+
+## exTZONE
+*(page 07)*
+- **সহজ মানে:** extreme temperature zone (T1E1…T5E4) — একটা categorical code (SI Fig. S6e)।
+- **খেয়াল:** উৎস/সংজ্ঞা paper-এ নেই ("Not reported…")।
 
 ## Generalized Linear Model (GLM) / Ridge, λ
 *(page 04)*
@@ -154,6 +164,11 @@
 - **এই paper-এ:** প্রতি season-এর 16-day সময়ে NDVI feature।
 - **খেয়াল:** মেঘ, ছোট জমি (250 m pixel-এ মিশ্র ফসল), union-centroid-এ pixel।
 
+## Observed vs predicted (1:1) plot
+*(page 07)*
+- **সহজ মানে:** x = আসল মান, y = prediction; আদর্শ হলে সব বিন্দু 45° রেখার উপর।
+- **খেয়াল:** slope < 1 মানে shrinkage।
+
 ## Partial Dependence Plot (PDP)
 *(page 05)*
 - **সূত্র:** ĝ_j(z) = (1/n) Σ_{i=1}^{n} f(z, x_{i,−j}) — j-তম feature-কে z-তে বসিয়ে বাকিগুলো যেমন আছে রেখে model-এর prediction গড়।
@@ -186,6 +201,13 @@
 - **ছোট উদাহরণ:** observed 6000 → predicted 5200; observed 1500 → predicted 2300। Predicted-vs-observed লাইনের slope < 1।
 - **এই paper-এ:** Fig. 5 সব season-এ।
 - **খেয়াল:** এটা শুধু "ensemble-এর দোষ" নয়; noisy label (farmer-reported yield) থাকলেও হয়। Bias correction (isotonic/linear recalibration) আলোচনা নেই।
+
+## Relative importance (%)
+*(page 07)*
+- **সহজ মানে:** সবচেয়ে বড় loss-কে 100 ধরে বাকিগুলোর আনুপাতিক মান।
+- **ছোট উদাহরণ:** 236.4/361.5 × 100 = **65.4%** (Aus crop type); 176.3/361.5 = **48.8%** (K-rate)।
+- **এই paper-এ:** Table S7–S9, "> 10%" cut-off Fig. 6-এ feature বাছাইয়ের জন্য।
+- **খেয়াল:** relative হওয়ায় season-জুড়ে তুলনা নেই; 10% cut-off arbitrary।
 
 ## Resampling (250 m-এ)
 *(page 02)*

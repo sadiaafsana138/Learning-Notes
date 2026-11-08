@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 68 | Potential concern: 22, Confirmed issue: 33, Unresolved question: 12, Research opportunity: 2
+মোট observation: 81 | Potential concern: 26, Confirmed issue: 39, Unresolved question: 14, Research opportunity: 3
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -72,3 +72,16 @@
 | 6.6 | "No distinct spatial pattern" — Aman/Boro-য় Moran's I 0.19/0.23 (p≈0.001) দুর্বল clustering দেখায় | `work/check_moran.out` (আমাদের own check) | Potential concern  | [p06](../pages/page-06.md) |
 | 6.7 | Fig. 4: bin-পদ্ধতি/union-প্রতি n অজানা; caption-label সামান্য অমিল | Fig. 4 | Potential concern  | [p06](../pages/page-06.md) |
 | 6.8 | Fig. 3 hybrid>HYV yield correlation, causation নয় (nutrient/district নিয়ন্ত্রিত নয়) | p5 §3.1; Fig. 3 | Potential concern  | [p06](../pages/page-06.md) |
+| 7.1 | Table 4 Aus/Boro swapped (models count সহ); row order Boro/Aman/Aus | p7 Table 4; SI S6; HTML; `work/check_arith.out` | Confirmed issue  | [p07](../pages/page-07.md) |
+| 7.2 | "farmers' reported yield" predictor বলা (yield = target; code-এ নেই) | p7 §3.2 শেষ; `FeatureData` | Confirmed issue (wording)  | [p07](../pages/page-07.md) |
+| 7.3 | Boro yield "~2000–9000" বনাম CSV min 0, 195 row < 2000, 12 শূন্য | p7; `boro_data_all.csv` | Potential concern  | [p07](../pages/page-07.md) |
+| 7.4 | RMSE season-জুড়ে তুলনা অন্যায্য; relative error Aus 26.3%, Aman 26.7%, Boro 20.3% | CSV means; S6 test RMSE | Potential concern  | [p07](../pages/page-07.md) |
+| 7.5 | PFI ক্রম text ↔ S7–S9 ↔ Fig. 6 সামঞ্জস্যপূর্ণ; importance>10 সংখ্যা 17/19/18 ✓ | `work/check_pfi.out` | (লেখকদের পক্ষে — verified)  | [p07](../pages/page-07.md) |
+| 7.6 | শীর্ষ-৫ feature-এর ভেতরে ক্রম noise-এর মধ্যে (Aman crop vs N z=0.44; Boro K vs P 1.02) | `work/check_pfi_rankz.out` | Potential concern  | [p07](../pages/page-07.md) |
+| 7.7 | Aman PFI-তে `TEMP DEC-19-2014` ৮ম (15.6%) অথচ Aman window ওভারল্যাপ Boro-র সাথে (1 Nov–19 Dec) | SI S3; S8 | Confirmed issue (overlap); ব্যাখ্যা: Potential concern  | [p07](../pages/page-07.md) |
+| 7.8 | Field duration PFI-তে বড় (61–70%) কিন্তু PDP/ALE flat (p8) | S7–S9; Fig. 7 | Unresolved question  | [p07](../pages/page-07.md) |
+| 7.9 | "factor" বনাম code "difference"; PFI train data-য় | p7 §3.3; `Rmd:862` | Confirmed issue  | [p07](../pages/page-07.md) |
+| 7.10 | `Water_regime` model-এ ছিল, importance 0 (S8: 1.26±9.49; S9: 0.00±15.48) | SI S8, S9 | Confirmed issue (inconsistent reporting)  | [p07](../pages/page-07.md) |
+| 7.11 | "Mannure application" typo; Aman S8 importance% সামান্য অমিল | Fig. 6a; S7; S8 | Confirmed issue (minor)  | [p07](../pages/page-07.md) |
+| 7.12 | Fig. 5 Aus RMSE 835 ≠ HTML test 817.6; test n/CI নেই | Fig. 5; HTML | Unresolved question  | [p07](../pages/page-07.md) |
+| 7.13 | কোনো PFI-র সাথে repeated model run/seed variability নেই (AutoML-এর randomness) | p7 | Research opportunity  | [p07](../pages/page-07.md) |
