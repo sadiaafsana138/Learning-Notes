@@ -1,5 +1,19 @@
 # Glossary (alphabetical; প্রতিটা page-এর section C থেকে auto-generated)
 
+## Accumulated Local Effects (ALE)
+*(page 05)*
+- **সহজ মানে:** feature-কে ছোট ছোট bin-এ ভাগ করে প্রতি bin-এ শুধু ছোট পরিবর্তনে prediction-এর পার্থক্য জমা (accumulate) করা, তারপর center করা।
+- **ছোট উদাহরণ (Python):** bin 1 (0–100): row-পার্থক্য 200, 300 → গড় 250; bin 2: 100, 60 → গড় 80। জমা: 250, 330 → ওজনযুক্ত গড় 290 → centered: **−40, +40**।
+- **এই paper-এ:** Fig. 7-এ কমলা রেখা (AL)।
+- **খেয়াল:** bin ছোট হলে অস্থির; local difference মানে model যেখানে data আছে সেখানেই দেখে।
+
+## ANOVA (F-test)
+*(page 05)*
+- **সহজ মানে:** একাধিক group-এর গড় আলাদা কিনা পরীক্ষা: F = (group-এর মধ্যে variance)/(group-এর ভেতরের variance)।
+- **ছোট উদাহরণ:** ৩ group (3000–3200, 3400–3600, 4000–4200), 3টা করে row → F = **76.0** (df 2,6)।
+- **এই paper-এ:** season-ভেদে yield (F=3012), crop type-ভেদে।
+- **খেয়াল:** independence ধরে নেয় — এখানে clustered।
+
 ## AutoML (Automated Machine Learning)
 *(page 01)*
 - **সহজ মানে:** অনেকগুলো model আর hyperparameter নিজে নিজে try করে সেরাটা বেছে দেওয়া একটা tool।
@@ -18,6 +32,18 @@
 - **উদাহরণ:** ৫০০ গাছের forest — প্রতি গাছের সিদ্ধান্ত পড়া অসম্ভব।
 - **এই paper-এ:** stacking-কেই black-box ধরে post-hoc XAI।
 - **খেয়াল:** Rudin 2019 বলেন high-stakes-এ interpretable model ভালো।
+
+## Boxplot
+*(page 06)*
+- **সহজ মানে:** বাক্সের ভেতরের দাগ = median; বাক্স = 25%–75%; গোঁফ = সাধারণ range; বিন্দু = outlier।
+- **খেয়াল:** boxplot গড় দেখায় না; sample size দেখায় না (hybrid Aus-এ মাত্র 21 row)।
+
+## Breakdown plot (iBreakDown)
+*(page 05)*
+- **সূত্র:** f(x*) = v₀ + Σ_j contribution_j (v₀ = গড় prediction)।
+- **ছোট উদাহরণ:** গড় yield 3105 + N 250 + crop type 120 + field duration (−40) + P 60 + K 30 + বাকি 15 = **3540**।
+- **এই paper-এ:** প্রতি row-এর contribution, union-গড় করে map (Fig. 8)।
+- **খেয়াল:** order-নির্ভর; "contribution" ≠ causal effect; union-গড় feature-value-র পার্থক্য আর model-এর প্রকৃত "response"-এর পার্থক্য মিশিয়ে ফেলে।
 
 ## CCAFS-MOT
 *(page 03)*
@@ -51,12 +77,29 @@
 - **এই paper-এ:** Table S1; best-of-family S6-এ।
 - **খেয়াল:** DRF-ই সাধারণত শক্ত baseline (S6-এ DRF সবচেয়ে ভালো single)।
 
+## Ecological (aggregate) correlation
+*(page 05)*
+- **সহজ মানে:** group-গড়ের (যেমন union-গড়) correlation, individual-এর নয়; সাধারণত বেশি দেখায়।
+- **উদাহরণ:** Aus yield~P: union-গড়ে r = 0.625, row-level 0.402 (Check 7)।
+
+## Explained variance (EVar)
+*(page 06)*
+- **সহজ মানে:** 1 − Var(error)/Var(y); R²-এর মতো, কিন্তু গড় ভুল (bias) বাদ দেয়।
+- **উদাহরণ:** `work/worked_examples2.out`: R² 0.820, EVar 0.827 (bias −66.7 থাকায়)।
+
 ## Generalized Linear Model (GLM) / Ridge, λ
 *(page 04)*
 - **সহজ মানে:** linear regression-এর সাধারণ রূপ; regularization (Ridge) coefficient ছোট রাখে।
 - **ছোট উদাহরণ:** λ বড় → coefficient প্রায় 0 → prediction ≈ গড়।
 - **এই paper-এ:** baseline; SI S4: λ.max = λ.1se (Aus 50,164; Aman 52,782; Boro 21,265) ⇒ সব coefficient ≈ 0, **training R² = 0.000** (S6)।
 - **খেয়াল:** এটা আসলে "intercept-only" মডেল; (Seed F4)।
+
+## Geographically weighted (GW) correlation, bi-square kernel
+*(page 05)*
+- **সূত্র:** ওজন w(d) = (1 − (d/b)²)² যখন d < b, নাহলে 0; ওজনযুক্ত Pearson correlation।
+- **ছোট উদাহরণ:** b = 10: d = 2 → 0.9216; d = 5 → 0.5625; d = 10 → 0।
+- **এই paper-এ:** Total GWP বনাম N, P, K, GD; adaptive bandwidth (নিকটতম k প্রতিবেশী); Fig. 9।
+- **খেয়াল:** local correlation অনেক কম sample-এ চলে → অস্থির; multiple-testing; spatial autocorrelation।
 
 ## GHG, CH₄, N₂O, CO₂e, GWP
 *(page 01)*
@@ -111,6 +154,20 @@
 - **এই paper-এ:** প্রতি season-এর 16-day সময়ে NDVI feature।
 - **খেয়াল:** মেঘ, ছোট জমি (250 m pixel-এ মিশ্র ফসল), union-centroid-এ pixel।
 
+## Partial Dependence Plot (PDP)
+*(page 05)*
+- **সূত্র:** ĝ_j(z) = (1/n) Σ_{i=1}^{n} f(z, x_{i,−j}) — j-তম feature-কে z-তে বসিয়ে বাকিগুলো যেমন আছে রেখে model-এর prediction গড়।
+- **ছোট উদাহরণ:** ৪ row-এ N=100 বসালে prediction 3000, 3400, 3800, 4200 → PD = **3600**।
+- **এই paper-এ:** Fig. 7 (নীল রেখা = PD)।
+- **খেয়াল:** feature correlated হলে অবাস্তব combination; ICE দেখা হয়নি।
+
+## Permutation Feature Importance (PFI) — গভীরে
+*(page 05)*
+- **সহজ মানে:** একটা feature-এর মান row-গুলোর মধ্যে এলোমেলো করে সাজাই; error কতটা বাড়ল সেটাই গুরুত্ব।
+- **ছোট উদাহরণ (সংখ্যা):** train RMSE 404.8; N-rate shuffle → RMSE 766.3 → loss (difference) = 361.5; top feature-এর 100% ধরলে K-rate (176.3)-এর গুরুত্ব = 176.3/361.5 = **48.8%**।
+- **এই paper-এ:** DALEX `variable_importance(type="difference")`, **train data-তে**; Table S7–S9, Fig. 6।
+- **খেয়াল:** correlated feature (N, P, K rate) থাকলে এক feature shuffle করলে অসম্ভব combination তৈরি হয় → গুরুত্ব বিকৃত; test data-তে চালানো উচিত।
+
 ## PSU (Primary Sampling Unit)
 *(page 02)*
 - **সহজ মানে:** survey-র প্রথম ধাপে বাছাই করা ছোট এলাকা (গ্রাম/মহল্লা)। এখানে 325টা।
@@ -122,6 +179,13 @@
 - **উদাহরণ:** একটা 12 km × 12 km cell-এ একটাই তাপমাত্রা; ওই cell-এর ভেতরে ৫ km দূরে দুই গ্রামের তফাত দেখা যায় না।
 - **এই paper-এ:** rainfall ও temperature, 2014–2015।
 - **খেয়াল:** Reanalysis rainfall সাধারণত স্থানীয় বৃষ্টির peak কম দেখায়।
+
+## Regression to the mean / shrinkage
+*(page 06)*
+- **সহজ মানে:** model চরম মানের prediction কম চরম করে দেয় — কম yield-কে একটু বেশি, বেশি yield-কে একটু কম।
+- **ছোট উদাহরণ:** observed 6000 → predicted 5200; observed 1500 → predicted 2300। Predicted-vs-observed লাইনের slope < 1।
+- **এই paper-এ:** Fig. 5 সব season-এ।
+- **খেয়াল:** এটা শুধু "ensemble-এর দোষ" নয়; noisy label (farmer-reported yield) থাকলেও হয়। Bias correction (isotonic/linear recalibration) আলোচনা নেই।
 
 ## Resampling (250 m-এ)
 *(page 02)*

@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 45 | Potential concern: 13, Confirmed issue: 21, Unresolved question: 9, Research opportunity: 2
+মোট observation: 68 | Potential concern: 22, Confirmed issue: 33, Unresolved question: 12, Research opportunity: 2
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -49,3 +49,26 @@
 | 4.12 | Fig. 2-তে ALE/স্থানিক correlation/grouped validation নেই; "Partial Dependency" | p4 Fig. 2 | Potential concern  | [p04](../pages/page-04.md) |
 | 4.13 | GLM baseline intercept-only (λ.1se = λ.max; train R² = 0.000) — SI S4 আবার "Ridge λ = λ.min" লেখে | SI S4 (λ values); SI S6 | Confirmed issue  | [p04](../pages/page-04.md) |
 | 4.14 | Stack-এর CV RMSE (HTML Aus 836.03) বনাম meta-learner level-one metric (816.68) আলাদা stage | HTML `yield_aus_autoML.html` (stacked ensemble CV vs glm training) | Potential concern  | [p04](../pages/page-04.md) |
+| 5.1 | **Table 4-এ Aus ও Boro অদলবদল** (958 models = Aus HTML; 198 বনাম Boro HTML 188) — Aus "transition period" ব্যাখ্যা অসমর্থিত | p5 §3.2; p7 Table 4; SI S6; HTML (aus: 958 base models, level-one RMSE 816.68; boro: 188 base models, CV RMSE 1112.41) | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.2 | Table 4 "CV" মান আসলে meta-learner level-one metrics; stack-এর নিজস্ব CV RMSE (Aus 836.03, Aman 928.20, Boro 1112.41) আলাদা stage | `work/html_{aus,aman,boro}.txt` (extract of the HTMLs): stack CV block vs `glm` level-one block (Aus lines 426 vs 512; Aman 443 vs 529; Boro 447 vs 533) | Potential concern  | [p05](../pages/page-05.md) |
+| 5.3 | PFI/PDP/ALE **training data-য়** (`explainer_train`), test-এ নয় | `yield_aus_autoML.Rmd:849-862,1016-1054`; Aman:862,875; Boro:865,878 | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.4 | Paper "RMSE-এর factor" বলে, code `type="difference"` (kg/ha বিয়োগ) | p7 §3.3; Rmd:862 | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.5 | Local XAI-এর saved model ≠ AutoML-HTML-এর model (Aus: 20211104_201857 vs 20211128_82339; Aman: …162457 vs …174647; Boro: …201704 vs …123317) | `local_XAI_uniion_*.Rmd:159/170/171` vs HTML model IDs | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.6 | Local XAI চলেছে `*_union_data_all.csv`-এ (repo-তে নেই), train ফাইলে নয়; scaling mismatch | `local_XAI_uniion_aus.Rmd:47,108,115-117,152` | Confirmed issue (scaling-প্রভাব: execution লাগবে)  | [p05](../pages/page-05.md) |
+| 5.7 | GW code শুধু Aman; `_01`-এ nominal `Crop_Types` numeric Pearson-এ | `gw_correlation_aman_01.Rmd:77`; `_02` তা বাদ দেয় | Confirmed issue (code-level)  | [p05](../pages/page-05.md) |
+| 5.8 | "All relevant R code available" — CCAFS-MOT, split, kriging, GHG-PFI, Aus/Boro GW নেই | file inventory | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.9 | S5 correlations = union-mean (ecological); row-level কম | `work/check07b.out` | Confirmed issue (reporting) / Potential concern (interpretation)  | [p05](../pages/page-05.md) |
+| 5.10 | "Boro F-value" দু'বার; 27.6 আসলে Aus (আমাদের ANOVA); Boro F আমাদের 116.6 vs paper 123 | p5 §3.1; `work/check_anova.out` | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.11 | MAE range "637–773" বনাম Table 4 min 622.31; "MAE < minimum observed yield" ভুল (min yield: 247/112/0) | p5 §3.2; Table 4; CSV | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.12 | Row 13,150 বনাম 13,137; Aman unions 246 বনাম 247 | CSV (Check 4) | Unresolved question  | [p05](../pages/page-05.md) |
+| 5.13 | Fig. S6 panel/label মিল নেই (text S6b→(d), S6d→(e)) | p5 §3.1; SI p23 | Confirmed issue  | [p05](../pages/page-05.md) |
+| 5.14 | Train rows 80% নয় (77.7–79.6%) | HTML Null D.o.F. | Unresolved question  | [p05](../pages/page-05.md) |
+| 5.15 | ANOVA-তে clustering/confounding উপেক্ষিত; hybrid-এ "significantly higher yield" মানে causal নয় | p5 §3.1 | Potential concern  | [p05](../pages/page-05.md) |
+| 6.1 | S6 test RMSE ≈ HTML test RMSE (817.6/948.7/1122.7); কিন্তু S6 R² কলাম (Aman 0.590, Boro 0.514) নিজের RMSE-র সাথে অসঙ্গত (implied 0.562, 0.524) | SI S6; HTML `h2o.performance(test)`; `work/check_arith.out` | Confirmed issue  | [p06](../pages/page-06.md) |
+| 6.2 | Fig. 5 R² (0.561, 0.523) S6 RMSE-র সাথে সামঞ্জস্যপূর্ণ; Aus-এ Fig. 5 RMSE 835 কোনো test output-এ নেই (HTML test 817.6; কাছাকাছি 836.03 = CV, ভিন্ন stage) | p7 Fig. 5; `work/check_arith.out` | Unresolved question  | [p06](../pages/page-06.md) |
+| 6.3 | "Stack only slightly improved" (p6) বনাম Abstract "outperformed all" — tone-অমিল | p1; p6 | Potential concern  | [p06](../pages/page-06.md) |
+| 6.4 | Fig. 5 flat-slope bias স্বীকৃত; slope/CI/recalibration report নেই | p6 §3.2; Fig. 5 | Potential concern  | [p06](../pages/page-06.md) |
+| 6.5 | Fig. 3: sample size (n) দেখানো নেই; Aus hybrid মাত্র 21 row; Boro-য় 12 শূন্য-yield row | Fig. 3; CSV | Potential concern  | [p06](../pages/page-06.md) |
+| 6.6 | "No distinct spatial pattern" — Aman/Boro-য় Moran's I 0.19/0.23 (p≈0.001) দুর্বল clustering দেখায় | `work/check_moran.out` (আমাদের own check) | Potential concern  | [p06](../pages/page-06.md) |
+| 6.7 | Fig. 4: bin-পদ্ধতি/union-প্রতি n অজানা; caption-label সামান্য অমিল | Fig. 4 | Potential concern  | [p06](../pages/page-06.md) |
+| 6.8 | Fig. 3 hybrid>HYV yield correlation, causation নয় (nutrient/district নিয়ন্ত্রিত নয়) | p5 §3.1; Fig. 3 | Potential concern  | [p06](../pages/page-06.md) |
