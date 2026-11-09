@@ -7,6 +7,13 @@
 - **এই paper-এ:** Fig. 7-এ কমলা রেখা (AL)।
 - **খেয়াল:** bin ছোট হলে অস্থির; local difference মানে model যেখানে data আছে সেখানেই দেখে।
 
+## Additive model
+*(page 08)*
+- **সহজ মানে:** model যেখানে feature-এর প্রভাবগুলো যোগ হয়, একটা অন্যটার উপর নির্ভর করে না: f(x) = f₁(x₁) + f₂(x₂) + …।
+- **ছোট উদাহরণ:** yield = 2000 + 8·N + 300·(HYV) → N বাড়ালে সবসময় +8, জাত-নির্বিশেষে। Non-additive: HYV-তে +10, local-এ +4 — **interaction**।
+- **এই paper-এ:** "stack-ensemble is additive" claim।
+- **খেয়াল:** PD ≈ AL additivity-র প্রমাণ নয়; H-statistic লাগে।
+
 ## ANOVA (F-test)
 *(page 05)*
 - **সহজ মানে:** একাধিক group-এর গড় আলাদা কিনা পরীক্ষা: F = (group-এর মধ্যে variance)/(group-এর ভেতরের variance)।
@@ -141,12 +148,26 @@
 - **উদাহরণ:** GBM-এ max_depth ∈ {3..17} (15 value) × min_rows ∈ 6 value = 90 সংমিশ্রণ থেকে random কয়েকটা (SI S4)।
 - **এই paper-এ:** GBM, XGBoost, DNN।
 
+## Interaction / H-statistic
+*(page 08)*
+- **সহজ মানে:** দুই feature একসাথে যে বাড়তি প্রভাব ফেলে যা আলাদা প্রভাবের যোগফল নয়।
+- **সূত্র (সংক্ষেপে):** H²_j = (j-এর অংশবিশেষ-নির্ভর variance যা শুধু j-এর main effect ব্যাখ্যা করে না)/ (পুরো variance); 0 = interaction নেই, 1 = পুরোটাই interaction।
+- **এই paper-এ:** `iml::Interaction` চালানো, ফল report নেই।
+- **খেয়াল:** H-statistic ব্যয়বহুল ও correlated feature-এ বিভ্রান্তিকর হতে পারে।
+
 ## Kriging / Multi-Gaussian Kriging
 *(page 03)*
 - **সহজ মানে:** কাছের নমুনা-বিন্দুগুলোর ওজনযুক্ত গড় দিয়ে অজানা জায়গার মান অনুমান; ওজন ঠিক হয় distance + spatial correlation (variogram) দিয়ে।
 - **ছোট উদাহরণ (সরল IDW দিয়ে বোঝানো; kriging-এ ওজন variogram থেকে আসে):** ১ km দূরে pH 6.0, ৩ km দূরে pH 7.0 → ওজন 1 ও 1/3 → 0.75, 0.25 → অনুমান 0.75×6+0.25×7 = **6.25** (`work/worked_examples.out`)।
 - **এই paper-এ:** SRDI 31,787 point → 250 m soil map (pH, SOC, N, P, K, S, B, Zn)।
 - **খেয়াল:** (১) kriging smooth করে; (২) variance বাদ দিয়ে শুধু গড় ব্যবহার; (৩) পুরোনো sample।
+
+## Local attribution / contribution
+*(page 08)*
+- **সহজ মানে:** একটি specific row-এর prediction-এ কোন feature কতটা যোগ/বিয়োগ করল।
+- **ছোট উদাহরণ:** গড় 3105 + N 250 + crop 120 + FD (−40) + P 60 + K 30 + বাকি 15 = 3540 (পরিমাণ বোঝানোর কাল্পনিক উদাহরণ)।
+- **এই paper-এ:** break_down → union-গড়।
+- **খেয়াল:** attribution = model-এর আচরণ; এটা "feature-মানের পার্থক্য" ও "প্রভাবের পার্থক্য" মেশায়।
 
 ## Meta-learner (non-negative GLM)
 *(page 04)*
@@ -163,6 +184,11 @@
 - **উদাহরণ:** NDVI 0.2 = প্রায় খালি জমি/জল; 0.8 = ঘন সবুজ ধান।
 - **এই paper-এ:** প্রতি season-এর 16-day সময়ে NDVI feature।
 - **খেয়াল:** মেঘ, ছোট জমি (250 m pixel-এ মিশ্র ফসল), union-centroid-এ pixel।
+
+## Non-stationarity (স্থানিক)
+*(page 08)*
+- **সহজ মানে:** একই সম্পর্ক (যেমন N→GHG) জায়গাভেদে আলাদা।
+- **খেয়াল:** বাস্তব non-stationarity বনাম sample-কম থেকে আসা noise আলাদা করতে test দরকার।
 
 ## Observed vs predicted (1:1) plot
 *(page 07)*

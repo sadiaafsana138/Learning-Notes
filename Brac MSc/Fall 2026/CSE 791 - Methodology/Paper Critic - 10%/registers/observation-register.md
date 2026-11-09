@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 81 | Potential concern: 26, Confirmed issue: 39, Unresolved question: 14, Research opportunity: 3
+মোট observation: 93 | Potential concern: 30, Confirmed issue: 46, Unresolved question: 15, Research opportunity: 3
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -85,3 +85,15 @@
 | 7.11 | "Mannure application" typo; Aman S8 importance% সামান্য অমিল | Fig. 6a; S7; S8 | Confirmed issue (minor)  | [p07](../pages/page-07.md) |
 | 7.12 | Fig. 5 Aus RMSE 835 ≠ HTML test 817.6; test n/CI নেই | Fig. 5; HTML | Unresolved question  | [p07](../pages/page-07.md) |
 | 7.13 | কোনো PFI-র সাথে repeated model run/seed variability নেই (AutoML-এর randomness) | p7 | Research opportunity  | [p07](../pages/page-07.md) |
+| 8.1 | Fig. reference ভুল: "Fig. 6 shows PDP/AL"(→Fig. 7), "Figs. 6b, 6h"(→7b, 7h), "leftmost panel"(→rightmost), "P-rate (Fig. 7g)"(→Fig. 8g) | p8 §3.4–3.5; Fig. 6/7/8 | Confirmed issue  | [p08](../pages/page-08.md) |
+| 8.2 | "AL = blue lines" ভুল; legend: PD নীল, AL কমলা | p8 §3.4 ¶২; Fig. 7a legend | Confirmed issue  | [p08](../pages/page-08.md) |
+| 8.3 | "Additive" claim শুধু PD≈AL-এর ভিত্তিতে; `iml::Interaction` চালিয়ে `Feature_Interaction.csv` লিখলেও কোথাও report নেই | p8 §3.4; `yield_aus_autoML.Rmd:1066-1076`; Aman:1089; Boro:1093 | Confirmed issue  | [p08](../pages/page-08.md) |
+| 8.4 | "All five features parallel" — Fig. 7(o) Boro crop type-এ PD vs AL ৩৫০–৫০০ kg/ha ফারাক (আনুমানিক) | Fig. 7(o) | Confirmed issue  | [p08](../pages/page-08.md) |
+| 8.5 | Field duration: PFI 61–70% বনাম PDP/ALE flat — লেখকরা উল্লেখ করেন, ব্যাখ্যা করেন না | p7; p8; Fig. 7d,i,n | Unresolved question  | [p08](../pages/page-08.md) |
+| 8.6 | PDP/ALE train data-য়; sparse high-N অংশ অনির্ভরযোগ্য; uncertainty/rug নেই | `Rmd:1016-1054`; Fig. 7 | Potential concern  | [p08](../pages/page-08.md) |
+| 8.7 | §3.5: Aus/Aman % বনাম Boro count (167/125/124) — শৈলী মেলে না (167/224 = 74.6%) | p8 §3.5 | Confirmed issue (reporting)  | [p08](../pages/page-08.md) |
+| 8.8 | "Positive contribution in X% of unions" ≈ feature-মান গড়ের উপরে কি না; effect heterogeneity নয় — আমাদের proxy: Aman crop type 73.6% ≈ ">70%" | `work/check_breakdown_proxy.out` | Potential concern  | [p08](../pages/page-08.md) |
+| 8.9 | Union-average-এ union-প্রতি n/uncertainty নেই (n = 1–207) | Fig. 8; CSV | Potential concern  | [p08](../pages/page-08.md) |
+| 8.10 | **F5:** S5 Aman GWP~N/P/K/FD = 0.201/0.108/0.223/0.277 (weak) বনাম "moderate to strongly positive across three seasons" | p8 §3.6; SI S5; আমাদের recompute `work/check07b.out` | Confirmed issue  | [p08](../pages/page-08.md) |
+| 8.11 | Fig. 7 y-label "Respone" typo; Fig. 7 e/j/o legend নেই | Fig. 7 | Confirmed issue (minor)  | [p08](../pages/page-08.md) |
+| 8.12 | Abstract "spatial variations in average effects" বনাম আসলে union-average local attribution | p1; p8 | Potential concern  | [p08](../pages/page-08.md) |
