@@ -1,12 +1,12 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 137 | Potential concern: 46, Confirmed issue: 64, Unresolved question: 21, Research opportunity: 5
+মোট observation: 151 | Potential concern: 49, Confirmed issue: 73, Unresolved question: 22, Research opportunity: 5
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
 | 1.1 | Abstract-এ GHG যে **modeled (CCAFS-MOT)**, measured নয় — তা বলা নেই | p1 abstract; p3 §2.2 ("estimated emissions are based solely on modeled outputs") | Potential concern  | [p01](../pages/page-01.md) |
 | 1.2 | Abstract-এর causal ভাষা ("influencing", "impact") vs p12 Limitation ("do not explain why things happen") | p1 abstract vs p12 | Potential concern  | [p01](../pages/page-01.md) |
-| 1.3 | "IPCC, 2019" reference-এর title = "Annex IV: reviewers of the IPCC special report…" (reviewer list); "one-third" claim support করে না | p1 ¶1; ref list p14 | Confirmed issue  | [p01](../pages/page-01.md) |
+| 1.3 | "IPCC, 2019" reference-এর title = "Annex IV: reviewers of the IPCC special report…" (reviewer list) — "one-third" claim-এর সূত্র হিসেবে অপ্রাসঙ্গিক (claim নিজে Crippa 2021 দ্বারা সমর্থিত) | p1 ¶1; ref list p14 | Confirmed issue  | [p01](../pages/page-01.md) |
 | 1.4 | Suarez-Gutierrez 2018 = ইউরোপের গ্রীষ্মকালীন তাপমাত্রা; net-negative-emissions claim-এর সাথে মিল নেই | p1 ¶2; ref list p16 | Confirmed issue  | [p01](../pages/page-01.md) |
 | 1.5 | Gaihre 2015 = N₂O/NO (urea deep placement); text-এ CH₄ কমানোর claim | p1 ¶2; ref list | Confirmed issue  | [p01](../pages/page-01.md) |
 | 1.6 | "one-third" (food systems) vs "15%" (agri food system) — scope ব্যাখ্যা নেই | p1 ¶1 | Potential concern  | [p01](../pages/page-01.md) |
@@ -141,3 +141,17 @@
 | 12.8 | "Balanced fertilizer use" অসংজ্ঞায়িত; balanced-fertilization feature code-এ নেই | p12; p4; `FeatureData` | Confirmed issue  | [p12](../pages/page-12.md) |
 | 12.9 | `Emission_Intensity` column আছে (≈ GWP/YIELD) অথচ ব্যবহৃত নয়; Krupnik 2022 yield-scaled উল্লেখ | CSV; p12 | Research opportunity  | [p12](../pages/page-12.md) |
 | 12.10 | Soil data সময়-অমিল (SRDI 1996–2014 বনাম BIHS 2015) | p3; p12 | Potential concern  | [p12](../pages/page-12.md) |
+| 13.1 | Ethical statement: "predicting **wheat** yield in Bangladesh" — paper ধান নিয়ে | p13 Ethical statement | Confirmed issue  | [p13](../pages/page-13.md) |
+| 13.2 | Data availability: "code of all workflows and data" — train/test CSV, split code, union CSV, shapefile, models, CCAFS-MOT, processing code, Aus/Boro GW, Fig. S7 code নেই | p13; `work/code-inventory.md` | Confirmed issue  | [p13](../pages/page-13.md) |
+| 13.3 | লেখকের নামে typo: "Spkota", "Hosssin" | p13 Declaration | Confirmed issue (minor)  | [p13](../pages/page-13.md) |
+| 13.4 | তহবিল-বিবরণ ভিন্ন (Ethics: CIMMYT/CGIAR; Ack: + USAID, BMGF, CSISA) | p13 | Potential concern (minor)  | [p13](../pages/page-13.md) |
+| 13.5 | "No human subjects" — household-survey data; BIHS-এর ethics clearance উল্লেখ নেই | p13 | Potential concern  | [p13](../pages/page-13.md) |
+| 13.6 | "provided by CIMMYT and partners with permission" — কোন data non-public তা বলা নেই | p13 | Unresolved question  | [p13](../pages/page-13.md) |
+| 13.7 | R Core Team 2020/2021a/2021b/Team 2021 in-text, list-এ একটি | p13–p16 refs; p3–p5 | Confirmed issue (minor)  | [p13](../pages/page-13.md) |
+| 13.8 | Reference-name formatting অসামঞ্জস্য (Fisher, Gollini) | refs p15 | Confirmed issue (minor)  | [p13](../pages/page-13.md) |
+| 14.1 | IPCC 2019 entry = reviewer তালিকা (দাবি Crippa 2021 দ্বারা সমর্থিত) | refs p14 (IPCC 2019; Crippa 2021) | Confirmed issue  | [p14](../pages/page-14.md) |
+| 14.2 | Gaihre 2015 = N₂O/NO (p1-এ CH₄ দাবিতে ভুল; p10-এ ঠিক) | refs p14; p1; p10 | Confirmed issue  | [p14](../pages/page-14.md) |
+| 14.3 | Chen 2011 = steppe CH₄ uptake; p11-এ "rice yield" প্রসঙ্গে | refs p14; p11 | Confirmed issue  | [p14](../pages/page-14.md) |
+| 14.4 | D'Orazio 2019 duplicate (Prasad/Prasady) | refs p14 | Confirmed issue  | [p14](../pages/page-14.md) |
+| 14.5 | কিছু entry-র traceability দুর্বল (SRDI Bengali report, UNEP শুধু URL, কয়েকটায় DOI নেই) | refs p14–p16 | Potential concern  | [p14](../pages/page-14.md) |
+| 14.6 | Crippa 2021, Datta 2013, Emran 2019, Coggins 2025 title দাবির সাথে মেলে | refs p14 | (লেখকদের পক্ষে — verified)  | [p14](../pages/page-14.md) |

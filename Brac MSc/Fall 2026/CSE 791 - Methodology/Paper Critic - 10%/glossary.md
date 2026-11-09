@@ -70,6 +70,12 @@
 - **এই paper-এ:** `Total_GWP` (kg CO₂e/ha) তৈরি।
 - **খেয়াল:** Tool-এর input-ই যদি পরে "predictor" হিসেবে যায় → circular।
 
+## Citation–claim mismatch
+*(page 13)*
+- **সহজ মানে:** text-এ যে কথা বলা, সেই cited paper-এ আসলে সেই কথা নেই।
+- **ছোট উদাহরণ:** "stacking ভালো (Wang 2018c)" কিন্তু Wang 2018c = insect pest image segmentation।
+- **খেয়াল:** মনে রাখুন — mismatch বলার আগে title দেখা; abstract না পড়লে "প্রমাণ নেই" না বলে "title মেলে না" বলুন।
+
 ## Collinearity / confounding
 *(page 11)*
 - **সহজ মানে:** দুটি predictor একসাথে ওঠানামা করে বলে আলাদা প্রভাব আলাদা করা যায় না। Confounding = অন্য একটি factor দুটি variable-কেই প্রভাবিত করে।
@@ -89,10 +95,21 @@
 - **এই paper-এ:** প্রমাণ নয়, সম্ভাবনা; আমাদের simulation-এ ৯৭–৯৯.৮% test row-এর union train-এ আছে।
 - **খেয়াল:** (Rule 6) leakage প্রমাণের জন্য আসল split লাগে।
 
+## Data/Code availability statement
+*(page 13)*
+- **সহজ মানে:** paper-এ লিখে জানানো কোথায় data ও code পাওয়া যাবে।
+- **খেয়াল:** "available" মানে "reproducible" নয় — split, saved model, seed, environment লাগে।
+
 ## DEM / SRTM
 *(page 03)*
 - **সহজ মানে:** ভূমির উচ্চতার map; SRTM 90 m।
 - **খেয়াল:** বাংলাদেশের floodplain-এ উচ্চতা ১–১০ m-এর মধ্যে — ছোট পার্থক্যই বড় (বন্যা/drainage)।
+
+## DOI (Digital Object Identifier)
+*(page 13)*
+- **সহজ মানে:** একটা paper/dataset-এর স্থায়ী ইন্টারনেট ঠিকানা (যেমন 10.1016/j.ecoinf.2026.103885)।
+- **এই paper-এ:** reference list-এ ~105টি DOI (regex গণনা); BIHS Dataverse DOI 10.7910/DVN/BXSYEL।
+- **খেয়াল:** DOI দিয়ে title মিলিয়ে দেখলে citation-mismatch ধরা যায় (আমরা title দিয়ে করেছি)।
 
 ## DRF / XRT / GBM / XGBoost / DNN
 *(page 04)*
@@ -297,6 +314,13 @@
 *(page 12)*
 - **সহজ মানে:** কৃষক পুরোনো কথা ঠিকমতো মনে রাখতে পারেন না (কত সার, কত সেচ)।
 - **খেয়াল:** fertilizer rate-ও self-report; error সীমাবদ্ধতায় আছে।
+
+## Reference audit (citation checking) — কীভাবে করবেন
+*(page 14)*
+- **সহজ মানে:** text-এর প্রতিটি বড় দাবির পাশের citation-এর title/abstract মিলিয়ে দেখা।
+- **ছোট উদাহরণ:** দাবি "Aus-এ কম GHG কারণ কম flooding (Haque 2024)" → Haque 2024 = "Mitigation of GHG emissions through different rice cultivars during T. Aman and Boro seasons" (Bangladesh Rice J. 28) — Aus নয়, Aman/Boro; (প্রাসঙ্গিক, কিন্তু Aus-এর সরাসরি সূত্র নয়)।
+- **এই paper-এ:** আমরা title দিয়ে যাচাই করেছি; abstract/full-text পড়িনি (Rule 1, 8)।
+- **খেয়াল:** শুধু title দেখে "ভুল" বলা সতর্কভাবে — "title মেলে না" লিখুন, "paper-টা ভুল" নয়।
 
 ## Regression to the mean / shrinkage
 *(page 06)*
