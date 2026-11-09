@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 105 | Potential concern: 35, Confirmed issue: 50, Unresolved question: 17, Research opportunity: 4
+মোট observation: 115 | Potential concern: 37, Confirmed issue: 54, Unresolved question: 20, Research opportunity: 4
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -109,3 +109,13 @@
 | 9.10 | Novelty claim (p2) বনাম Discussion-এ Ahmed 2024 (maize AutoML+XAI Bangladesh) | p2; p9 | Potential concern  | [p09](../pages/page-09.md) |
 | 9.11 | "crop duration" ও "field duration" — একই কি না অস্পষ্ট; কোথাও সংজ্ঞা নেই | p9; p2 | Unresolved question  | [p09](../pages/page-09.md) |
 | 9.12 | Stack vs single model-এর gap-এর জন্য repeated split/CI নেই | S6 | Research opportunity  | [p09](../pages/page-09.md) |
+| 10.1 | "N most important in all seasons" — Aman-এ PFI শীর্ষ crop type (S8) ও p8 নিজেই "crop type most critical in Aman" | p10 §4; p8 §3.5; SI S8 | Confirmed issue  | [p10](../pages/page-10.md) |
+| 10.2 | "critical role in increasing rice yield" — causal ভাষা; PFI/attribution predictive | p10; p12 limitations | Potential concern  | [p10](../pages/page-10.md) |
+| 10.3 | Fig. 9 FD legend "> 0.035" → হবে "< 0.035" | p10 Fig. 9(j–l) legend | Confirmed issue  | [p10](../pages/page-10.md) |
+| 10.4 | Placement/deep-placement/NUE সুপারিশ data দিয়ে সমর্থিত নয় (data-তে শুধু rate) | p10–p11; CSV columns | Confirmed issue (claim ← evidence)  | [p10](../pages/page-10.md) |
+| 10.5 | Fig. 9: significance/CI নেই; local sample ছোট; bandwidth: Aman `_01` = 144, `_02` = 69 neighbours — কোনটা Fig. 9-এ? | `gw_correlation_aman_01.html`, `_02.html` | Unresolved question  | [p10](../pages/page-10.md) |
+| 10.6 | N/P/K–GHG correlation আংশিক circular (CCAFS-MOT input) | p3 §2.2; Fig. 9 | Confirmed issue (conceptual) / পরিমাণ: Unresolved  | [p10](../pages/page-10.md) |
+| 10.7 | "Particularly Boro" (N) বনাম S5 global Aus 0.816 > Boro 0.593 — ব্যাখ্যা নেই | Fig. 9; SI S5 | Unresolved question  | [p10](../pages/page-10.md) |
+| 10.8 | NUE/yield-scaled emission বিশ্লেষণে নেই | p10 Discussion | Potential concern  | [p10](../pages/page-10.md) |
+| 10.9 | Gaihre 2015 এখানে সঠিক প্রসঙ্গে (N₂O, deep placement); p1-এ ভুল ছিল | p10; p1 | (লেখকদের পক্ষে)  | [p10](../pages/page-10.md) |
+| 10.10 | Aman GW code দুই version (`_01`, `_02`) ও ভিন্ন bandwidth; কোনটা প্রকাশিত অজানা | `gw_correlation_aman_01/02.Rmd` | Unresolved question  | [p10](../pages/page-10.md) |

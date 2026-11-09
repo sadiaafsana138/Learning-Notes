@@ -202,10 +202,21 @@
 - **এই paper-এ:** প্রতি season-এর 16-day সময়ে NDVI feature।
 - **খেয়াল:** মেঘ, ছোট জমি (250 m pixel-এ মিশ্র ফসল), union-centroid-এ pixel।
 
+## Nitrogen-use efficiency (NUE)
+*(page 10)*
+- **সহজ মানে:** দেওয়া N-এর কত অংশ ধান আসলে নিল (বা প্রতি kg N-এ কত kg grain)।
+- **ছোট উদাহরণ:** 100 kg N/ha দিলে 4000 kg yield, N ছাড়া 2500 ⇒ agronomic efficiency = (4000 − 2500)/100 = **15 kg grain/kg N**।
+- **এই paper-এ:** শুধু Discussion-এ উল্লেখ; মাপা হয়নি।
+- **খেয়াল:** NUE না মেপে "efficiency" নিয়ে সুপারিশ করা দুর্বল।
+
 ## Non-stationarity (স্থানিক)
 *(page 08)*
 - **সহজ মানে:** একই সম্পর্ক (যেমন N→GHG) জায়গাভেদে আলাদা।
 - **খেয়াল:** বাস্তব non-stationarity বনাম sample-কম থেকে আসা noise আলাদা করতে test দরকার।
+
+## N₂O ও CH₄ উৎস (সংক্ষেপে)
+*(page 10)*
+- **CH₄:** জলমগ্ন (anaerobic) জমিতে জৈবিক বিয়োজন থেকে; **N₂O:** nitrification/denitrification থেকে, N-সারের পরিমাণের সাথে বাড়ে। দুটোর পদ্ধতি আলাদা, তাই Total GWP একটাই সংখ্যায় দুই ভিন্ন প্রক্রিয়া মিশিয়ে দেয়।
 
 ## Observed vs predicted (1:1) plot
 *(page 07)*
@@ -218,6 +229,13 @@
 - **ছোট উদাহরণ:** ৪ row-এ N=100 বসালে prediction 3000, 3400, 3800, 4200 → PD = **3600**।
 - **এই paper-এ:** Fig. 7 (নীল রেখা = PD)।
 - **খেয়াল:** feature correlated হলে অবাস্তব combination; ICE দেখা হয়নি।
+
+## Pearson correlation (local)
+*(page 10)*
+- **সূত্র:** r = Σ(xᵢ − x̄)(yᵢ − ȳ)/√(Σ(xᵢ − x̄)² Σ(yᵢ − ȳ)²); GW version-এ ওজনযুক্ত গড়/variance (bi-square)।
+- **ছোট উদাহরণ:** x = [50,100,150,200], y = [900,1100,1250,1500] ⇒ **r = 0.995** (Python)।
+- **এই paper-এ:** Total GWP vs N/P/K/GD; Aus global r (union-গড়) N = 0.816 ⇒ r² = **0.67** (variance-এর ~67%)।
+- **খেয়াল:** r নির্দেশ করে সরলরেখীয় সম্পর্ক; r ≠ প্রভাব।
 
 ## Permutation Feature Importance (PFI) — গভীরে
 *(page 05)*
@@ -283,6 +301,11 @@
 - **উদাহরণ:** 4টা weather cell-এর মাঝে একটা 250 m point-এর মান smooth interpolation-এ আসে।
 - **এই paper-এ:** weather 12 km → 250 m, R `fields`।
 - **খেয়াল:** Interpolation নতুন তথ্য আনে না।
+
+## Urea broadcast / deep placement
+*(page 10)*
+- **সহজ মানে:** broadcast = জমিতে ছিটিয়ে দেওয়া (বন্যার জলে লোকসান বেশি); deep placement = ঢেলা (briquette) করে গাছের শিকড়ের কাছে মাটিতে গুঁজে দেওয়া।
+- **খেয়াল:** এই data-তে এ তথ্য নেই।
 
 ## XAI (Explainable AI)
 *(page 01)*
