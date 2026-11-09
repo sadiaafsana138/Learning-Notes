@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 93 | Potential concern: 30, Confirmed issue: 46, Unresolved question: 15, Research opportunity: 3
+মোট observation: 105 | Potential concern: 35, Confirmed issue: 50, Unresolved question: 17, Research opportunity: 4
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -47,7 +47,7 @@
 | 4.10 | Eq. (1): ŷ-এ subscript i নেই; "households" ভুল unit | p4 Eq.(1) | Confirmed issue  | [p04](../pages/page-04.md) |
 | 4.11 | `Water_regime` model predictor (code), অথচ p12 "excluded" | Rmd:115 (Aus), 128 (Aman), 131 (Boro) | Confirmed issue  | [p04](../pages/page-04.md) |
 | 4.12 | Fig. 2-তে ALE/স্থানিক correlation/grouped validation নেই; "Partial Dependency" | p4 Fig. 2 | Potential concern  | [p04](../pages/page-04.md) |
-| 4.13 | GLM baseline intercept-only (λ.1se = λ.max; train R² = 0.000) — SI S4 আবার "Ridge λ = λ.min" লেখে | SI S4 (λ values); SI S6 | Confirmed issue  | [p04](../pages/page-04.md) |
+| 4.13 | GLM baseline কার্যত intercept-only: HTML-এ "Ridge (lambda = 14082.0)", nlambda = 30, λ.max = λ.1se = 50164, λ.min = 14082 (= λ-path-এর শেষ মান), training R² = 0.0001 (Aus), Aman 0.0001, Boro ≈ 0 — λ-path কখনো ছোট λ-তে পৌঁছায়নি; (S4-এর "Ridge λ = λ.min" ও "λ.1se = λ.max" দুটোই সত্য, বিরোধ নেই) | `work/html_aus.txt:770-772,809`; SI S4; SI S6 | Confirmed issue  | [p04](../pages/page-04.md) |
 | 4.14 | Stack-এর CV RMSE (HTML Aus 836.03) বনাম meta-learner level-one metric (816.68) আলাদা stage | HTML `yield_aus_autoML.html` (stacked ensemble CV vs glm training) | Potential concern  | [p04](../pages/page-04.md) |
 | 5.1 | **Table 4-এ Aus ও Boro অদলবদল** (958 models = Aus HTML; 198 বনাম Boro HTML 188) — Aus "transition period" ব্যাখ্যা অসমর্থিত | p5 §3.2; p7 Table 4; SI S6; HTML (aus: 958 base models, level-one RMSE 816.68; boro: 188 base models, CV RMSE 1112.41) | Confirmed issue  | [p05](../pages/page-05.md) |
 | 5.2 | Table 4 "CV" মান আসলে meta-learner level-one metrics; stack-এর নিজস্ব CV RMSE (Aus 836.03, Aman 928.20, Boro 1112.41) আলাদা stage | `work/html_{aus,aman,boro}.txt` (extract of the HTMLs): stack CV block vs `glm` level-one block (Aus lines 426 vs 512; Aman 443 vs 529; Boro 447 vs 533) | Potential concern  | [p05](../pages/page-05.md) |
@@ -97,3 +97,15 @@
 | 8.10 | **F5:** S5 Aman GWP~N/P/K/FD = 0.201/0.108/0.223/0.277 (weak) বনাম "moderate to strongly positive across three seasons" | p8 §3.6; SI S5; আমাদের recompute `work/check07b.out` | Confirmed issue  | [p08](../pages/page-08.md) |
 | 8.11 | Fig. 7 y-label "Respone" typo; Fig. 7 e/j/o legend নেই | Fig. 7 | Confirmed issue (minor)  | [p08](../pages/page-08.md) |
 | 8.12 | Abstract "spatial variations in average effects" বনাম আসলে union-average local attribution | p1; p8 | Potential concern  | [p08](../pages/page-08.md) |
+| 9.1 | §3.6: "Aus weak FD" ভুল; S5 Aus 0.309, Aman 0.277, Boro 0.058; Fig. 9(l) Boro দুর্বল; Discussion p11 সঠিক | p9 §3.6; SI S5; `work/check07b.out`; Fig. 9 | Confirmed issue  | [p09](../pages/page-09.md) |
+| 9.2 | "Stacking ensemble effectively captured these relationships" — GW correlation-এ stack ব্যবহৃত হয়নি | p9 §3.6; `gw_correlation_aman_01.Rmd:76-80` | Confirmed issue  | [p09](../pages/page-09.md) |
+| 9.3 | "water-saving practices" ও "maintaining productivity" — water/yield-scaled emission বিশ্লেষণে নেই | p9 §3.6; p12 | Confirmed issue (claim ← evidence)  | [p09](../pages/page-09.md) |
+| 9.4 | "1–4% vs DRF": test 0.91–1.47%, CV 1.07–6.23% (stage ভিন্ন), Aus test best single XRT 820.8 থেকে মাত্র 0.39% | SI S6; `work/check_arith.out` | Confirmed issue  | [p09](../pages/page-09.md) |
+| 9.5 | Stack-এর "bias+variance কমায়" — এই data-য় পরীক্ষা নেই; 958-এর 769 GBM; অধিকাংশ coefficient 0 | p9 §4; HTML metalearner | Potential concern  | [p09](../pages/page-09.md) |
+| 9.6 | "Local XAI overcomes GW regression constraints" — তুলনা নেই; ভিন্ন জিনিস মাপে | p9 §4 ¶১ | Potential concern  | [p09](../pages/page-09.md) |
+| 9.7 | Fig. 8: legend-এ unit নেই, break-পদ্ধতি অজানা, প্রতি panel আলাদা scale; "%-positive" ও legend-এর মিল অনিশ্চিত | Fig. 8 | Unresolved question  | [p09](../pages/page-09.md) |
+| 9.8 | "Fertilizer effects on GHG" causal ভাষা + CCAFS-MOT circularity | p9 §3.6; p3 §2.2 | Potential concern  | [p09](../pages/page-09.md) |
+| 9.9 | Local correlation-এ union-গড় (ecological), row-level কম | `work/check07b.out` | Potential concern  | [p09](../pages/page-09.md) |
+| 9.10 | Novelty claim (p2) বনাম Discussion-এ Ahmed 2024 (maize AutoML+XAI Bangladesh) | p2; p9 | Potential concern  | [p09](../pages/page-09.md) |
+| 9.11 | "crop duration" ও "field duration" — একই কি না অস্পষ্ট; কোথাও সংজ্ঞা নেই | p9; p2 | Unresolved question  | [p09](../pages/page-09.md) |
+| 9.12 | Stack vs single model-এর gap-এর জন্য repeated split/CI নেই | S6 | Research opportunity  | [p09](../pages/page-09.md) |

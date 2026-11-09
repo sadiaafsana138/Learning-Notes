@@ -28,6 +28,11 @@
 - **এই paper-এ:** H2O AutoML (R), p4 §2.3.1। সব season-এ stacked ensemble best।
 - **খেয়াল রাখতে হবে:** AutoML মানে "ভালো validation" নয়; validation split ঠিক না হলে (p4 এ random row split) সব model-ই অতিরিক্ত ভালো দেখাতে পারে।
 
+## Base learner vs meta-learner coefficient
+*(page 09)*
+- **সহজ মানে:** meta-learner প্রতিটি base model-এর prediction-কে ওজন দেয়; ওজন 0 মানে model-টি stack-এ অংশ নেয় না।
+- **এই paper-এ:** HTML metalearner table (Aus: 958 model-এর মধ্যে বেশিরভাগ 0.0000)।
+
 ## BIHS (Bangladesh Integrated Household Survey)
 *(page 02)*
 - **সহজ মানে:** IFPRI-র নেওয়া ৬৫০০ ঘরের জাতীয় household survey (2015)।
@@ -109,7 +114,7 @@
 - **সহজ মানে:** linear regression-এর সাধারণ রূপ; regularization (Ridge) coefficient ছোট রাখে।
 - **ছোট উদাহরণ:** λ বড় → coefficient প্রায় 0 → prediction ≈ গড়।
 - **এই paper-এ:** baseline; SI S4: λ.max = λ.1se (Aus 50,164; Aman 52,782; Boro 21,265) ⇒ সব coefficient ≈ 0, **training R² = 0.000** (S6)।
-- **খেয়াল:** এটা আসলে "intercept-only" মডেল; (Seed F4)।
+- **খেয়াল:** এটা কার্যত "intercept-only"। HTML (Aus) দেখায় Ridge λ = 14,082 নির্বাচিত — এটা path-এর সবচেয়ে ছোট λ (λ.min), আর path শুরু λ.max = 50,164 থেকে; অর্থাৎ λ-search ছোট λ-তে যায়নি, ফলে training R² = 0.0001। (Seed F4: **revised** — "λ.1se = λ.max" সত্য, কিন্তু "Ridge λ = λ.min" বিরোধ নয়; সমস্যা হলো λ-path-এ ছোট λ না থাকা; তাই সত্যিকারের linear baseline নেই। আমাদের OLS check: p2/code-audit।)
 
 ## Geographically weighted (GW) correlation, bi-square kernel
 *(page 05)*
@@ -117,6 +122,13 @@
 - **ছোট উদাহরণ:** b = 10: d = 2 → 0.9216; d = 5 → 0.5625; d = 10 → 0।
 - **এই paper-এ:** Total GWP বনাম N, P, K, GD; adaptive bandwidth (নিকটতম k প্রতিবেশী); Fig. 9।
 - **খেয়াল:** local correlation অনেক কম sample-এ চলে → অস্থির; multiple-testing; spatial autocorrelation।
+
+## Geographically Weighted Regression (GWR) / GW correlation
+*(page 09)*
+- **সহজ মানে:** একটা বিশ্বব্যাপী formula-র বদলে প্রতি জায়গার জন্য কাছের পয়েন্টগুলোকে বেশি ওজন দিয়ে আলাদা regression/correlation।
+- **ছোট উদাহরণ:** ঢাকার union-এর জন্য ঢাকার কাছাকাছি ৪০টা union-কে ওজন (bi-square: 0.92, 0.56, 0), দূরেরগুলো 0।
+- **এই paper-এ:** Total GWP ~ N/P/K/GD, adaptive bandwidth (AICc)।
+- **খেয়াল:** bandwidth-সংবেদী; পুনঃপুনঃ test; কম local sample।
 
 ## GHG, CH₄, N₂O, CO₂e, GWP
 *(page 01)*
@@ -168,6 +180,11 @@
 - **ছোট উদাহরণ:** গড় 3105 + N 250 + crop 120 + FD (−40) + P 60 + K 30 + বাকি 15 = 3540 (পরিমাণ বোঝানোর কাল্পনিক উদাহরণ)।
 - **এই paper-এ:** break_down → union-গড়।
 - **খেয়াল:** attribution = model-এর আচরণ; এটা "feature-মানের পার্থক্য" ও "প্রভাবের পার্থক্য" মেশায়।
+
+## Local XAI বনাম GW regression
+*(page 09)*
+- **সহজ মানে:** GW regression = data-র local সম্পর্ক; Local XAI = model-এর local আচরণ। একটা model-কে ব্যাখ্যা করে, আরেকটা data-কে।
+- **এই paper-এ:** Discussion বলছে XAI সীমা কাটায়; প্রমাণ নেই।
 
 ## Meta-learner (non-negative GLM)
 *(page 04)*
@@ -273,4 +290,11 @@
 - **কীভাবে কাজ করে:** যেমন একটা feature-এর value এলোমেলো করে (shuffle) দেখি error কতটা বাড়ে — বাড়লে feature গুরুত্বপূর্ণ।
 - **এই paper-এ:** PFI, PDP, ALE, breakdown (p5)।
 - **খেয়াল রাখতে হবে:** XAI model-এর আচরণ বলে, বাস্তব জগতের কারণ-ফল নয়।
+
+## Yield-scaled emission (GHG intensity)
+*(page 09)*
+- **সহজ মানে:** প্রতি টন ফলনে কত CO₂e: Emission/Yield।
+- **ছোট উদাহরণ:** 4000 kg CO₂e/ha ÷ 4000 kg yield = 1.00; 4400 ÷ 5000 = **0.88** — বেশি emission হলেও বেশি yield-এ intensity কম হতে পারে।
+- **এই paper-এ:** CSV-তে `Emission_Intensity` column আছে (analysis-এ ব্যবহৃত নয়); text-এ নেই।
+- **খেয়াল:** "ভালো nutrient management = বেশি yield + কম GHG" দাবির জন্য এটাই প্রয়োজনীয় মেট্রিক।
 
