@@ -115,6 +115,12 @@
 - **সহজ মানে:** 1 − Var(error)/Var(y); R²-এর মতো, কিন্তু গড় ভুল (bias) বাদ দেয়।
 - **উদাহরণ:** `work/worked_examples2.out`: R² 0.820, EVar 0.827 (bias −66.7 থাকায়)।
 
+## External validity / Transferability
+*(page 12)*
+- **সহজ মানে:** এক জায়গা/সময়ের data-তে শেখা model অন্য জায়গা/সময়েও কাজ করে কি না।
+- **ছোট উদাহরণ:** Aus model-কে সম্পূর্ণ অদেখা ১০টি union-এ চালিয়ে R² মাপা — আমাদের leave-union-out R² (Aus 0.129) এ রকম পরীক্ষার সরল সংস্করণ।
+- **এই paper-এ:** পরীক্ষা নেই।
+
 ## exTZONE
 *(page 07)*
 - **সহজ মানে:** extreme temperature zone (T1E1…T5E4) — একটা categorical code (SI Fig. S6e)।
@@ -268,6 +274,13 @@
 - **এই paper-এ:** DALEX `variable_importance(type="difference")`, **train data-তে**; Table S7–S9, Fig. 6।
 - **খেয়াল:** correlated feature (N, P, K rate) থাকলে এক feature shuffle করলে অসম্ভব combination তৈরি হয় → গুরুত্ব বিকৃত; test data-তে চালানো উচিত।
 
+## Post-hoc explanation
+*(page 12)*
+- **সহজ মানে:** model train হওয়ার **পরে** তার আচরণ ব্যাখ্যা; model-এর নিজের গঠন সহজ নয়।
+- **ছোট উদাহরণ:** random forest-এর ফল দেখে "N-rate গুরুত্বপূর্ণ" বলা (PFI) — post-hoc; একটা linear regression-এ coefficient সরাসরি পড়া — interpretable।
+- **এই paper-এ:** PFI/PDP/ALE/breakdown সবই post-hoc।
+- **খেয়াল:** Rudin 2019: high-stakes-এ interpretable model।
+
 ## PSU (Primary Sampling Unit)
 *(page 02)*
 - **সহজ মানে:** survey-র প্রথম ধাপে বাছাই করা ছোট এলাকা (গ্রাম/মহল্লা)। এখানে 325টা।
@@ -279,6 +292,11 @@
 - **উদাহরণ:** একটা 12 km × 12 km cell-এ একটাই তাপমাত্রা; ওই cell-এর ভেতরে ৫ km দূরে দুই গ্রামের তফাত দেখা যায় না।
 - **এই paper-এ:** rainfall ও temperature, 2014–2015।
 - **খেয়াল:** Reanalysis rainfall সাধারণত স্থানীয় বৃষ্টির peak কম দেখায়।
+
+## Recall bias
+*(page 12)*
+- **সহজ মানে:** কৃষক পুরোনো কথা ঠিকমতো মনে রাখতে পারেন না (কত সার, কত সেচ)।
+- **খেয়াল:** fertilizer rate-ও self-report; error সীমাবদ্ধতায় আছে।
 
 ## Regression to the mean / shrinkage
 *(page 06)*
@@ -304,6 +322,11 @@
 *(page 04)*
 - **RMSE:** বড় ভুলকে বেশি শাস্তি দেয়, kg/ha-এ। **MAE:** গড় পরম ভুল। **RMSLE:** log-scale ভুল; আপেক্ষিক ভুল বোঝায়। **R²:** variance-এর কত অংশ model ব্যাখ্যা করে।
 - **ছোট উদাহরণ (D-তে পুরো হিসাব):** y = 3000/4000/5000, ŷ = 3200/3600/5400 → RMSE 346.4, MAE 333.3, R² 0.820।
+
+## Selection (sampling) bias
+*(page 12)*
+- **সহজ মানে:** নমুনা এমনভাবে বাছা যে কিছু ধরনের কৃষক বাদ পড়ে; তাই সিদ্ধান্ত সবার জন্য সত্য নয়।
+- **এই paper-এ:** BIHS-এ remote/stressed খামার কম প্রতিনিধিত্ব (স্বীকৃত)।
 
 ## Stacked ensemble
 *(page 01)*

@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 127 | Potential concern: 41, Confirmed issue: 60, Unresolved question: 21, Research opportunity: 4
+মোট observation: 137 | Potential concern: 46, Confirmed issue: 64, Unresolved question: 21, Research opportunity: 5
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -131,3 +131,13 @@
 | 11.10 | "Balanced NPK + water management" সুপারিশ — balanced fertilization/water ফলে নেই | p11; p12; p4 | Confirmed issue (claim ← evidence)  | [p11](../pages/page-11.md) |
 | 11.11 | §3.6 (p9) বনাম p11 FD-কথা পরস্পরবিরোধী (Aus বনাম Boro weak) | p9; p11; S5 | Confirmed issue  | [p11](../pages/page-11.md) |
 | 11.12 | Self-reported fertilizer data-র error প্রভাব মাপা নেই (স্বীকৃত) | p11 | Potential concern (acknowledged)  | [p11](../pages/page-11.md) |
+| 12.1 | **F7:** Conclusion "better nutrient management → higher yield AND lower GHG" — ফল: fertilizer ↔ yield ও GHG দুটোই ধনাত্মক; NUE/yield-scaled analysis নেই | p12 §5; SI S5 | Confirmed issue  | [p12](../pages/page-12.md) |
+| 12.2 | আমাদের extra evidence: total GWP N-এর সাথে বাড়ে; intensity Aus 0.39→0.35, Aman 1.82→1.31 (কমে), Boro 0.72→0.83 (বাড়ে) | `work/check_intensity.out` (own check) | Potential concern  | [p12](../pages/page-12.md) |
+| 12.3 | "Water data excluded" বনাম `Water_regime` predictor (importance 0%) | p12; `Rmd:115/128/131`; S8–S9 | Confirmed issue  | [p12](../pages/page-12.md) |
+| 12.4 | "CCAFS-MOT widely recognized for accuracy" — এই paper-এ validation নেই; একই ¶-এ অনিশ্চয়তা স্বীকার | p12 | Potential concern  | [p12](../pages/page-12.md) |
+| 12.5 | Limitations (post-hoc ≠ causal) বনাম Abstract (influencing/impact) | p1; p12 | Potential concern  | [p12](../pages/page-12.md) |
+| 12.6 | Limitations ("controlled trials ছাড়া decision-এ নয়") বনাম Policy (subsidy, extension decision-support) | p12 | Confirmed issue (internal inconsistency)  | [p12](../pages/page-12.md) |
+| 12.7 | স্বীকৃত নয়: random-split/leakage সম্ভাবনা, linear baseline অভাব, ভিন্ন-run XAI, transferability অপরীক্ষিত | p12 বনাম 4.1–4.13, 5.5 | Potential concern  | [p12](../pages/page-12.md) |
+| 12.8 | "Balanced fertilizer use" অসংজ্ঞায়িত; balanced-fertilization feature code-এ নেই | p12; p4; `FeatureData` | Confirmed issue  | [p12](../pages/page-12.md) |
+| 12.9 | `Emission_Intensity` column আছে (≈ GWP/YIELD) অথচ ব্যবহৃত নয়; Krupnik 2022 yield-scaled উল্লেখ | CSV; p12 | Research opportunity  | [p12](../pages/page-12.md) |
+| 12.10 | Soil data সময়-অমিল (SRDI 1996–2014 বনাম BIHS 2015) | p3; p12 | Potential concern  | [p12](../pages/page-12.md) |
