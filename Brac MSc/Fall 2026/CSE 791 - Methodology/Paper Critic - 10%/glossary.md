@@ -207,6 +207,13 @@
 - **এই paper-এ:** `iml::Interaction` চালানো, ফল report নেই।
 - **খেয়াল:** H-statistic ব্যয়বহুল ও correlated feature-এ বিভ্রান্তিকর হতে পারে।
 
+## Interpretable model (inherently) vs Post-hoc explanation
+*(page 15)*
+- **সহজ মানে:** Interpretable = model নিজেই পড়ার মতো (linear regression, ছোট decision tree, GAM); Post-hoc = জটিল model-এর পরে ব্যাখ্যা।
+- **ছোট উদাহরণ:** yield = 800 + 9·N + 5·P + 350·(hybrid) — প্রতিটি সংখ্যা সরাসরি পড়া যায়। Random forest-এ এমন সূত্র নেই।
+- **এই paper-এ:** Rudin-কে cite করে post-hoc পথে গেছে।
+- **খেয়াল:** আমাদের Check 9: OLS test R² Aus 0.284, Aman 0.378, Boro 0.197; RF 0.503/0.575/0.515 — interpretable baseline-এ accuracy কম, কিন্তু খুব কমও নয় (Aman)।
+
 ## Kriging / Multi-Gaussian Kriging
 *(page 03)*
 - **সহজ মানে:** কাছের নমুনা-বিন্দুগুলোর ওজনযুক্ত গড় দিয়ে অজানা জায়গার মান অনুমান; ওজন ঠিক হয় distance + spatial correlation (variogram) দিয়ে।
@@ -298,6 +305,16 @@
 - **এই paper-এ:** PFI/PDP/ALE/breakdown সবই post-hoc।
 - **খেয়াল:** Rudin 2019: high-stakes-এ interpretable model।
 
+## Preprint (arXiv)
+*(page 15)*
+- **সহজ মানে:** peer-review ছাড়াই প্রকাশিত খসড়া।
+- **খেয়াল:** Ribeiro 2016 = arXiv/ICML workshop; LIME-এর মূল paper নয়।
+
+## Preprint / Grey literature
+*(page 16)*
+- **সহজ মানে:** peer-review ছাড়া (arXiv) বা প্রতিষ্ঠানের report (UNEP, SRDI) — যাচাই কঠিন।
+- **খেয়াল:** মূল সংখ্যা (59.1 GtCO₂e) grey literature থেকে নিলে পেজ/টেবিল উল্লেখ করা ভালো।
+
 ## PSU (Primary Sampling Unit)
 *(page 02)*
 - **সহজ মানে:** survey-র প্রথম ধাপে বাছাই করা ছোট এলাকা (গ্রাম/মহল্লা)। এখানে 325টা।
@@ -336,6 +353,11 @@
 - **এই paper-এ:** Table S7–S9, "> 10%" cut-off Fig. 6-এ feature বাছাইয়ের জন্য।
 - **খেয়াল:** relative হওয়ায় season-জুড়ে তুলনা নেই; 10% cut-off arbitrary।
 
+## Reproducibility chain (সূত্র-শৃঙ্খল)
+*(page 16)*
+- **সহজ মানে:** দাবি → citation → মূল সংখ্যা/পদ্ধতি — প্রতিটি ধাপ যাচাইযোগ্য হতে হবে।
+- **ছোট উদাহরণ:** "59.1 ± 5.9 GtCO₂e" → UNEP 2020 → Emissions Gap Report table X — এই paper শুধু URL দেয় (শৃঙ্খল ভাঙা)।
+
 ## Resampling (250 m-এ)
 *(page 02)*
 - **সহজ মানে:** একটা raster-এর pixel-এর মাপ বদলে অন্য raster-এর সাথে মেলানো।
@@ -372,6 +394,12 @@
 - **উদাহরণ:** 4টা weather cell-এর মাঝে একটা 250 m point-এর মান smooth interpolation-এ আসে।
 - **এই paper-এ:** weather 12 km → 250 m, R `fields`।
 - **খেয়াল:** Interpolation নতুন তথ্য আনে না।
+
+## Transportability / Transferability
+*(page 15)*
+- **সহজ মানে:** এক site-এর data-য় train করা model অন্য site-এ প্রয়োগ।
+- **ছোট উদাহরণ:** Aus-এর ৭০টা union-এ train করে বাকি ৮টা অদেখা union-এ পরীক্ষা (leave-union-out)।
+- **এই paper-এ:** নেই; Song 2020-এ কেন্দ্রীয় প্রশ্ন।
 
 ## Urea broadcast / deep placement
 *(page 10)*

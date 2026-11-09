@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 151 | Potential concern: 49, Confirmed issue: 73, Unresolved question: 22, Research opportunity: 5
+মোট observation: 164 | Potential concern: 55, Confirmed issue: 78, Unresolved question: 23, Research opportunity: 6
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -127,7 +127,7 @@
 | 11.6 | "Our study captured these complex interactions" — কোনো interaction/GHG-model/H-statistic report নেই; Fig. S7 text-এ উল্লিখিত নয় | p11; (grep "S7"/"interaction") | Confirmed issue  | [p11](../pages/page-11.md) |
 | 11.7 | "marginal PDP … Indeed positive in many unions" — যুক্তি-সংযোগ ভুল (feature-value vs effect) | p11 §4 | Potential concern  | [p11](../pages/page-11.md) |
 | 11.8 | Boro AWD ব্যাখ্যা বনাম data (`Water_regime` Boro = সবাই "Continuous flooding"); GD range সংকীর্ণ (SD 7.5 দিন) | `boro_data_all.csv`; p11 | Potential concern  | [p11](../pages/page-11.md) |
-| 11.9 | Citation mismatch: Chen 2011 (steppe CH₄ uptake), Luo 2013 (3 ecosystems), Craufurd & Wheeler 2009 (flowering time), Sapkota 2014 (wheat NW India) | refs p14, p15, p13 | Confirmed issue  | [p11](../pages/page-11.md) |
+| 11.9 | Citation mismatch: Chen 2011 (steppe CH₄ uptake), Luo 2013 (3 ecosystems), Sutton-Grier 2011 (wetland CH₄), Craufurd & Wheeler 2009 (flowering time), Sapkota 2014 (wheat NW India) | refs p14, p15, p13 | Confirmed issue  | [p11](../pages/page-11.md) |
 | 11.10 | "Balanced NPK + water management" সুপারিশ — balanced fertilization/water ফলে নেই | p11; p12; p4 | Confirmed issue (claim ← evidence)  | [p11](../pages/page-11.md) |
 | 11.11 | §3.6 (p9) বনাম p11 FD-কথা পরস্পরবিরোধী (Aus বনাম Boro weak) | p9; p11; S5 | Confirmed issue  | [p11](../pages/page-11.md) |
 | 11.12 | Self-reported fertilizer data-র error প্রভাব মাপা নেই (স্বীকৃত) | p11 | Potential concern (acknowledged)  | [p11](../pages/page-11.md) |
@@ -155,3 +155,16 @@
 | 14.4 | D'Orazio 2019 duplicate (Prasad/Prasady) | refs p14 | Confirmed issue  | [p14](../pages/page-14.md) |
 | 14.5 | কিছু entry-র traceability দুর্বল (SRDI Bengali report, UNEP শুধু URL, কয়েকটায় DOI নেই) | refs p14–p16 | Potential concern  | [p14](../pages/page-14.md) |
 | 14.6 | Crippa 2021, Datta 2013, Emran 2019, Coggins 2025 title দাবির সাথে মেলে | refs p14 | (লেখকদের পক্ষে — verified)  | [p14](../pages/page-14.md) |
+| 15.1 | Rudin 2019 = interpretable-model advocacy; paper আলোচনা করেনি | refs p15; p2 | Confirmed issue  | [p15](../pages/page-15.md) |
+| 15.2 | Song 2020 = cross-site transportability; paper-এ অপরীক্ষিত | refs p15; p2 | Research opportunity  | [p15](../pages/page-15.md) |
+| 15.3 | Quiñones 2021 ও Hipp & Chalise 2015 (diabetes) — linear-assumption/GW-limitation দাবির সরাসরি সূত্র নয় | refs p15; p2, p9 | Potential concern  | [p15](../pages/page-15.md) |
+| 15.4 | Sapkota 2014 = গম (NW India), ধান-দাবির জন্য | refs p15; p10 | Potential concern  | [p15](../pages/page-15.md) |
+| 15.5 | Shiragi 2017 "Pedotransfer Function of Bangladesh Soils" — SRDI 50,000-point dataset-এর সূত্র হিসেবে পরোক্ষ; SRDI report বাংলা/DOI-হীন | refs p15; p3 | Potential concern  | [p15](../pages/page-15.md) |
+| 15.6 | Ribeiro 2016 breakdown-এর জন্য; সঠিক Staniak & Biecek 2018 (একই পেজে) | refs p15; p5 | Confirmed issue (minor)  | [p15](../pages/page-15.md) |
+| 15.7 | OLS বনাম RF (নিজস্ব check): R² Aus 0.284/0.503, Aman 0.378/0.575, Boro 0.197/0.515 | `work/check03_09_10.out` | (আমাদের own check) Potential concern: "ML beats linear" টিকে যায়, কিন্তু gap paper-এর intercept-only তুলনার চেয়ে ছোট  | [p15](../pages/page-15.md) |
+| 16.1 | Suarez-Gutierrez 2018 = ইউরোপের গ্রীষ্মকালীন তাপমাত্রা (p1 ¶২ দাবির সাথে অমিল) | refs p16; p1 | Confirmed issue  | [p16](../pages/page-16.md) |
+| 16.2 | Wang et al. 2018c = insect pest image segmentation (p2 stacking দাবির সাথে অমিল) | refs p16; p2 | Confirmed issue  | [p16](../pages/page-16.md) |
+| 16.3 | Sutton-Grier 2011 (wetland CH₄) — p11-এ rice yield প্রসঙ্গে | refs p16; p11 | Potential concern  | [p16](../pages/page-16.md) |
+| 16.4 | La Puma 2007 (CO₂, Alaska), Guo 2013 (GHG concentration) — p12-এ "regional methane" দাবির জন্য | refs p15–16; p12 | Potential concern  | [p16](../pages/page-16.md) |
+| 16.5 | UNEP 2020 শুধু URL; 59.1 GtCO₂e/15% সংখ্যা অযাচাইকৃত | refs p16; p1 | Unresolved question  | [p16](../pages/page-16.md) |
+| 16.6 | Reference list: D'Orazio duplicate; Ahmed 2021a/b ও R Core Team a/b-এর জন্য একটি entry | refs p13–p14; p2–p5 | Confirmed issue  | [p16](../pages/page-16.md) |
