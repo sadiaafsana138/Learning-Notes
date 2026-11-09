@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 164 | Potential concern: 55, Confirmed issue: 78, Unresolved question: 23, Research opportunity: 6
+মোট observation: 165 | Potential concern: 55, Confirmed issue: 79, Unresolved question: 23, Research opportunity: 6
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -85,6 +85,7 @@
 | 7.11 | "Mannure application" typo; Aman S8 importance% সামান্য অমিল | Fig. 6a; S7; S8 | Confirmed issue (minor)  | [p07](../pages/page-07.md) |
 | 7.12 | Fig. 5 Aus RMSE 835 ≠ HTML test 817.6; test n/CI নেই | Fig. 5; HTML | Unresolved question  | [p07](../pages/page-07.md) |
 | 7.13 | কোনো PFI-র সাথে repeated model run/seed variability নেই (AutoML-এর randomness) | p7 | Research opportunity  | [p07](../pages/page-07.md) |
+| 7.14 | Table-নম্বর 1 থেকে সরাসরি 4 (Table 2, 3 নেই — মূল text-এ কোথাও নেই; সম্ভবত বাদ পড়া/পুনর্নম্বরণ ত্রুটি) | p3 Table 1; p7 Table 4; grep "Table [0-9]" | Confirmed issue  | [p07](../pages/page-07.md) |
 | 8.1 | Fig. reference ভুল: "Fig. 6 shows PDP/AL"(→Fig. 7), "Figs. 6b, 6h"(→7b, 7h), "leftmost panel"(→rightmost), "P-rate (Fig. 7g)"(→Fig. 8g) | p8 §3.4–3.5; Fig. 6/7/8 | Confirmed issue  | [p08](../pages/page-08.md) |
 | 8.2 | "AL = blue lines" ভুল; legend: PD নীল, AL কমলা | p8 §3.4 ¶২; Fig. 7a legend | Confirmed issue  | [p08](../pages/page-08.md) |
 | 8.3 | "Additive" claim শুধু PD≈AL-এর ভিত্তিতে; `iml::Interaction` চালিয়ে `Feature_Interaction.csv` লিখলেও কোথাও report নেই | p8 §3.4; `yield_aus_autoML.Rmd:1066-1076`; Aman:1089; Boro:1093 | Confirmed issue  | [p08](../pages/page-08.md) |

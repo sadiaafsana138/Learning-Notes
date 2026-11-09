@@ -101,6 +101,7 @@
 | 7.11 | "Mannure application" typo; Aman S8 importance% সামান্য অমিল | Fig. 6a; S7; S8 | Confirmed issue (minor) |
 | 7.12 | Fig. 5 Aus RMSE 835 ≠ HTML test 817.6; test n/CI নেই | Fig. 5; HTML | Unresolved question |
 | 7.13 | কোনো PFI-র সাথে repeated model run/seed variability নেই (AutoML-এর randomness) | p7 | Research opportunity |
+| 7.14 | Table-নম্বর 1 থেকে সরাসরি 4 (Table 2, 3 নেই — মূল text-এ কোথাও নেই; সম্ভবত বাদ পড়া/পুনর্নম্বরণ ত্রুটি) | p3 Table 1; p7 Table 4; grep "Table [0-9]" | Confirmed issue |
 
 **লেখকদের পক্ষে:** PFI SD দেখানো; Tables S7–S9-এ সব feature-এর পূর্ণ তালিকা; Fig. 6-এ সত্যিই শীর্ষ ৫টা আলাদাভাবে দেখা যায় — সংখ্যা text-এর সাথে মেলে।
 

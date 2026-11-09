@@ -85,7 +85,7 @@
 - **সহজ মানে:** linear regression-এর সাধারণ রূপ; regularization (Ridge) coefficient ছোট রাখে।
 - **ছোট উদাহরণ:** λ বড় → coefficient প্রায় 0 → prediction ≈ গড়।
 - **এই paper-এ:** baseline; SI S4: λ.max = λ.1se (Aus 50,164; Aman 52,782; Boro 21,265) ⇒ সব coefficient ≈ 0, **training R² = 0.000** (S6)।
-- **খেয়াল:** এটা আসলে "intercept-only" মডেল; (Seed F4)।
+- **খেয়াল:** এটা কার্যত "intercept-only"। HTML (Aus) দেখায় Ridge λ = 14,082 নির্বাচিত — এটা path-এর সবচেয়ে ছোট λ (λ.min), আর path শুরু λ.max = 50,164 থেকে; অর্থাৎ λ-search ছোট λ-তে যায়নি, ফলে training R² = 0.0001। (Seed F4: **revised** — "λ.1se = λ.max" সত্য, কিন্তু "Ridge λ = λ.min" বিরোধ নয়; সমস্যা হলো λ-path-এ ছোট λ না থাকা; তাই সত্যিকারের linear baseline নেই। আমাদের OLS check: p2/code-audit।)
 
 #### DRF / XRT / GBM / XGBoost / DNN
 - **DRF:** অনেক decision tree-র গড় (bootstrap + random feature)। **XRT:** DRF-এর চেয়েও random split। **GBM:** tree-গুলো ধাপে ধাপে আগের ভুল ঠিক করে। **XGBoost:** GBM-এর দ্রুত/regularized সংস্করণ। **DNN:** multi-layer neural net।
@@ -140,7 +140,7 @@
 | 4.10 | Eq. (1): ŷ-এ subscript i নেই; "households" ভুল unit | p4 Eq.(1) | Confirmed issue |
 | 4.11 | `Water_regime` model predictor (code), অথচ p12 "excluded" | Rmd:115 (Aus), 128 (Aman), 131 (Boro) | Confirmed issue |
 | 4.12 | Fig. 2-তে ALE/স্থানিক correlation/grouped validation নেই; "Partial Dependency" | p4 Fig. 2 | Potential concern |
-| 4.13 | GLM baseline intercept-only (λ.1se = λ.max; train R² = 0.000) — SI S4 আবার "Ridge λ = λ.min" লেখে | SI S4 (λ values); SI S6 | Confirmed issue |
+| 4.13 | GLM baseline কার্যত intercept-only: HTML-এ "Ridge (lambda = 14082.0)", nlambda = 30, λ.max = λ.1se = 50164, λ.min = 14082 (= λ-path-এর শেষ মান), training R² = 0.0001 (Aus), Aman 0.0001, Boro ≈ 0 — λ-path কখনো ছোট λ-তে পৌঁছায়নি; (S4-এর "Ridge λ = λ.min" ও "λ.1se = λ.max" দুটোই সত্য, বিরোধ নেই) | `work/html_aus.txt:770-772,809`; SI S4; SI S6 | Confirmed issue |
 | 4.14 | Stack-এর CV RMSE (HTML Aus 836.03) বনাম meta-learner level-one metric (816.68) আলাদা stage | HTML `yield_aus_autoML.html` (stacked ensemble CV vs glm training) | Potential concern |
 
 **Scaling সম্পর্কে ব্যাখ্যা (4.9):** `scale(x)` প্রতিবার নিজের data-র mean/SD ব্যবহার করে। train-এ train-এর mean/SD, test-এ **test-এর** mean/SD — তাই একই feature-মান train ও test-এ আলাদা scaled value পায়। Tree-based model-এ প্রভাব কম (monotonic রূপান্তর, তবে train/test-এ ভিন্ন) কিন্তু threshold-কে ভুল জায়গায় ফেলতে পারে; GLM/DNN-এ বেশি ক্ষতি। এটা "standard practice" নয়। প্রভাব কতটা — execution ছাড়া নিশ্চিত নয় (Rule 8: R চালানো হয়নি)।

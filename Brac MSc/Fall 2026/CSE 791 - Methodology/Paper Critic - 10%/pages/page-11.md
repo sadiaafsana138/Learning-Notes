@@ -63,6 +63,7 @@
 - **খেয়াল (ref list থেকে title):**
   - **Chen 2011** = *"Annual methane uptake by temperate semiarid steppes as regulated by stocking rates, aboveground plant biomass and topsoil air permeability"* (Glob. Change Biol. 17) — তৃণভূমি/methane uptake; ধানের yield-এর সূত্র নয়। **Confirmed issue (citation)**।
   - **Luo 2013** = *"Effects of soil temperature and moisture on methane uptake and nitrous oxide emissions across three different ecosystem types"* — ধান নয়; yield নয়।
+  - **Sutton-Grier & Megonigal 2011** = *"Plant species traits regulate methane production in freshwater wetland soils"* — freshwater wetland CH₄; ধানের yield নয়। (তিনটি citation-ই ধান-yield-দাবির জন্য ঢিলা।)
   - পুরো ¶ ~২০টা citation-এর তালিকা, কোনোটাই এই study-র ফল নয় — নির্দিষ্ট দাবি ছাড়াই; পাঠকের জন্য পথ দেখায় না।
   - "Soil/practice/weather important" — অথচ এই study-র data-য় practices (tillage, residue, liming, mulching) মডেলে **নেই** (code feature list)।
 
@@ -113,7 +114,7 @@
 | 11.6 | "Our study captured these complex interactions" — কোনো interaction/GHG-model/H-statistic report নেই; Fig. S7 text-এ উল্লিখিত নয় | p11; (grep "S7"/"interaction") | Confirmed issue |
 | 11.7 | "marginal PDP … Indeed positive in many unions" — যুক্তি-সংযোগ ভুল (feature-value vs effect) | p11 §4 | Potential concern |
 | 11.8 | Boro AWD ব্যাখ্যা বনাম data (`Water_regime` Boro = সবাই "Continuous flooding"); GD range সংকীর্ণ (SD 7.5 দিন) | `boro_data_all.csv`; p11 | Potential concern |
-| 11.9 | Citation mismatch: Chen 2011 (steppe CH₄ uptake), Luo 2013 (3 ecosystems), Craufurd & Wheeler 2009 (flowering time), Sapkota 2014 (wheat NW India) | refs p14, p15, p13 | Confirmed issue |
+| 11.9 | Citation mismatch: Chen 2011 (steppe CH₄ uptake), Luo 2013 (3 ecosystems), Sutton-Grier 2011 (wetland CH₄), Craufurd & Wheeler 2009 (flowering time), Sapkota 2014 (wheat NW India) | refs p14, p15, p13 | Confirmed issue |
 | 11.10 | "Balanced NPK + water management" সুপারিশ — balanced fertilization/water ফলে নেই | p11; p12; p4 | Confirmed issue (claim ← evidence) |
 | 11.11 | §3.6 (p9) বনাম p11 FD-কথা পরস্পরবিরোধী (Aus বনাম Boro weak) | p9; p11; S5 | Confirmed issue |
 | 11.12 | Self-reported fertilizer data-র error প্রভাব মাপা নেই (স্বীকৃত) | p11 | Potential concern (acknowledged) |

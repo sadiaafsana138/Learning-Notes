@@ -28,7 +28,7 @@
 - **লেখকরা কী বোঝাতে চান:** সমস্যাটা বিশাল, তাই ধান নিয়ে কাজ জরুরি।
 - **খেয়াল রাখার মতো:**
   1. **"one-third" বনাম "15%"** — একই paragraph-এ দুটো সংখ্যা, scope ব্যাখ্যা নেই (food system পুরো supply chain + land-use change ধরলে ~⅓; শুধু agriculture ধরলে কম)। পাঠক confuse হবে। "বড় সংখ্যা vs ছোট সংখ্যা" ব্যাখ্যা ছাড়া **Potential concern**।
-  2. **Citation:** "IPCC, 2019" — reference list-এ এর title: *"Annex IV: reviewers of the IPCC special report on climate change and land"* (p13–14 refs)। অর্থাৎ reviewer-দের নামের তালিকা; "one-third" claim-এর source হতে পারে না। **Confirmed issue** (citation mismatch)। (সঠিক source হতে পারে SRCCL-এর Chapter 5, কিন্তু সেটা paper-এ নেই — "Not reported in the provided paper".)
+  2. **Citation:** "IPCC, 2019" — reference list-এ এর title: *"Annex IV: reviewers of the IPCC special report on climate change and land"* (p13–14 refs)। অর্থাৎ reviewer-দের নামের তালিকা; "one-third" claim-এর source হতে পারে না। (একই বন্ধনীতে থাকা **Crippa et al. 2021** = "Food systems are responsible for a third of global anthropogenic GHG emissions" (p14 refs) — এটাই claim-কে সমর্থন করে; তাই claim ঠিক, কিন্তু IPCC 2019 entry অপ্রাসঙ্গিক।) **Confirmed issue** (citation mismatch)। (সঠিক source হতে পারে SRCCL-এর Chapter 5, কিন্তু সেটা paper-এ নেই — "Not reported in the provided paper".)
   3. "150, 40, 20%" IPCC 2014 (AR5 WGIII) — সংখ্যাটা আমরা AR5 থেকে যাচাই করিনি; **Unresolved**।
 
 ### B3. Introduction ¶2 (লাইন ৪৫–৫৮): rice importance, sustainability
@@ -81,7 +81,7 @@
 |---|---|---|---|
 | 1.1 | Abstract-এ GHG যে **modeled (CCAFS-MOT)**, measured নয় — তা বলা নেই | p1 abstract; p3 §2.2 ("estimated emissions are based solely on modeled outputs") | Potential concern |
 | 1.2 | Abstract-এর causal ভাষা ("influencing", "impact") vs p12 Limitation ("do not explain why things happen") | p1 abstract vs p12 | Potential concern |
-| 1.3 | "IPCC, 2019" reference-এর title = "Annex IV: reviewers of the IPCC special report…" (reviewer list); "one-third" claim support করে না | p1 ¶1; ref list p14 | Confirmed issue |
+| 1.3 | "IPCC, 2019" reference-এর title = "Annex IV: reviewers of the IPCC special report…" (reviewer list) — "one-third" claim-এর সূত্র হিসেবে অপ্রাসঙ্গিক (claim নিজে Crippa 2021 দ্বারা সমর্থিত) | p1 ¶1; ref list p14 | Confirmed issue |
 | 1.4 | Suarez-Gutierrez 2018 = ইউরোপের গ্রীষ্মকালীন তাপমাত্রা; net-negative-emissions claim-এর সাথে মিল নেই | p1 ¶2; ref list p16 | Confirmed issue |
 | 1.5 | Gaihre 2015 = N₂O/NO (urea deep placement); text-এ CH₄ কমানোর claim | p1 ¶2; ref list | Confirmed issue |
 | 1.6 | "one-third" (food systems) vs "15%" (agri food system) — scope ব্যাখ্যা নেই | p1 ¶1 | Potential concern |
@@ -102,6 +102,6 @@
 ## Master Notes
 - **Paragraph-wise:** Abstract → ৫ key factors, stack ensemble best, spatial attributions, positive spatially-variable GHG relation। Intro ¶1 GHG stats; ¶2 rice + sustainability।
 - **Exact numbers:** 59.1 ± 5.9 GtCO₂e; 15%; 150/40/20%।
-- **Claims & evidence:** "Food systems = ⅓" → source ভুল (IPCC 2019 reviewer list)। "Rice CH₄ কমানো যায়" → Gaihre 2015 N₂O নিয়ে।
+- **Claims & evidence:** "Food systems = ⅓" → Crippa 2021 সমর্থন করে; IPCC 2019 entry (reviewer list) অপ্রাসঙ্গিক। "Rice CH₄ কমানো যায়" → Gaihre 2015 N₂O নিয়ে।
 - **Open checks:** IPCC 2014 percentages verify; Xu 2025/2026 content।
 - **MSc notes:** নিজের proposal-এ citation-গুলো title পর্যন্ত যাচাই করুন; "influence/impact" না লিখে "associated with" লিখুন; GHG যদি না থাকে (আপনার scope-এ নেই) তবে এই অংশের দরকার নেই।
