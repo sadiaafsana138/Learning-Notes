@@ -1,6 +1,6 @@
 # Observation register (সব page-এর section G একসাথে; `work/scripts/build_registers.py` দিয়ে auto-generated)
 
-মোট observation: 115 | Potential concern: 37, Confirmed issue: 54, Unresolved question: 20, Research opportunity: 4
+মোট observation: 127 | Potential concern: 41, Confirmed issue: 60, Unresolved question: 21, Research opportunity: 4
 
 | # (page.n) | কী পেলাম | প্রমাণ | ধরন | page |
 |---|---|---|---|---|
@@ -119,3 +119,15 @@
 | 10.8 | NUE/yield-scaled emission বিশ্লেষণে নেই | p10 Discussion | Potential concern  | [p10](../pages/page-10.md) |
 | 10.9 | Gaihre 2015 এখানে সঠিক প্রসঙ্গে (N₂O, deep placement); p1-এ ভুল ছিল | p10; p1 | (লেখকদের পক্ষে)  | [p10](../pages/page-10.md) |
 | 10.10 | Aman GW code দুই version (`_01`, `_02`) ও ভিন্ন bandwidth; কোনটা প্রকাশিত অজানা | `gw_correlation_aman_01/02.Rmd` | Unresolved question  | [p10](../pages/page-10.md) |
+| 11.1 | "P ও K moderate-strong association all seasons" ভুল — S5 Aman P 0.108, K 0.223 (weak) | p11; SI S5; `work/check07b.out` | Confirmed issue  | [p11](../pages/page-11.md) |
+| 11.2 | N-কে নিয়ন্ত্রণে P-GHG partial r ≈ 0 (Aus 0.116; Aman −0.070; Boro −0.016) ⇒ লেখকদের "N-এর সাথে একত্রে ব্যবহার" ব্যাখ্যা সমর্থিত | `work/check_ghg_partial.out` (আমাদের own check) | (লেখকদের পক্ষে — verified)  | [p11](../pages/page-11.md) |
+| 11.3 | "HYV vs hybrid emission-এ significant পার্থক্য নেই" — শুধু Aman-এ; Aus +151 (p=0.0003), Boro +127 (p<0.0001), row-level Welch | `work/check_ghg_partial.out` | Potential concern  | [p11](../pages/page-11.md) |
+| 11.4 | "Hybrid area বাড়ালে GHG কমবে" — নিজের ফল উল্টো/নিরপেক্ষ; সাহিত্য (Islam 2025) নির্ভর; yield-scaled emission অগণিত | p11; CSV; calc | Confirmed issue (claim ← evidence)  | [p11](../pages/page-11.md) |
+| 11.5 | Boro-তে hybrid-এর N/P/K কম কিন্তু GWP বেশি ⇒ GWP-র নির্ধারক অন্যত্র (CCAFS-MOT input অজানা) | `work/check_ghg_partial.out` | Unresolved question  | [p11](../pages/page-11.md) |
+| 11.6 | "Our study captured these complex interactions" — কোনো interaction/GHG-model/H-statistic report নেই; Fig. S7 text-এ উল্লিখিত নয় | p11; (grep "S7"/"interaction") | Confirmed issue  | [p11](../pages/page-11.md) |
+| 11.7 | "marginal PDP … Indeed positive in many unions" — যুক্তি-সংযোগ ভুল (feature-value vs effect) | p11 §4 | Potential concern  | [p11](../pages/page-11.md) |
+| 11.8 | Boro AWD ব্যাখ্যা বনাম data (`Water_regime` Boro = সবাই "Continuous flooding"); GD range সংকীর্ণ (SD 7.5 দিন) | `boro_data_all.csv`; p11 | Potential concern  | [p11](../pages/page-11.md) |
+| 11.9 | Citation mismatch: Chen 2011 (steppe CH₄ uptake), Luo 2013 (3 ecosystems), Craufurd & Wheeler 2009 (flowering time), Sapkota 2014 (wheat NW India) | refs p14, p15, p13 | Confirmed issue  | [p11](../pages/page-11.md) |
+| 11.10 | "Balanced NPK + water management" সুপারিশ — balanced fertilization/water ফলে নেই | p11; p12; p4 | Confirmed issue (claim ← evidence)  | [p11](../pages/page-11.md) |
+| 11.11 | §3.6 (p9) বনাম p11 FD-কথা পরস্পরবিরোধী (Aus বনাম Boro weak) | p9; p11; S5 | Confirmed issue  | [p11](../pages/page-11.md) |
+| 11.12 | Self-reported fertilizer data-র error প্রভাব মাপা নেই (স্বীকৃত) | p11 | Potential concern (acknowledged)  | [p11](../pages/page-11.md) |

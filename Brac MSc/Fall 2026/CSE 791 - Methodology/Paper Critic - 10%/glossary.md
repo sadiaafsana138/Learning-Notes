@@ -14,6 +14,12 @@
 - **এই paper-এ:** "stack-ensemble is additive" claim।
 - **খেয়াল:** PD ≈ AL additivity-র প্রমাণ নয়; H-statistic লাগে।
 
+## Alternate Wetting and Drying (AWD)
+*(page 11)*
+- **সহজ মানে:** ধানের জমি সব সময় জলমগ্ন না রেখে মাঝে মাঝে শুকিয়ে দেওয়া — মিথেন কমে, জল বাঁচে।
+- **ছোট উদাহরণ:** ১০০ দিনের মধ্যে ৭০ দিন জল বনাম ৪০ দিন জল ⇒ anaerobic সময় কম ⇒ CH₄ কম (সংখ্যাগুলো বোঝানোর কাল্পনিক)।
+- **এই paper-এ:** Discussion-এ Boro ব্যাখ্যায়; data/মডেলে নেই।
+
 ## ANOVA (F-test)
 *(page 05)*
 - **সহজ মানে:** একাধিক group-এর গড় আলাদা কিনা পরীক্ষা: F = (group-এর মধ্যে variance)/(group-এর ভেতরের variance)।
@@ -63,6 +69,11 @@
 - **ছোট উদাহরণ:** N rate বেশি → N₂O emission factor ধরে বেশি N₂O (সরল ছবি; আসল সূত্র এই paper-এ নেই)।
 - **এই paper-এ:** `Total_GWP` (kg CO₂e/ha) তৈরি।
 - **খেয়াল:** Tool-এর input-ই যদি পরে "predictor" হিসেবে যায় → circular।
+
+## Collinearity / confounding
+*(page 11)*
+- **সহজ মানে:** দুটি predictor একসাথে ওঠানামা করে বলে আলাদা প্রভাব আলাদা করা যায় না। Confounding = অন্য একটি factor দুটি variable-কেই প্রভাবিত করে।
+- **ছোট উদাহরণ:** যে কৃষক বেশি N দেয়, সে বেশি P-ও দেয় ⇒ P এবং GHG দুটোই বাড়ে; P নিজে দায়ী নয়।
 
 ## Cross-validation (10-fold)
 *(page 04)*
@@ -148,6 +159,12 @@
 - **এই paper-এ:** 80/20 random।
 - **খেয়াল:** "hold-out" তখনই সৎ, যখন test row-গুলো train row-র সাথে identity share করে না (এখানে union share করে)।
 
+## Hybrid rice vs HYV vs Local
+*(page 11)*
+- **সহজ মানে:** Hybrid = F1 সংকর (বেশি ফলন, প্রতি মৌসুমে নতুন বীজ লাগে); HYV = আধুনিক উচ্চফলনশীল জাত (ইনব্রিড); Local = স্থানীয় ঐতিহ্যবাহী জাত।
+- **এই paper-এ:** crop type (3 স্তর), Boro-তে local নেই।
+- **খেয়াল:** জাতভেদ গড় yield-পার্থক্য আংশিক জমি-ব্যবস্থাপনার পার্থক্য (সেচযোগ্য ভালো জমিতে hybrid)।
+
 ## Hyperparameter
 *(page 02)*
 - **সহজ মানে:** যে setting আপনি train-এর আগে ঠিক করে দেন (tree-এর depth, learning rate)।
@@ -222,6 +239,13 @@
 *(page 07)*
 - **সহজ মানে:** x = আসল মান, y = prediction; আদর্শ হলে সব বিন্দু 45° রেখার উপর।
 - **খেয়াল:** slope < 1 মানে shrinkage।
+
+## Partial correlation
+*(page 11)*
+- **সহজ মানে:** তৃতীয় কোনো variable-এর প্রভাব সরিয়ে দুই variable-এর সম্পর্ক।
+- **ছোট উদাহরণ (আমাদের data, Boro row):** r(GWP, P) = 0.228, কিন্তু N-কে বাদ দিলে partial r = **−0.016** ⇒ P-র নিজস্ব ভূমিকা প্রায় নেই; আগের 0.228 ছিল N-এর ছায়া।
+- **এই paper-এ:** ব্যবহৃত হয়নি; আমাদের check।
+- **খেয়াল:** partial r-ও causal নয়; N-র সাথে সম্পর্ক রৈখিক ধরে।
 
 ## Partial Dependence Plot (PDP)
 *(page 05)*
@@ -320,4 +344,9 @@
 - **ছোট উদাহরণ:** 4000 kg CO₂e/ha ÷ 4000 kg yield = 1.00; 4400 ÷ 5000 = **0.88** — বেশি emission হলেও বেশি yield-এ intensity কম হতে পারে।
 - **এই paper-এ:** CSV-তে `Emission_Intensity` column আছে (analysis-এ ব্যবহৃত নয়); text-এ নেই।
 - **খেয়াল:** "ভালো nutrient management = বেশি yield + কম GHG" দাবির জন্য এটাই প্রয়োজনীয় মেট্রিক।
+
+## Yield-scaled emission (পুনরাবৃত্তি, গভীরে)
+*(page 11)*
+- **ছোট উদাহরণ (Boro; CSV গড়, `python`):** HYV 3734.4 ÷ 5442.9 = **0.69**; Hybrid 3861.9 ÷ 6080.7 = **0.64** kg CO₂e/kg grain — hybrid-এ আনুমানিক ৭% কম intensity, যদিও total GWP বেশি।
+- **খেয়াল:** গড়ের অনুপাত ≠ গড় অনুপাত; row-level `Emission_Intensity` column ব্যবহার করা উচিত।
 
