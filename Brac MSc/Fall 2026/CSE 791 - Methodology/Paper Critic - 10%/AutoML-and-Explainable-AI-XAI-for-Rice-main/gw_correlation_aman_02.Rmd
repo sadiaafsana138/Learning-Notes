@@ -1,0 +1,92 @@
+---
+title: "GW-Correlation"
+author: "Zia"
+date: "10/8/2021"
+output: html_document
+---
+
+
+#### Load Pcakages
+
+```{r message=F, warning=F}
+library(plyr)
+library(tidyverse)
+library(tibble)
+library(sp)
+library(parallel)
+library(raster)
+library(rgdal)
+library(RColorBrewer)
+library(SpatialML)
+library(GWmodel)
+library(classInt)
+library(latticeExtra)   # For layer()
+library(Hmisc)          # for correlation matrix
+library(DT)
+```
+
+#### Set working directory
+
+```{r}
+setwd("C:\\Users\\zahmed2\\Dropbox\\CIMMYT_UB\\NEW_ANALYSIS\\ANALYSIS\\GW_Correlation\\AMAN")
+```
+
+```{r}
+spdf<-shapefile("aman_GWM_02.shp")
+names(spdf)
+```
+
+
+```{r message=F, warning=F}
+DM<-gw.dist(dp.locat=coordinates(spdf))
+```
+
+
+### Bandwidth selection for basic GWR
+
+```{r message=F, warning=F}
+bw.gwr <- bw.gwr( 
+                Total_GWP ~ 
+                GD+
+                K_rate+
+                N_rate+
+                P_rate,       
+                     data = spdf,
+                     approach = "AICc",
+                     kernel = "bisquare",
+                     adaptive = TRUE,
+                     dMat = DM)
+```
+
+```{r}
+print(bw.gwr)
+```
+
+
+### Geographically Weighted correlation
+
+```{r}
+local.stat <- gwss(data = spdf, 
+                vars=c("Total_GWP", "GD", "N_rate", "P_rate", "K_rate"),       
+                     kernel = "bisquare",
+                     adaptive = TRUE,
+                     bw = bw.gwr)
+```
+
+```{r}
+names(local.stat$SDF)
+```
+
+
+```{r}
+
+aman<-shapefile("aman_union.shp")
+aman$Crop_Types<-local.stat$SDF$Corr_Total_GWP.Crop_Types
+aman$GD<-local.stat$SDF$Corr_Total_GWP.GD
+aman$N_rate<-local.stat$SDF$Corr_Total_GWP.N_rate
+aman$P_rate<-local.stat$SDF$Corr_Total_GWP.P_rate
+aman$K_rate<-local.stat$SDF$Corr_Total_GWP.K_rate
+
+shapefile(aman, "aman_Corr_Total_GWP_Values.shp", overwrite=T)
+```
+

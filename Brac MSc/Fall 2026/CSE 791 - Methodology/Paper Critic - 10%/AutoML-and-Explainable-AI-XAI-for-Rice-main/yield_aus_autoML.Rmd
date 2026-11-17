@@ -1,0 +1,1077 @@
+---
+title: 'AutoML: Aus Yield Prediction'
+author: "Zia Ahmed, Unversity at Buffalo"
+---
+
+```{r}
+setwd(gsub(pattern = '/scripts', replacement = '', x = getwd()))
+```
+
+
+# AutoML: Automatic Machine Learning
+
+In recent years, the demand for machine learning experts has outpaced the supply, despite the surge of people entering the field. To address this gap, there have been big strides in the development of user-friendly machine learning software that can be used by non-experts. The first steps toward simplifying machine learning involved developing simple, unified interfaces to a variety of machine learning algorithms (e.g. H2O).
+
+Although H2O has made it easy for non-experts to experiment with machine learning, there is still a fair bit of knowledge and background in data science that is required to produce high-performing machine learning models. Deep Neural Networks in particular are notoriously difficult for a non-expert to tune properly. In order for machine learning software to truly be accessible to non-experts, we have designed an easy-to-use interface which automates the process of training a large selection of candidate models. H2O’s AutoML can also be a helpful tool for the advanced user, by providing a simple wrapper function that performs a large number of modeling-related tasks that would typically require many lines of code, and by freeing up their time to focus on other aspects of the data science pipeline tasks such as data-preprocessing, feature engineering and model deployment.
+
+H2O’s AutoML can be used for automating the machine learning workflow, which includes automatic training and tuning of many models within a user-specified time-limit. Stacked Ensembles – one based on all previously trained models, another one on the best model of each family – will be automatically trained on collections of individual models to produce highly predictive ensemble models which, in most cases, will be the top performing models in the AutoML Leaderboard.
+
+H2O offers a number of model explainability methods that apply to AutoML objects (groups of models), as well as individual models (e.g. leader model). Explanations can be generated automatically with a single function call, providing a simple interface to exploring and explaining the AutoML models.
+
+
+
+#### Set working directory
+
+```{r}
+#setwd("D:/Dropbox/CIMMYT_UB/NEW_ANALYSIS/ANALYSIS/AMAN")
+setwd("/home/zia207/Dropbox/CIMMYT_UB/NEW_ANALYSIS/ANALYSIS/Yield/AUS/AutoML_Aus_Yield/NewAnalysis")
+#setwd("C:\\Users\\zahmed2\\Dropbox\\CIMMYT_UB\\NEW_ANALYSIS\\ANALYSIS\\Yield\\AUS\\AutoML_Aus_Yield")
+```
+
+#### Load Pcakages
+
+```{r message=F, warning=F}
+library(plyr)
+library(tidyverse)
+library(dplyr)
+library(classInt)
+library(data.table)
+library(magrittr)
+library(DT)
+require(reshape2)
+library(pdp)       # for partial dependence plots (and ICE curves)
+library(vip)       # for variable importance plots
+library(iml)       # for general IML-related functions
+library(DALEX)     # for general IML-related functions
+library(lime)      # for local interpretable model-agnostic explanations
+library(breakDown)
+library(iBreakDown)
+library(purrrlyr)
+```
+
+### Load data
+
+```{r}
+mf<-read.csv("aus_data_all.csv", header = T)
+train.mf<-read.csv("train_data.csv", header = T)
+test.mf<-read.csv("test_data.csv", header = T)
+```
+
+```{r}
+names(mf)
+```
+
+### Create data frame-function
+
+```{r}
+FeatureData <- function(data) {
+  features <- c(
+                "GD",              # 1 
+                "N_rate",          # 2      
+                "P_rate",          # 3        
+                "K_rate",          # 4        
+                    
+                "pH",              # 5        
+                "SOC",             # 6         
+                "N",               # 7         
+                "P",               # 8         
+                "K",               # 9         
+                "S",               # 10    
+                "Zn",              # 11    
+               
+                "DEM",             # 12
+                
+                "NDVI_097",      # 13
+                "NDVI_113",      # 14                          
+                "NDVI_129",      # 15                         
+                "NDVI_145",      # 16                           
+                "NDVI_161",      # 17                           
+                "NDVI_177",      # 18                           
+                "NDVI_193",      # 19                          
+
+                "t2m_097",      # 20
+                "t2m_113",      # 21
+                "t2m_129",      # 22
+                "t2m_145",      # 23
+                "t2m_161",      # 24
+                "t2m_177",      # 25 
+                "t2m_193",      # 26
+         
+                "tp_097",       # 27                           
+                "tp_113",       # 28
+                "tp_129",       # 29 
+                "tp_145",       # 30
+                "tp_161",       # 31
+                "tp_177",       # 32
+                "tp_193",       # 33
+
+          
+                "Crop_Types",        # 34
+                "LT_Class",          # 35
+                "General_Soil_type", # 36
+                "DRC_Class",         # 37
+                "TZONE_Class",       # 38
+                "Soil_texture",      # 39     
+                "Water_regime",      # 40
+                "Manure",            # 41      
+ 
+                "YIELD")            # 54
+                fea <- data[,features]
+                fea[, 1:33] = scale(fea[, 1:33])            # scale predictors
+                fea[,34:41]= dmap(fea[,34:41], as.factor)   # convert to factors 
+                return(fea)
+                 }
+```
+
+```{r}
+df<-FeatureData(mf)
+train.df<-FeatureData(train.mf)
+test.df<-FeatureData(test.mf)
+```
+
+```{r}
+write.csv(train.df, "train_data_scaled.csv", row.names = T)
+write.csv(test.df, "test_data_scaled.csv", row.names = T)
+```
+
+### Connect to H2o server 
+
+```{r message=F, warning=F, results = "hide"}
+library(h2o)
+h2o.init(nthreads = -1,max_mem_size ="48g",enable_assertions = FALSE)
+```
+
+```{r}
+h2o.no_progress() # disable progress bar for RMarkdown
+h2o.removeAll()   # Optional: remove anything from previous session 
+```
+
+### Create h2o dataframe
+
+```{r message=F, warning=F, results = "hide"}
+h_df<-  as.h2o(df)
+h_train<-  as.h2o(train.df)
+h_test<- as.h2o(test.df)
+```
+
+### Define response and predictors
+
+```{r}
+y <- "YIELD"
+x <- setdiff(names(h_train), y)
+```
+
+### Create data frame for Explianers
+
+### All Data
+
+```{r}
+x_all <- as.data.frame(h_df) %>% dplyr::select(-YIELD)
+y_all<- as.data.frame(h_df) %>% pull(YIELD)
+```
+
+### Training
+
+```{r}
+x_train <- as.data.frame(h_train) %>% dplyr::select(-YIELD)
+y_train <- as.data.frame(h_train) %>% pull(YIELD)
+```
+
+### Test
+
+```{r}
+x_test <- as.data.frame(h_test) %>% dplyr::select(-YIELD)
+y_test <- as.data.frame(h_test) %>% pull(YIELD)
+```
+
+<div style="margin-bottom:40px;">
+</div>
+
+# Auto ML
+
+<div style="margin-bottom:20px;">
+</div>
+
+```{r  message=F, warning=F,results = "hide"}
+train.aml <- h2o.automl(
+                  x= x,
+                  y = y,
+                  training_frame = h_train,
+                  nfolds=10,
+                  keep_cross_validation_predictions = TRUE,
+                  stopping_metric = "RMSE",
+                  stopping_tolerance = 0.001,
+                  stopping_rounds = 3,
+                  max_runtime_secs_per_model = 0, 
+                  seed = 42,
+                  #max_models = 20,
+                  project_name = "AutoML_trainings")
+```
+
+## Leaderboard
+
+Next, we will view the AutoML Leaderboard. A default performance metric for each machine learning task (binary classification, multiclass classification, regression) is specified internally and the leaderboard will be sorted by that metric.  In the case of regression, the default ranking metric is mean residual deviance.  In the future, the user will be able to specify any of the H2O metrics so that different metrics can be used to generate rankings on the leaderboard.
+
+
+```{r  message=F, warning=F,results = "hide"}
+lb <- h2o.get_leaderboard(object = train.aml, extra_columns = "ALL")
+datatable(as.data.frame(lb), 
+          rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 4)
+write.csv(as.data.frame(lb), "Model_Stat_AutoML.csv", row.names = F)
+```
+
+### The best Model
+
+```{r}
+best_ML<- h2o.get_best_model(train.aml, criterion = "RMSE" )
+best_ML
+```
+
+### Save Model
+
+```{r}
+model_path <- h2o.saveModel(object = best_ML, path = getwd(), force = TRUE)
+print(model_path)
+```
+
+
+### The best Stack Ensemble of all models 
+
+```{r}
+model_ids<-as.data.frame(lb)$model_id
+stack_all<-h2o.getModel(grep("StackedEnsemble_AllModels", model_ids, value=TRUE)[1])
+stack_all_meta<-stack_all@model$metalearner_model
+stack_all_meta
+```
+
+### The best Stack Ensemble best of family
+
+```{r}
+stack_best<-h2o.getModel(grep("StackedEnsemble_BestOfFamily", model_ids, value=TRUE)[1])
+stack_best_meta<-stack_best@model$metalearner_model
+stack_best_meta
+```
+
+### The best Stack
+
+```{r}
+best_stack <- h2o.get_best_model(train.aml, algorithm = "stackedensemble", criterion = "RMSE" )
+best_stack
+```
+
+### The best GLM
+
+```{r}
+best_GLM <- h2o.get_best_model(train.aml, algorithm = "glm", criterion = "RMSE" )
+best_GLM
+```
+
+### The best DRF
+
+```{r}
+best_DRF <- h2o.get_best_model(train.aml, algorithm = "DRF", criterion = "RMSE" )
+best_DRF
+```
+
+### The best XRT
+
+```{r}
+best_XRT<-h2o.getModel(grep("XRT", model_ids, value=TRUE)[1])
+best_XRT
+```
+
+### The best GBM
+
+```{r}
+best_GBM <- h2o.get_best_model(train.aml, algorithm = "GBM", criterion = "RMSE" )
+best_GBM
+```
+
+### The best XGBoost
+
+```{r}
+best_XGBoost <- h2o.get_best_model(train.aml, algorithm = "xgboost", criterion = "RMSE" )
+best_XGBoost
+```
+
+### The best DNN
+
+```{r}
+best_DNN <- h2o.get_best_model(train.aml, algorithm = "DeepLearning", criterion = "RMSE" )
+best_DNN
+```
+
+## Cross-validation results
+
+```{r}
+# Stack Ensemble of all model 
+cv.stack_all<-stack_all_meta@model$cross_validation_metrics_summary
+write.csv(cv.stack_all, "cv.stack_all.csv")
+
+# Stack Ensemble the best of family
+cv.stack_best<-stack_best_meta@model$cross_validation_metrics_summary
+write.csv(cv.stack_best, "cv.stack_best.csv")
+
+# GLM
+cv.GLM<-best_GLM@model$cross_validation_metrics_summary
+write.csv(cv.GLM, "cv_best_GML.csv")
+
+# DRF
+cv.DRF<-best_DRF@model$cross_validation_metrics_summary
+write.csv(cv.DRF, "cv_best_DRF.csv")
+
+# XRT
+cv.XRT<-best_XRT@model$cross_validation_metrics_summary
+write.csv(cv.XRT, "cv_best_XRT.csv")
+
+# GBM
+cv.GBM<-best_GBM@model$cross_validation_metrics_summary
+write.csv(cv.GBM, "cv_best_GBM.csv")
+
+# XGBoost
+cv.XGBoost<-best_XGBoost@model$cross_validation_metrics_summary 
+write.csv(cv.XGBoost, "cv_best_XGBoost.csv")
+
+# DNN
+cv.DNN<-best_DNN@model$cross_validation_metrics_summary
+write.csv(cv.DNN, "cv_best_DNN.csv")
+```
+
+## RMSE - CV 
+
+```{r warning=FALSE, fig.width = 7, fig.height = 5}
+
+## Create a data-frame
+glm.RMSE<-cv.GLM[7,c(1:2)]
+drf.RMSE<-cv.DRF[6,c(1:2)]
+xrt.RMSE<-cv.XRT[6,c(1:2)]
+gbm.RMSE<-cv.GBM[6,c(1:2)]
+xgboost.RMSE<-cv.XGBoost[6,c(1:2)]
+dnn.RMSE<-cv.DNN[6,c(1:2)]
+stack_all.RMSE<-cv.stack_all[7,c(1:2)]
+stack_best.RMSE<-cv.stack_best[7,c(1:2)]
+
+cv.RMSE<-rbind(glm.RMSE, drf.RMSE, xrt.RMSE, gbm.RMSE, 
+                   xgboost.RMSE, dnn.RMSE, stack_all.RMSE, stack_best.RMSE )
+
+rownames(cv.RMSE) <- c("GLM ", "DRF ", "XRT", "GBM", "XGBoost", "DNN",
+                           "Stack-Ensemble (all models)", "Stack-Ensemble (the best of family)")
+cv.RMSE <- tibble::rownames_to_column(cv.RMSE, "Models")
+cv.RMSE <-arrange(cv.RMSE ,desc(mean))
+
+## Plot
+tiff( file="FIGURE_CV_RMSE_aman.tif", 
+      width=7,   height=5,
+      units = "in", 
+      pointsize = 10, 
+      res=600, bg = "white",
+      compression =  "lzw")
+
+cv.RMSE.p<-ggplot(cv.RMSE, aes(y=mean, x=reorder(Models, +mean))) +
+  ylab('') +
+  xlab('')+
+  geom_point(colour = "black", size = 2.5)+
+  geom_errorbar(aes(ymin=mean-sd, 
+                    ymax=mean+sd), 
+                width=.2, 
+                linetype=1,
+                color ="dark grey") +
+   #scale_y_continuous(limits=c(0.6,1), breaks=seq(0.6, 1, 0.2)) +
+   theme(axis.line = element_line(colour = "grey"),
+        axis.text.y=element_text(size=12),
+        axis.text.x = element_text(size=10),
+        axis.title.x = element_text(size=12),
+        axis.title.y = element_text(size=12))+
+  coord_flip()
+print(cv.RMSE.p)
+dev.off()
+print(cv.RMSE.p)
+```
+
+## MAE - CV 
+
+```{r warning=FALSE, fig.width = 7, fig.height = 5}
+
+## Create a data-frame
+glm.MAE<-cv.GLM[1,c(1:2)]
+drf.MAE<-cv.DRF[1,c(1:2)]
+xrt.MAE<-cv.XRT[1,c(1:2)]
+gbm.MAE<-cv.GBM[1,c(1:2)]
+xgboost.MAE<-cv.XGBoost[1,c(1:2)]
+dnn.MAE<-cv.DNN[1,c(1:2)]
+stack_all.MAE<-cv.stack_all[1,c(1:2)]
+stack_best.MAE<-cv.stack_best[1,c(1:2)]
+
+cv.MAE<-rbind(glm.MAE, drf.MAE, xrt.MAE, gbm.MAE, 
+               xgboost.MAE, dnn.MAE, stack_all.MAE, stack_best.MAE )
+
+rownames(cv.MAE) <- c("GLM ", "DRF ", "XRT", "GBM", "XGBoost", "DNN",
+                       "Stack-Ensemble (all models)", "Stack-Ensemble (the best of family)")
+cv.MAE <- tibble::rownames_to_column(cv.MAE, "Models")
+cv.MAE <-arrange(cv.MAE ,desc(mean))
+
+## Plot
+tiff( file="FIGURE_CV_MAE_aman.tif", 
+      width=7,   height=5,
+      units = "in", 
+      pointsize = 10, 
+      res=600, bg = "white",
+      compression =  "lzw")
+
+cv.MAE.p<-ggplot(cv.MAE, aes(y=mean, x=reorder(Models, +mean))) +
+  ylab('') +
+  xlab('')+
+  geom_point(colour = "black", size = 2.5)+
+  geom_errorbar(aes(ymin=mean-sd, 
+                    ymax=mean+sd), 
+                width=.2, 
+                linetype=1,
+                color ="dark grey") +
+  #scale_y_continuous(limits=c(0.6,1), breaks=seq(0.6, 1, 0.2)) +
+  theme(axis.line = element_line(colour = "grey"),
+        axis.text.y=element_text(size=12),
+        axis.text.x = element_text(size=10),
+        axis.title.x = element_text(size=12),
+        axis.title.y = element_text(size=12))+
+  coord_flip()
+print(cv.MAE.p)
+dev.off()
+print(cv.MAE.p)
+```
+
+## R2 - CV 
+
+```{r warning=FALSE, fig.width = 7, fig.height = 5}
+## Create a data-frame
+glm.R2<-cv.GLM[5,c(1:2)]
+drf.R2<-cv.DRF[4,c(1:2)]
+xrt.R2<-cv.XRT[4,c(1:2)]
+gbm.R2<-cv.GBM[4,c(1:2)]
+xgboost.R2<-cv.XGBoost[4,c(1:2)]
+dnn.R2<-cv.DNN[4,c(1:2)]
+stack_all.R2<-cv.stack_all[5,c(1:2)]
+stack_best.R2<-cv.stack_best[5,c(1:2)]
+
+cv.R2<-rbind(glm.R2, drf.R2, xrt.R2, gbm.R2, 
+               xgboost.R2, dnn.R2, stack_all.R2, stack_best.R2 )
+
+rownames(cv.R2) <- c("GLM ", "DRF ", "XRT", "GBM", "XGBoost", "DNN",
+                       "Stack-Ensemble (all models)", "Stack-Ensemble (the best of family)")
+cv.R2 <- tibble::rownames_to_column(cv.R2, "Models")
+cv.R2 <-arrange(cv.R2 ,desc(mean))
+
+## Plot
+tiff( file="FIGURE_CV_R2_aman.tif", 
+      width=7,   height=5,
+      units = "in", 
+      pointsize = 10, 
+      res=600, bg = "white",
+      compression =  "lzw")
+
+cv.R2.p<-ggplot(cv.R2, aes(y=mean, x=reorder(Models, +mean))) +
+  ylab('') +
+  xlab('')+
+  geom_point(colour = "black", size = 2.5)+
+  geom_errorbar(aes(ymin=mean-sd, 
+                    ymax=mean+sd), 
+                width=.2, 
+                linetype=1,
+                color ="dark grey") +
+  #scale_y_continuous(limits=c(0.6,1), breaks=seq(0.6, 1, 0.2)) +
+  theme(axis.line = element_line(colour = "grey"),
+        axis.text.y=element_text(size=12),
+        axis.text.x = element_text(size=10),
+        axis.title.x = element_text(size=12),
+        axis.title.y = element_text(size=12))+
+  coord_flip()
+print(cv.R2.p)
+dev.off()
+print(cv.R2.p)
+```
+
+## Model Performance
+
+### The best ML
+
+```{r}
+per.best.train<-h2o.performance(best_ML, h_train)
+per.best.test<-h2o.performance(best_ML, h_test)
+per.best.cv<-h2o.performance(best_stack, xval = TRUE)
+#per.stack_best.train
+per.best.test
+#per.stack_best.cv
+```
+
+### The best Stack-Ensemble
+
+```{r}
+per.stack_best.train<-h2o.performance(best_stack, h_train)
+per.stack_best.test<-h2o.performance(best_stack, h_test)
+per.stack_best.cv<-h2o.performance(best_stack, xval = TRUE)
+#per.stack_best.train
+per.stack_best.test
+#per.stack_best.cv
+```
+
+### The best GLM 
+
+```{r}
+# ### Training
+per.best_GLM.train<-h2o.performance(best_GLM, h_train)
+per.best_GLM.test<-h2o.performance(best_GLM, h_test)
+per.best_GLM.cv<-h2o.performance(best_GLM, xval = TRUE)
+#per.best_GLM.train
+per.best_GLM.test
+#per.best_GLM.cv
+```
+
+### The best DRF 
+
+```{r}
+# ### Training
+per.best_DRF.train<-h2o.performance(best_DRF, h_train)
+per.best_DRF.test<-h2o.performance(best_DRF, h_test)
+per.best_DRF.cv<-h2o.performance(best_DRF, xval = TRUE)
+#per.best_DRF.train
+per.best_DRF.test
+#per.best_DRF.cv
+```
+
+### The best XRT  
+
+```{r}
+# ### Training
+per.best_XRT.train<-h2o.performance(best_XRT, h_train)
+per.best_XRT.test<-h2o.performance(best_XRT, h_test)
+per.best_XRT.cv<-h2o.performance(best_XRT, xval = TRUE)
+#per.best_XRT.train
+per.best_XRT.test
+#per.best_XRT.cv
+```
+
+### The best GBM
+
+```{r}
+# ### Training
+per.best_GBM.train<-h2o.performance(best_GBM, h_train)
+per.best_GBM.test<-h2o.performance(best_GBM, h_test)
+per.best_GBM.cv<-h2o.performance(best_GBM, xval = TRUE)
+#per.best_GBM.train
+per.best_GBM.test
+#per.best_GBM.cv
+```
+
+### The best XGBoost
+
+```{r}
+# ### Training
+per.best_XGBoost.train<-h2o.performance(best_XGBoost, h_train)
+per.best_XGBoost.test<-h2o.performance(best_XGBoost, h_test)
+per.best_XGBoost.cv<-h2o.performance(best_XGBoost, xval = TRUE)
+#per.best_XGBoost.train
+per.best_XGBoost.test
+#per.best_XGBoost.cv
+```
+
+### The best DNN
+
+```{r}
+# ### Training
+per.best_DNN.train<-h2o.performance(best_DNN, h_train)
+per.best_DNN.test<-h2o.performance(best_DNN, h_test)
+per.best_DNN.cv<-h2o.performance(best_DNN, xval = TRUE)
+#per.best_DNN.train
+per.best_DNN.test
+#per.best_DNN.cv
+```
+
+
+##  Model Comparison - Training/CV/Test
+
+## RMSE
+
+```{r}
+
+d_rmse <- data.frame(Models = c("GLM ", 
+                                   "DRF ",
+                                   "XRT",
+                                   "GBM",
+                                   "XGBoost",
+                                   "DNN",
+                                   "Stack-Ensemble",
+                                   "Best-ML"
+),
+stringsAsFactors = FALSE)
+
+d_rmse$Training <- NA
+d_rmse$CV <- NA
+d_rmse$Test <- NA
+
+## Training
+d_rmse[1, ]$Training<-h2o.rmse(h2o.performance(best_GLM, newdata = h_train))
+d_rmse[2, ]$Training<-h2o.rmse(h2o.performance(best_DRF, newdata = h_train))
+d_rmse[3, ]$Training<-h2o.rmse(h2o.performance(best_XRT, newdata = h_train))
+d_rmse[4, ]$Training<-h2o.rmse(h2o.performance(best_GBM, newdata = h_train))
+d_rmse[5, ]$Training<-h2o.rmse(h2o.performance(best_XGBoost, newdata = h_train))
+d_rmse[6, ]$Training<-h2o.rmse(h2o.performance(best_DNN, newdata = h_train))
+d_rmse[7, ]$Training<-h2o.rmse(h2o.performance(best_stack, newdata = h_train))
+d_rmse[8, ]$Training<-h2o.rmse(h2o.performance(best_ML, newdata = h_train))
+
+## Cross_Validation
+d_rmse[1, ]$CV<-h2o.rmse(h2o.performance(best_GLM, xval = TRUE))
+d_rmse[2, ]$CV<-h2o.rmse(h2o.performance(best_DRF, xval = TRUE))
+d_rmse[3, ]$CV<-h2o.rmse(h2o.performance(best_XRT, xval = TRUE))
+d_rmse[4, ]$CV<-h2o.rmse(h2o.performance(best_GBM, xval = TRUE))
+d_rmse[5, ]$CV<-h2o.rmse(h2o.performance(best_XGBoost, xval = TRUE))
+d_rmse[6, ]$CV<-h2o.rmse(h2o.performance(best_DNN, xval = TRUE))
+d_rmse[7, ]$CV<-h2o.rmse(h2o.performance(best_stack, xval = TRUE))
+d_rmse[8, ]$CV<-h2o.rmse(h2o.performance(best_ML, xval = TRUE))
+
+##  Test data
+d_rmse[1, ]$Test<-h2o.rmse(h2o.performance(best_GLM, newdata = h_test))
+d_rmse[2, ]$Test<-h2o.rmse(h2o.performance(best_DRF, newdata = h_test))
+d_rmse[3, ]$Test<-h2o.rmse(h2o.performance(best_XRT, newdata = h_test))
+d_rmse[4, ]$Test<-h2o.rmse(h2o.performance(best_GBM, newdata = h_test))
+d_rmse[5, ]$Test<-h2o.rmse(h2o.performance(best_XGBoost, newdata = h_test))
+d_rmse[6, ]$Test<-h2o.rmse(h2o.performance(best_DNN, newdata = h_test))
+d_rmse[7, ]$Test<-h2o.rmse(h2o.performance(best_stack, newdata = h_test))
+d_rmse[8, ]$Test<-h2o.rmse(h2o.performance(best_ML, newdata = h_test))
+
+write.csv(d_rmse, "rmse_all_models.csv", row.names = F)
+# Show Comparison (rmse: Lower = Better)
+datatable(d_rmse, rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 3)
+```
+<div style="margin-bottom:0px;">
+</div>
+
+
+## MAE
+
+```{r}
+
+d_mae <- data.frame(Models = c("GLM ", 
+                                   "DRF ",
+                                   "XRT",
+                                   "GBM",
+                                   "XGBoost",
+                                   "DNN",
+                                   "Stack-Ensemble",
+                                   "Best-ML"
+),
+stringsAsFactors = FALSE)
+
+d_mae$Training <- NA
+d_mae$CV <- NA
+d_mae$Test <- NA
+
+## Training
+d_mae[1, ]$Training<-h2o.mae(h2o.performance(best_GLM, newdata = h_train))
+d_mae[2, ]$Training<-h2o.mae(h2o.performance(best_DRF, newdata = h_train))
+d_mae[3, ]$Training<-h2o.mae(h2o.performance(best_XRT, newdata = h_train))
+d_mae[4, ]$Training<-h2o.mae(h2o.performance(best_GBM, newdata = h_train))
+d_mae[5, ]$Training<-h2o.mae(h2o.performance(best_XGBoost, newdata = h_train))
+d_mae[6, ]$Training<-h2o.mae(h2o.performance(best_DNN, newdata = h_train))
+d_mae[7, ]$Training<-h2o.mae(h2o.performance(best_stack, newdata = h_train))
+d_mae[8, ]$Training<-h2o.mae(h2o.performance(best_ML, newdata = h_train))
+
+## Cross_Validation
+d_mae[1, ]$CV<-h2o.mae(h2o.performance(best_GLM, xval = TRUE))
+d_mae[2, ]$CV<-h2o.mae(h2o.performance(best_DRF, xval = TRUE))
+d_mae[3, ]$CV<-h2o.mae(h2o.performance(best_XRT, xval = TRUE))
+d_mae[4, ]$CV<-h2o.mae(h2o.performance(best_GBM, xval = TRUE))
+d_mae[5, ]$CV<-h2o.mae(h2o.performance(best_XGBoost, xval = TRUE))
+d_mae[6, ]$CV<-h2o.mae(h2o.performance(best_DNN, xval = TRUE))
+d_mae[7, ]$CV<-h2o.mae(h2o.performance(best_stack, xval = TRUE))
+d_mae[8, ]$CV<-h2o.mae(h2o.performance(best_ML, xval = TRUE))
+
+##  Test data
+d_mae[1, ]$Test<-h2o.mae(h2o.performance(best_GLM, newdata = h_test))
+d_mae[2, ]$Test<-h2o.mae(h2o.performance(best_DRF, newdata = h_test))
+d_mae[3, ]$Test<-h2o.mae(h2o.performance(best_XRT, newdata = h_test))
+d_mae[4, ]$Test<-h2o.mae(h2o.performance(best_GBM, newdata = h_test))
+d_mae[5, ]$Test<-h2o.mae(h2o.performance(best_XGBoost, newdata = h_test))
+d_mae[6, ]$Test<-h2o.mae(h2o.performance(best_DNN, newdata = h_test))
+d_mae[7, ]$Test<-h2o.mae(h2o.performance(best_stack, newdata = h_test))
+d_mae[8, ]$Test<-h2o.mae(h2o.performance(best_ML, newdata = h_test))
+
+write.csv(d_mae, "mae_all_models.csv", row.names = F)
+# Show Comparison (mae: Lower = Better)
+datatable(d_mae, rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 3)
+```
+<div style="margin-bottom:0px;">
+</div>
+
+## R2
+
+```{r}
+d_r2 <- data.frame(Models = c("GLM ", 
+                                   "DRF ",
+                                   "XRT",
+                                   "GBM",
+                                   "XGBoost",
+                                   "DNN",
+                                   "Stack-Ensemble",
+                                   "Best-ML"
+),
+stringsAsFactors = FALSE)
+
+d_r2$Training <- NA
+d_r2$CV <- NA
+d_r2$Test <- NA
+
+## Training
+
+d_r2[1, ]$Training<-h2o.r2(h2o.performance(best_GLM, newdata = h_train))
+d_r2[2, ]$Training<-h2o.r2(h2o.performance(best_DRF, newdata = h_train))
+d_r2[3, ]$Training<-h2o.r2(h2o.performance(best_XRT, newdata = h_train))
+d_r2[4, ]$Training<-h2o.r2(h2o.performance(best_GBM, newdata = h_train))
+d_r2[5, ]$Training<-h2o.r2(h2o.performance(best_XGBoost, newdata = h_train))
+d_r2[6, ]$Training<-h2o.r2(h2o.performance(best_DNN, newdata = h_train))
+d_r2[7, ]$Training<-h2o.r2(h2o.performance(best_stack, newdata = h_train))
+d_r2[8, ]$Training<-h2o.r2(h2o.performance(best_ML, newdata = h_train))
+
+## Cross_Validation
+
+d_r2[1, ]$CV<-h2o.r2(h2o.performance(best_GLM, xval = TRUE))
+d_r2[2, ]$CV<-h2o.r2(h2o.performance(best_DRF, xval = TRUE))
+d_r2[3, ]$CV<-h2o.r2(h2o.performance(best_XRT, xval = TRUE))
+d_r2[4, ]$CV<-h2o.r2(h2o.performance(best_GBM, xval = TRUE))
+d_r2[5, ]$CV<-h2o.r2(h2o.performance(best_XGBoost, xval = TRUE))
+d_r2[6, ]$CV<-h2o.r2(h2o.performance(best_DNN, xval = TRUE))
+d_r2[7, ]$CV<-h2o.r2(h2o.performance(best_stack, xval = TRUE))
+d_r2[8, ]$CV<-h2o.r2(h2o.performance(best_ML, xval = TRUE))
+
+##  Test data
+
+d_r2[1, ]$Test<-h2o.r2(h2o.performance(best_GLM, newdata = h_test))
+d_r2[2, ]$Test<-h2o.r2(h2o.performance(best_DRF, newdata = h_test))
+d_r2[3, ]$Test<-h2o.r2(h2o.performance(best_XRT, newdata = h_test))
+d_r2[4, ]$Test<-h2o.r2(h2o.performance(best_GBM, newdata = h_test))
+d_r2[5, ]$Test<-h2o.r2(h2o.performance(best_XGBoost, newdata = h_test))
+d_r2[6, ]$Test<-h2o.r2(h2o.performance(best_DNN, newdata = h_test))
+d_r2[7, ]$Test<-h2o.r2(h2o.performance(best_stack, newdata = h_test))
+d_r2[8, ]$Test<-h2o.r2(h2o.performance(best_ML, newdata = h_test))
+
+write.csv(d_r2, "r2_all_models.csv", row.names = F)
+# Show Comparison (r2: Lower = Better)
+datatable(d_r2, rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 3)
+
+```
+<div style="margin-bottom:0px;">
+</div>
+
+## Create a data-frame  Model Perforamnce for the test data
+
+```{r}
+test.matrix <- data.frame(Models = c("GLM ", 
+                                        "DRF ",
+                                        "XRT",
+                                        "GBM",
+                                        "XGBoost",
+                                        "DNN",
+                                        "Stack-Ensemble",
+                                        "Best-ML"
+                                        ),
+                                        stringsAsFactors = FALSE)
+
+test.matrix$MAE<-round((d_mae$Test),3)
+test.matrix$RMSE<-round((d_rmse$Test),3)
+test.matrix$R2<-round((d_r2$Test),3)
+
+write.csv(test.matrix, "test_matrix_all_models.csv", row.names = F)
+# Show Comparison (F1: high = Better)
+datatable(test.matrix, rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 3)
+```
+
+```{r}
+#best_ML<- h2o.loadModel("StackedEnsemble_AllModels_3_AutoML_1_20211102_184016")
+```
+
+### 1: 1 Plot Ovserved vs Predicted Yields
+
+```{r warning=FALSE, fig.width = 5.5, fig.height = 5}
+
+bestML.test<-as.data.frame(h2o.predict(object = best_ML, newdata = h_test))
+test.xy<-test.mf[,c(1:5,17)]
+test.xy$Predicted<-bestML.test$predict
+write.csv(test.xy, "test_pred.csv", row.names = F)
+```
+
+
+```{r warning=FALSE, fig.width = 5.5, fig.height = 5}
+tiff( file="FIGURE_Obs_Pred.tif", 
+width=5.5, height=5, units="in", res=600)
+
+pred.yield.test<-ggplot(data=t.xy, aes(x=YIELD, y=Predicted))+ 
+  geom_point(size = 1.0,colour = "grey")+
+  geom_smooth(method = "lm", se = FALSE, colour="black",size=0.5)+
+  scale_x_continuous(limits=c(0,10000), breaks=seq(0, 10000, 2000))+ 
+  scale_y_continuous(limits=c(0,10000), breaks=seq(0, 10000, 2000)) +
+  theme_light() +
+  theme(
+    panel.background = element_rect(fill = "white",colour = "gray75",size = 0.5, linetype = "solid"),
+    axis.line = element_line(colour = "grey"),
+    panel.grid.major = element_blank(),
+    axis.title.x=element_blank(),
+    axis.title.y=element_blank(),
+    axis.text.x=element_text(size=14, colour="black"),
+    axis.text.y=element_text(size=14,angle = 90,vjust = 0.5, hjust=0.5, colour='black'))+
+  geom_abline(slope=1, intercept=0,linetype="dashed",size=0.5)
+print(pred.yield.test)
+dev.off()
+```
+
+```{r warning=FALSE, fig.width = 4.5, fig.height = 4.25}
+print(pred.yield.test)
+```
+
+#  Interpretable Machine Learning
+
+The following code extracts these items for the h2o example:
+
+## Create Model Explainer for Best_ML
+
+```{r message=F, warning=F, results = "hide"}
+pred_fun_best_ML <- function(object, newdata)  {
+  results <- as.vector(h2o.predict(object, as.h2o(newdata)))
+  return(results)
+}
+```
+
+### Explainer For Training Data
+
+```{r message=F, warning=F, results = "hide"}
+explainer_train <- DALEX::explain(
+  model = best_ML,
+  type="regression",
+  data = x_train,
+  y = y_train,
+  predict_function = pred_fun_best_ML,
+  label = "The Best ML- Training"
+)
+```
+
+## Permutation-based feature importance
+
+```{r message=F, warning=F, results = "hide"}
+vip_train <- variable_importance(explainer_train, type="difference")
+datatable(as.data.frame(vip_train), 
+          rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 4)
+```
+
+```{r, warning=FALSE, fig.width =6, fig.height = 18}
+tiff( file="FIGURE_VIP.tif", 
+      width=6, height=18, units="in", res=600)
+p.vip_train<-plot(vip_train)
+print(p.vip_train)
+dev.off()
+print(p.vip_train)
+```
+
+### Create  VIP table 
+
+```{r message=F, warning=F, results = "hide"}
+vip_train_stat<-vip_train %>%
+  group_by(variable) %>%
+  summarise(mean.loss = mean(dropout_loss, na.rm = TRUE),
+            sd.loss = sd(dropout_loss, na.rm = TRUE),
+            n.loss = n()) %>%
+  mutate(se.loss = sd.loss / sqrt(n.loss),
+         lower.ci.loss = mean.loss - qt(1 - (0.05 / 2), n.loss - 1) * se.loss,
+         upper.ci.loss = mean.loss + qt(1 - (0.05 / 2), n.loss - 1) * se.loss)
+
+vip_train_stat<-filter(vip_train_stat,  variable != "_baseline_") 
+vip_train_stat<-filter(vip_train_stat,  variable != "_full_model_") 
+
+vip_train_stat$Scale_VIP<-(vip_train_stat$mean.loss - min(vip_train_stat$mean.loss))/
+                         (max(vip_train_stat$mean.loss)-min(vip_train_stat$mean.loss))
+
+datatable(as.data.frame(vip_train_stat), 
+          rownames = FALSE, options = list(pageLength = 10, scrollX = TRUE, round)) %>%
+  formatRound(columns = -1, digits = 4)
+write.csv(vip_train_stat, "vip_stat_train.csv", row.names = F)
+```
+
+# Partial-dependence Profiles
+
+
+```{r}
+vip_stat_df<-vip_train_stat %>%
+   arrange(desc(mean.loss))
+
+var.names.stack=vip_stat_df[1]
+var_1st=var.names.stack[1,]$variable
+var_1st
+var_2nd=var.names.stack[2,]$variable
+var_2nd
+var_3rd=var.names.stack[3,]$variable
+var_3rd
+var_4th=var.names.stack[4,]$variable
+var_4th
+var_5th=var.names.stack[5,]$variable
+var_5th
+```
+
+### PDP Plot of of 1st Important variable
+
+```{r message=F, warning=F, results = "hide"}
+pdp_1st <- variable_effect(explainer_train, 
+                                      variable =  var_1st, 
+                                      type = "partial_dependency")
+write.csv(pdp_1st , "PDP_1st.csv", row.names = F)
+```
+
+
+```{r, warning=FALSE, fig.width =5, fig.height = 5}
+tiff( file="FIGURE_PDP_1st.tif", 
+width=5, height=5, units="in", res=600)
+pdp_1st.p<-plot(pdp_1st)
+print(pdp_1st.p)
+dev.off()
+print(pdp_1st.p)
+```
+
+### PDP Plot of of 2nd Important variable
+
+```{r message=F, warning=F, results = "hide"}
+pdp_2nd <- variable_effect(explainer_train, 
+                                      variable =  var_2nd, 
+                                      type = "partial_dependency")
+write.csv(pdp_2nd , "PDP_2nd.csv", row.names = F)
+```
+
+```{r, warning=FALSE, fig.width =5, fig.height = 5}
+tiff( file="FIGURE_PDP_2nd.tif", 
+width=5, height=5, units="in", res=600)
+pdp_2nd.p<-plot(pdp_2nd)
+print(pdp_2nd.p)
+dev.off()
+print(pdp_2nd.p)
+```
+
+### PDP Plot of of 3rd Important variable
+
+```{r message=F, warning=F, results = "hide"}
+pdp_3rd <- variable_effect(explainer_train, 
+                                      variable =  var_3rd, 
+                                      type = "partial_dependency")
+write.csv(pdp_3rd , "PDP_3rd.csv", row.names = F)
+```
+
+```{r, warning=FALSE, fig.width =5, fig.height = 5}
+tiff( file="FIGURE_PDP_3rd_Aman.tif", 
+width=5, height=5, units="in", res=600)
+pdp_3rd.p<-plot(pdp_3rd)
+print(pdp_3rd.p)
+dev.off()
+print(pdp_3rd.p)
+```
+
+### PDP Plot of of 4th Important variable
+
+```{r message=F, warning=F, results = "hide"}
+pdp_4th <- variable_effect(explainer_train, 
+                                      variable =  var_4th, 
+                                      type = "partial_dependency")
+write.csv(pdp_4th , "PDP_4th.csv", row.names = F)
+```
+
+```{r, warning=FALSE, fig.width =5, fig.height = 5}
+tiff( file="FIGURE_PDP_4th.tif", 
+width=5, height=5, units="in", res=600)
+pdp_4th.p<-plot(pdp_4th)
+print(pdp_4th.p)
+dev.off()
+print(pdp_4th.p)
+```
+
+### PDP Plot of of 5th Important variable
+
+```{r message=F, warning=F, results = "hide"}
+pdp_5th <- variable_effect(explainer_train, 
+                                      variable =  var_5th, 
+                                      type = "partial_dependency")
+write.csv(pdp_5th , "PDP_5th.csv", row.names = F)
+```
+
+```{r, warning=FALSE, fig.width =5, fig.height = 5}
+tiff( file="FIGURE_PDP_5th.tif", 
+width=5, height=5, units="in", res=600)
+pdp_5th.p<-plot(pdp_5th)
+print(pdp_5th.p)
+dev.off()
+print(pdp_5th.p)
+```
+
+##  Partial, Accumulated and Local-dependence profils 
+
+```{r message=F, warning=F, fig.width =6, fig.height = 6, results = "hide"}
+## !st important 
+pd_stack_1st <- model_profile(explainer = explainer_train, type = "partial", variables = var_1st)
+ld_stack_1st <- model_profile(explainer = explainer_train, type = "conditional", variables = var_1st)
+al_stack_1st <- model_profile(explainer = explainer_train, type = "accumulated", variables = var_1st)
+
+write.csv(pd_stack_1st$agr_profiles, "partial_dependence_1st.csv")
+write.csv(ld_stack_1st$agr_profiles, "local_dependence_1st.csv")
+write.csv(al_stack_1st$agr_profiles, "accumulate_local_1st.csv")
+
+# 2nd Important
+pd_stack_2nd <- model_profile(explainer = explainer_train, type = "partial", variables = var_2nd)
+ld_stack_2nd <- model_profile(explainer = explainer_train, type = "conditional", variables = var_2nd)
+al_stack_2nd <- model_profile(explainer = explainer_train, type = "accumulated", variables = var_2nd)
+
+write.csv(pd_stack_2nd$agr_profiles, "partial_dependence_2nd.csv")
+write.csv(ld_stack_2nd$agr_profiles, "local_dependence_2nd.csv")
+write.csv(al_stack_2nd$agr_profiles, "accumulated_local_2nd.csv")
+
+# 3rd Important
+pd_stack_3rd <- model_profile(explainer = explainer_train, type = "partial", variables = var_3rd)
+ld_stack_3rd <- model_profile(explainer = explainer_train, type = "conditional", variables = var_3rd)
+al_stack_3rd <- model_profile(explainer = explainer_train, type = "accumulated", variables = var_3rd)
+
+write.csv(pd_stack_3rd$agr_profiles, "partial_dependence_3rd.csv")
+write.csv(ld_stack_3rd$agr_profiles, "local_dependence_3rd.csv")
+write.csv(al_stack_3rd$agr_profiles, "accumulated_local_3rd.csv")
+
+# 4th Important
+pd_stack_4th <- model_profile(explainer = explainer_train, type = "partial", variables = var_4th)
+ld_stack_4th <- model_profile(explainer = explainer_train, type = "conditional", variables = var_4th)
+al_stack_4th <- model_profile(explainer = explainer_train, type = "accumulated", variables = var_4th)
+
+write.csv(pd_stack_4th$agr_profiles, "partial_dependence_4th.csv")
+write.csv(ld_stack_4th$agr_profiles, "local_dependence_4th.csv")
+write.csv(al_stack_4th$agr_profiles, "accumulated_local_4th.csv")
+
+# 5th Important
+pd_stack_5th <- model_profile(explainer = explainer_train, type = "partial", variables = var_5th)
+ld_stack_5th <- model_profile(explainer = explainer_train, type = "conditional", variables = var_5th)
+al_stack_5th <- model_profile(explainer = explainer_train, type = "accumulated", variables = var_5th)
+
+write.csv(pd_stack_5th$agr_profiles, "partial_dependence_5th.csv")
+write.csv(ld_stack_5th$agr_profiles, "local_dependence_5th.csv")
+write.csv(al_stack_5th$agr_profiles, "accumulated_local_5th.csv")
+```
+
+##  Feature interactions
+
+A wonderful feature provided by iml is to measure how strongly features interact with each other. To measure interaction, iml uses the H-statistic proposed by Friedman and Popescu (2008). The H-statistic measures how much of the variation of the predicted outcome depends on the interaction of the features. There are two approaches to measure this. The first measures if a feature (x i  interacts with any other feature. 
+
+```{r, warning=FALSE, fig.width =6, fig.height = 18}
+# create predictor object to pass to explainer functions
+mod <- Predictor$new(best_ML, data =x_train)
+inter<-Interaction$new(mod) 
+tiff( file="FIGURE_Interaction.tif", 
+width=6, height=18, units="in", res=600)
+p.inter<-plot(inter)
+print(p.inter)
+dev.off()
+print(p.inter)
+dat<-inter$results
+write.csv(dat, "Feature_Interaction.csv", row.names=F)
+```

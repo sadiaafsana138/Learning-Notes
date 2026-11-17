@@ -1,3 +1,5 @@
 # Jupyter autosave checkpoints — not source content, safe to ignore
 .ipynb_checkpoints/
 **/.ipynb_checkpoints/
+# Ignore CSE 791 Seminar 1 NLP
+Brac MSc/Fall 2026/CSE 791 - Methodology/Seminar 1 NLP/

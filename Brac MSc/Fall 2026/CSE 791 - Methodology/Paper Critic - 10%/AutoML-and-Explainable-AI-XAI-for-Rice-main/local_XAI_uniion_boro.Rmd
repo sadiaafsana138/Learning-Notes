@@ -1,0 +1,246 @@
+---
+title: 'Local_XAI: Boro Yield Prediction'
+author: "Zia Ahmed, Unversity at Buffalo"
+---
+
+```{r}
+setwd(gsub(pattern = '/scripts', replacement = '', x = getwd()))
+```
+
+
+#### Set working directory
+
+```{r}
+#setwd("/mnt/d/Dropbox/CIMMYT_UB/NEW_ANALYSIS/ANALYSIS/BORO/ALL_DATA")
+setwd("C:\\Users\\zahmed2\\Dropbox\\CIMMYT_UB\\NEW_ANALYSIS\\ANALYSIS\\Yield\\BORO\\XAI_Boro_Yield")
+```
+
+#### Load Pcakages
+
+```{r message=F, warning=F}
+library(plyr)
+library(tidyverse)
+library(dplyr)
+library(classInt)
+library(data.table)
+library(magrittr)
+library(DT)
+#library(kableExtra)
+require(reshape2)
+#library(pROC)
+library(pdp)       # for partial dependence plots (and ICE curves)
+library(vip)       # for variable importance plots
+library(iml)       # for general IML-related functions
+library(DALEX)     # for general IML-related functions
+library(lime)      # for local interpretable model-agnostic explanations
+library(breakDown)
+library(iBreakDown)
+#library(localICE)
+#library(tidyquant) #for better ggplot theme
+library(purrrlyr)
+```
+
+### Load data
+
+```{r}
+mf<-read.csv("boro_union_data_all.csv", header = T)
+train.mf<-read.csv("train_data.csv", header = T)
+test.mf<-read.csv("test_data.csv", header = T)
+```
+
+### Create data frame-function
+
+```{r}
+FeatureData <- function(data) {
+  features <- c(
+                "GD",              # 1 
+                "N_rate",          # 2      
+                "P_rate",          # 3        
+                "K_rate",          # 4        
+                    
+                "pH",              # 5        
+                "SOC",             # 6         
+                "N",               # 7         
+                "P",               # 8         
+                "K",               # 9         
+                "S",               # 10    
+                "Zn",              # 11    
+               
+                "DEM",             # 12
+                
+                "NDVI_305_2014",   # 13       
+                "NDVI_321_2014",   # 14
+                "NDVI_337_2014",   # 15
+                "NDVI_353_2014",   # 16
+                "NDVI_001_2105",   # 17     
+                "NDVI_017_2015",   # 18
+                "NDVI_033_2015",   # 19
+                "NDVI_049_2015",   # 20
+                "NDVI_065_2015",   # 21
+                "NDVI_081_2015",   # 22
+                "NDVI_097_2015",   # 23
+                "NDVI_113_2015",   # 24
+                
+                "t2m_305_2014",    # 25
+                "t2m_321_2014",    # 26       
+                "t2m_337_2014",    # 27      
+                "t2m_353_2014",    # 28      
+                "t2m_017_2015",    # 29       
+                "t2m_033_2015",    # 30      
+                "t2m_049_2015",    # 31      
+                "t2m_065_2015",    # 32
+                "t2m_081_2015",    # 33
+                "t2m_097_2015",    # 34
+                "t2m_113_2015",    # 35
+          
+                
+                "tp_305_2014",     # 36
+                "tp_321_2014",     # 37
+                "tp_337_2014",     # 38
+                "tp_353_2014",     # 39
+                "tp_017_2015",     # 40 
+                "tp_033_2015",     # 41
+                "tp_049_2015",     # 42
+                "tp_065_2015",     # 43
+                "tp_081_2015",     # 44
+                "tp_097_2015",     # 45
+                "tp_113_2015",     # 46  
+          
+                "Crop_Types",        # 47
+                "LT_Class",          # 48
+                "General_Soil_Type", # 49
+                "DRC_Class",         # 50
+                "TZONE_Class",       # 51
+                "Soil_texture",      # 52     
+                "Water_regime",      # 53
+                "Manure",            # 54      
+ 
+                "YIELD")
+                fea <- data[,features]
+                fea[, 1:46] = scale(fea[, 1:46])            # scale predictors
+                fea[,47:54]= dmap(fea[,47:54], as.factor)   # convert to factors 
+                return(fea)
+                 }
+```
+
+```{r}
+df<-FeatureData(mf)
+train.df<-FeatureData(train.mf)
+test.df<-FeatureData(test.mf)
+```
+
+### Connect to H2o server 
+
+```{r message=F, warning=F, results = "hide"}
+library(h2o)
+h2o.init(nthreads = -1,max_mem_size ="148g",enable_assertions = FALSE)
+```
+
+```{r}
+h2o.no_progress() # disable progress bar for RMarkdown
+h2o.removeAll()   # Optional: remove anything from previous session 
+```
+
+### Create h2o dataframe
+
+```{r message=F, warning=F, results = "hide"}
+h_df<-  as.h2o(df)
+h_train<-  as.h2o(train.df)
+h_test<- as.h2o(test.df)
+```
+
+### Define response and predictors
+
+```{r}
+y <- "YIELD"
+x <- setdiff(names(h_train), y)
+```
+
+### Create data frame for Explianers
+
+### All Data
+
+```{r}
+x_df <- as.data.frame(h_df) %>% dplyr::select(-YIELD)
+y_df<- as.data.frame(h_df) %>% pull(YIELD)
+```
+
+### Load best model
+
+```{r}
+best_ML<- h2o.loadModel("StackedEnsemble_AllModels_3_AutoML_2_20211102_201704")
+```
+
+
+## Create Model Explainer for Best_ML
+
+```{r message=F, warning=F, results = "hide"}
+pred_fun_best_ML <- function(object, newdata)  {
+  results <- as.vector(h2o.predict(object, as.h2o(newdata)))
+  return(results)
+}
+```
+
+### Explainer For Training Data
+
+```{r message=F, warning=F, results = "hide"}
+explainer_df <- DALEX::explain(
+  model = best_ML,
+  type="regression",
+  data = x_df,
+  y = y_df,
+  predict_function = pred_fun_best_ML,
+  label = "The Best ML- Training"
+)
+```
+
+## Local model interpretation
+
+## All Data
+
+```{r}
+
+x <- NULL
+
+for(i in 1:nrow(x_df)){
+   x[[i]]  <-  break_down(explainer_df, 
+                             new_observation = x_df[i,]
+                             )
+     }
+
+```
+
+```{r}
+
+for (i in 1:length(x)){
+  if (i==1){
+    ndf <- data.frame(x[[i]]$variable_name, x[[i]]$contribution)
+    names(ndf) <- c('variable_name', paste0("RowID_",i))
+    ndf = ndf[order(ndf$variable_name),]
+  }
+  ndf1 <- data.frame(x[[i]]$variable_name, x[[i]]$contribution)
+  names(ndf1) <- c('variable_name', paste0("RowID_",i))
+  ndf1 = ndf1[order(ndf1$variable_name),]
+  
+  ndf <- cbind(ndf, ndf1[2])
+  
+}
+
+```
+
+
+```{r}
+# delete  duplicate 
+
+ndf$RowID_1 <- NULL
+df_lc<-as.data.frame(t(ndf))
+colnames(df_lc) <- df_lc[1,]
+df_lc <- df_lc[-1, ] 
+df_lc$Intercept <- NULL
+df_lc<- df_lc[, -1] #delete column 5L
+
+# df_lc is the final data aframe
+write.csv(df_lc, "Local_contribution_boro_union.csv", row.names = TRUE)
+```
+
+
