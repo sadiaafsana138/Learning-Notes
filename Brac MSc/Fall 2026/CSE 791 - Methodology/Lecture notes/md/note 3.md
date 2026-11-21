@@ -1,1019 +1,367 @@
-# CSE791 – Research Methodology
-## Week 4 & Week 5: Exam-Ready Notes
+# WEEK 5 — ADDITIONAL SLIDE CONTENT
+
+## Add to Section 1: Human-Centered Research
+
+### Continuity from Week 4
+
+Week 4 produced revised research questions and a study design outline. Week 5 converts that design into actual research instruments and an ethical data collection plan.
+
+The process is:
+
+1. Design Outline: Revised RQs, constructs, methods, and evidence sources.
+2. Instruments: Survey questions, interview guides, observation protocols, usability tasks, or dataset evaluation protocols.
+3. Ethics Plan: Consent, recruitment, privacy, risk mitigation, storage, and review.
+4. Responsible Collection: Pilot testing followed by documented data collection.
+
+**Important Rule:** No instrument should reach participants and no dataset should enter the research pipeline before the relevant ethical questions have been addressed in writing.
+
+A project using both human participants and datasets must complete both evidence-track deliverables.
 
 ---
 
-# WEEK 4: RESEARCH QUESTIONS, HYPOTHESES, AND STUDY DESIGN
+## Add to Section 5: Survey Design
 
-## 1. What is a Problem Statement?
+### Additional Survey Design Principles
 
-A problem statement is a clear description of a specific research problem, its context, its importance, and the knowledge gap that needs to be addressed.
+1. Keep course-level surveys ideally within 10 minutes.
+2. Prefer validated scales such as SUS, NASA-TLX, and published trust or credibility scales.
+3. Adapt published scales with proper citation rather than inventing new measures unnecessarily.
+4. Keep response scales consistent and label every scale point clearly.
+5. Include a genuine neutral or "Prefer not to answer" option where appropriate.
+6. Every survey item should map to a construct in the Week 4 variable map.
 
-A good problem statement should identify:
-- The research context.
-- The specific problem.
-- Existing knowledge from previous studies.
-- The research gap.
-- The proposed research direction.
-
-**Problem Statement Formula:**
-
-Context + Specific Problem + Existing Evidence + Research Gap + Research Direction.
-
-## 2. What is a Research Gap?
-
-A research gap is an unanswered question, limitation, or underexplored area in existing literature that requires further investigation.
-
-A research gap provides the justification for conducting a new study.
-
-**Example:** Previous studies have examined AI adoption in education, but limited research has investigated how different AI scaffolding strategies influence independent problem-solving among undergraduate programming students.
-
-## 3. What is a Research Question (RQ)?
-
-A research question is a clear, focused, and answerable question that guides a research study.
-
-A strong research question should:
-1. Be linked to a specific literature gap.
-2. Define the population or context.
-3. Identify the phenomenon or variables.
-4. Have a clear evidence source.
-5. Be answerable using an appropriate method.
-6. Be feasible within the available time and resources.
-
-**Relationship:**
-
-Research Gap → Research Question → Evidence → Method → Analysis.
-
-## 4. Anatomy of a Strong Research Question
-
-A strong RQ contains five important elements:
-
-1. Population/Context: Who or what is being studied?
-2. Phenomenon: What issue is being investigated?
-3. Constructs/Variables: What concepts or measures are important?
-4. Evidence: What data can answer the question?
-5. Contribution: What will the findings explain or evaluate?
-
-**General Template:**
-
-How / To what extent / Why does [X] affect or relate to [Y] among [population/context] using [evidence or method]?
-
-## 5. Characteristics of Weak and Strong Research Questions
-
-| Weak RQ | Strong RQ |
-|---|---|
-| How can AI improve education? | How does step-by-step AI support influence independent problem-solving among undergraduate students? |
-| Is online learning better? | How do learning outcomes differ between online and classroom-based instruction? |
-| Why should we build an app? | To what extent does the proposed application improve task completion among target users? |
-| How can we solve misinformation? | How are misinformation exposure and verification behavior related among university students? |
-
-## 6. Types of Research Questions
-
-| Type | Purpose | Typical Evidence/Method |
-|---|---|---|
-| Descriptive | Describes what is happening | Survey, logs, content analysis |
-| Comparative | Compares groups | Experiment, survey, statistical tests |
-| Relational | Examines relationships between variables | Correlation, regression, SEM |
-| Causal | Examines whether X causes a change in Y | Experiment, quasi-experiment |
-| Interpretive | Understands experiences and meanings | Interviews, observation, thematic analysis |
-| Design/Evaluation | Evaluates an artifact or system | Prototype, usability testing, field study |
-
-## 7. RQ Revision Checklist
-
-Every revised research question should pass these six checks:
-
-1. Gap link: Which literature gap supports this RQ?
-2. Evidence: What specific data will answer it?
-3. Method fit: Is the selected method appropriate?
-4. Scope: Is the population, context, or dataset clearly defined?
-5. Construct clarity: Are the main concepts measurable or interpretable?
-6. Feasibility: Can the study be completed within the available time?
-
-**Important:** It is better to have fewer strong RQs than many weak and unanswerable RQs.
-
-## 8. What is a Hypothesis?
-
-A hypothesis is a testable prediction about the expected relationship or difference between variables in a research study.
-
-Hypotheses are mainly used in quantitative and confirmatory research.
-
-### Types of Hypotheses
-
-**Alternative Hypothesis (H1):**
-Predicts that a relationship or difference exists between variables.
-
-**Null Hypothesis (H0):**
-Predicts that no significant relationship or difference exists between variables.
-
-**Example:**
-
-RQ: To what extent do provenance cues affect users' willingness to share social media posts?
-
-- H1: Posts with visible provenance cues will produce lower sharing intention than posts without provenance cues.
-- H0: There is no difference in sharing intention between posts with and without provenance cues.
-
-### When Should We Use Hypotheses?
-
-Use hypotheses when:
-- Variables are measurable.
-- Previous literature provides a theoretical basis.
-- Statistical testing is planned.
-- The expected relationship or difference is clear.
-
-Avoid forcing hypotheses in exploratory, qualitative, or interpretive studies when the expected direction is unknown.
-
-## 9. Components of a Hypothesis
-
-A testable hypothesis should identify:
-
-1. Independent Variable (IV): The factor that changes or differs.
-2. Dependent Variable (DV): The outcome being measured.
-3. Direction: Expected increase, decrease, or relationship.
-4. Comparison: The condition or group being compared.
-
-## 10. Variables and Constructs
-
-**Construct:** An abstract concept that cannot always be directly observed, such as trust, usability, or cognitive load.
-
-**Variable:** A measurable characteristic that can take different values.
-
-**Dimension:** A specific aspect of a construct.
-
-**Indicator:** An observable sign used to represent a construct.
-
-**Measure:** The actual value or score collected.
-
-**Operational Definition:** A precise explanation of how a construct or variable will be observed or measured in a particular study.
-
-### Example
-
-| Stage | Example |
-|---|---|
-| Construct | Trust |
-| Dimension | Credibility |
-| Indicator | Agreement with trust-related statements |
-| Measure | 1–5 Likert-scale score |
-| Analysis | Mean, regression, group comparison |
-
-## 11. What is Study Design?
-
-Study design is the overall plan or framework that explains how a research study will collect, measure, and analyze evidence to answer its research questions.
-
-A good study design connects:
-- Research questions.
-- Variables and constructs.
-- Participants or datasets.
-- Data collection methods.
-- Analysis techniques.
-- Validity considerations.
-- Feasibility.
-
-**Important Principle:** Design follows the research question.
-
-## 12. Types of Study Design
-
-### A. Quantitative Research Design
-
-Quantitative research uses numerical data and statistical analysis to measure variables, compare groups, test relationships, or make predictions.
-
-Common types:
-
-1. Survey: Measures attitudes, behavior, and prevalence.
-2. Experiment: Tests causal effects by manipulating conditions.
-3. Quasi-experiment: Compares groups or conditions without full randomization.
-4. Dataset/ML study: Uses data and computational models for prediction, classification, or pattern analysis.
-
-### B. Qualitative Research Design
-
-Qualitative research explores experiences, opinions, meanings, behavior, and processes using non-numerical evidence.
-
-Common methods:
-
-1. Interviews: Collect detailed individual experiences.
-2. Observation: Study actual behavior.
-3. Focus groups: Explore shared opinions and group interactions.
-4. Thematic analysis: Identify patterns and themes in qualitative data.
-
-### C. Mixed-Methods Research Design
-
-Mixed-methods research combines quantitative and qualitative methods to answer different or complementary aspects of a research problem.
-
-Types:
-
-1. Sequential Explanatory: QUAN → qual. Quantitative findings are followed by qualitative investigation to explain the results.
-2. Sequential Exploratory: qual → QUAN. Qualitative findings are used to develop or guide quantitative investigation.
-3. Convergent: QUAN + qual. Both types of data are collected in parallel and compared or integrated.
-
-**Important:** Mixed methods should be selected because the RQs require different forms of evidence, not simply to make the study look more comprehensive.
-
-## 13. ML, CV, and Data Science Study Design
-
-ML and data science research requires a different design logic.
-
-Important components:
-
-1. Task Framing: Define the exact prediction, classification, detection, or generation task.
-2. Dataset: Select data that matches the research question and target population.
-3. Evaluation Protocol: Define metrics, baselines, data splits, and ablation studies.
-4. Generalization Claim: Specify the population, domain, or conditions to which the model is expected to generalize.
-
-**Mapping:**
-
-- Task framing ↔ Research Question
-- Dataset ↔ Sample
-- Evaluation protocol ↔ Measurement
-- Generalization claim ↔ Validity
-
-## 14. Validity Threats
-
-Validity refers to how accurately and reliably a research study measures, explains, and supports its conclusions.
-
-Six important validity considerations:
-
-1. Construct Validity: Whether the study measures the concept it claims to measure.
-2. Internal Validity: Whether the observed result is actually caused by the studied factor rather than another factor.
-3. External Validity: Whether the findings can be generalized to other populations, settings, or contexts.
-4. Reliability: Whether the research process produces consistent results.
-5. Conclusion Validity: Whether the conclusions are supported by the analysis and available evidence.
-6. Ethical Validity: Whether participants' rights, safety, and privacy are protected.
-
-## 15. Feasibility of a Research Study
-
-Feasibility means determining whether a research study can realistically be completed with available resources and constraints.
-
-Important factors:
-
-- Access: Availability of participants, datasets, tools, and APIs.
-- Time: Ability to finish within the deadline.
-- Ethics: Whether risks, consent, and privacy can be managed.
-- Skill: Whether the research team has the required technical and analytical skills.
-- Scope: Whether the research questions are manageable.
-
-## 16. Alignment Matrix
-
-An alignment matrix is a research planning tool that connects each research question with its literature gap, evidence source, method, analysis, and validity risk.
-
-| RQ | Gap | Evidence | Method/Analysis | Validity Risk |
-|---|---|---|---|---|
-| RQ1 | Literature gap A | Dataset or survey | Descriptive analysis | Recall or measurement bias |
-| RQ2 | Literature gap B | Scale, logs, or labels | Regression or comparison | Construct validity |
-| RQ3 | Literature gap C | Interviews or open responses | Thematic analysis | Transferability |
-
-Evidence status should also be recorded:
-- Available now.
-- Likely available.
-- Needs collection.
-- Risky.
-- Not available.
-
-## 17. Dataset Selection and Quality Assessment
-
-A dataset must match the research question and satisfy research, technical, and ethical requirements.
-
-### Dataset Fit Criteria
-
-**Research Fit:**
-- Matches the RQ.
-- Correct unit of analysis.
-- Relevant population and context.
-- Appropriate time period.
-- Contains the required outcome variables.
-
-**Technical Fit:**
-- Sufficient number of records.
-- Usable format and size.
-- Manageable missing values.
-- Duplicates can be identified.
-- Suitable train/test split is possible.
-
-**Research Quality Fit:**
-- Creator and collection purpose are documented.
-- Labeling process is clear.
-- License permits research use.
-- Bias and limitations can be identified.
-- Relevant baselines are available.
-
-### Important Dataset Quality Dimensions
-
-1. Research Fit: Does the dataset match the RQ?
-2. Temporal Fit: Is the collection period relevant?
-3. Variable Fit: Are the required variables available?
-4. Granularity Fit: Is the level of detail appropriate?
-5. Provenance: Is the data origin documented?
-6. Label Quality: Are labels reliable and consistent?
-7. Completeness: Are missing values and duplicates manageable?
-8. Representativeness: Does the dataset cover the target population?
-9. Class Balance: Are the classes sufficiently represented?
-10. Leakage Risk: Does any feature reveal the target unintentionally?
-11. Ethics and License: Is the data legally and ethically usable?
-12. Documentation: Are collection and preprocessing explained?
-
-## 18. Dataset Search Strategy
-
-A systematic dataset search follows these steps:
-
-1. Start from the RQ.
-2. Define the unit of analysis.
-3. List the required fields.
-4. Set region, population, time, and task boundaries.
-5. Search and document candidate datasets.
-
-### Common Dataset Sources
-
-- Google Dataset Search
-- Kaggle
-- UCI Machine Learning Repository
-- OpenML
-- Hugging Face Datasets
-- Papers with Code
-- Zenodo
-- Figshare
-- OSF
-- data.gov.bd
-- Bangladesh Bureau of Statistics
-- World Bank Open Data
-
-### Dataset Candidate Log
-
-Record:
-- Dataset/source name.
-- Repository or source link.
-- Which RQ it supports.
-- Key fields.
-- License.
-- Quality risks.
-- Final decision.
-
-**Week 4 Milestone:**
-1. Revised problem statement.
-2. Revised RQs (usually 2–4).
-3. Hypotheses, if applicable.
-4. Construct and variable map.
-5. Study design outline.
-6. Dataset or evidence source note with 2–3 candidates.
+**Important:** Every additional question increases respondent effort and may reduce the completion rate.
 
 ---
 
-# WEEK 5: HUMAN-CENTERED METHODS, ETHICS, AND RESPONSIBLE DATA COLLECTION
+## Add to Section 7: Interview Design
 
-## 1. What is Human-Centered Research?
+### Asking About Actual Behaviour
 
-Human-centered research focuses on understanding people's experiences, needs, behavior, and interaction with systems or technologies.
+Researchers should prefer questions about concrete, recent experiences rather than hypothetical opinions.
 
-It uses methods such as surveys, interviews, focus groups, observation, and usability testing.
+Example:
 
-The goal is to collect meaningful evidence while protecting participants' rights, safety, privacy, and dignity.
+- Better: "Walk me through the last time you verified a social media post."
+- Less informative: "Would you use a verification tool?"
 
-## 2. Learning Outcomes of Week 5
+Concrete examples help participants describe what they actually did rather than what they think they might do.
 
-Students should be able to:
+---
 
-1. Design appropriate research instruments.
-2. Plan ethical data collection and recruitment.
-3. Obtain informed consent.
-4. Protect participants' privacy.
-5. Assess dataset provenance, licensing, and PII.
-6. Apply responsible AI practices.
+## Add to Section 8: Focus Groups
 
-## 3. Two Evidence Tracks
+### When Should We Use a Focus Group?
 
-### A. Human-Participant Track
+A focus group should be selected when group interaction itself is important research evidence.
 
-Uses evidence collected directly from people.
+It is useful for understanding:
+- Shared beliefs and social norms.
+- Agreement and disagreement.
+- Community language.
+- How participants' opinions change during discussion.
 
-Examples:
-- Surveys.
-- Interviews.
-- Focus groups.
-- Observation.
-- Usability testing.
+**Confidentiality Limitation:** Researchers can explain their own confidentiality responsibilities, but cannot guarantee that other participants will keep the discussion private. This limitation must be explained during consent.
 
-Deliverables:
-- Draft survey or interview protocol.
-- Recruitment and consent plan.
-- Ethics considerations draft.
+---
 
-### B. Dataset/ML Track
+## Add to Section 9: Observation
 
-Uses existing datasets, scraped data, logged data, or benchmarks.
+### Additional Ethical Considerations
 
-Deliverables:
-- Dataset ethics note.
-- Provenance and license assessment.
-- PII audit.
-- Bias and downstream harm assessment.
-- Ethics considerations draft.
+Online observation includes forums, social media groups, and public comment threads.
 
-**Important:** Publicly available data does not automatically mean ethically usable data.
+However, public availability does not automatically mean that participants have consented to research use.
 
-## 4. Selecting the Appropriate Research Method
+Researchers should:
+- Consider privacy expectations.
+- Anonymize identifiable information.
+- Avoid verbatim quotations that can be traced through search engines when this creates privacy risks.
+- Document the researcher's presence and role.
 
-| Method | Best For | Typical Output |
-|---|---|---|
-| Survey | Measuring attitudes, prevalence, and relationships | Numeric responses and scale scores |
-| Interview | Understanding experiences and reasoning | Interview transcripts |
-| Focus Group | Understanding shared opinions and disagreements | Group transcripts |
-| Observation | Studying actual behavior | Field notes and observations |
-| Usability Testing | Evaluating a system or artifact | Task success, time, errors, SUS |
-| Existing Dataset Study | ML, AI, CV, and NLP research | Model performance and evaluation results |
+### Combining Observation and Interviews
 
-**Method Selection Rule:**
+Observation helps researchers understand what people actually do, while follow-up interviews help explain why they behave that way.
 
-- How much/how many? → Survey or logs.
-- How/why? → Interview or observation.
-- Does the system work? → Usability testing.
-- Can a model learn a pattern? → Dataset study with evaluation protocol.
+Combining both methods can provide complementary evidence.
 
-## 5. Survey Design
+---
 
-A survey is a structured data collection method used to gather information from respondents through a set of questions.
+## Add to Section 10: Usability Testing
 
-### Survey Design Process
+### Additional Usability Testing Principles
 
-Construct → Dimensions → Items → Response Scale → Pilot → Deployment.
+**Task Design:** Tasks should be realistic, goal-based, and have clearly defined success criteria.
 
-### Principles of Good Survey Design
+Example:
+- Weak: "Explore the application."
+- Strong: "Find a suspicious post and report it using the application."
 
-1. Use simple and clear language.
-2. Each question should measure one concept.
-3. Avoid leading questions.
-4. Avoid double-barreled questions.
-5. Keep response scales consistent.
-6. Use validated scales when possible.
-7. Keep the survey reasonably short.
-8. Pilot-test before deployment.
+**Think-Aloud Limitation:** Participants explain their thoughts while performing tasks. This helps identify confusion and reasoning, but may slightly affect task completion time.
 
-### Common Survey Item Problems
+**Small-Sample Logic:** Around five users may reveal many usability problems and support iterative improvement. However, this does not automatically provide a sufficient sample for statistical hypothesis testing.
 
-| Problem | Example | Improvement |
-|---|---|---|
-| Double-barreled | Is the app fast and easy to use? | Ask two separate questions |
-| Leading | How much do you love this feature? | Use neutral wording |
-| Vague quantifier | Do you often verify news? | Specify a time period |
-| Jargon | Rate the system's affordances | Use plain language |
-| Absolute wording | Do you always check sources? | Use a graded response scale |
+---
 
-**Pilot Testing:** Test the instrument with approximately 3–5 people before the actual deployment.
+## Add to Section 11: Dataset-Track Research Methods
 
-## 6. Sampling and Recruitment
+### A. Existing Dataset Studies
 
-Sampling is the process of selecting participants from a target population for a research study.
+Before model training:
+1. Select a dataset against explicit research requirements.
+2. Finalize train/test splits.
+3. Define baseline models.
+4. Select suitable evaluation metrics.
+5. Plan ablation studies where applicable.
 
-### Types of Sampling
+Dataset selection is a research design decision, not simply a process of choosing a popular dataset.
 
-**1. Convenience Sampling:**
-Selecting participants who are easily accessible.
+### B. Logged or Scraped Data
 
-Advantage: Fast and inexpensive.
+Researchers should:
+- Check platform Terms of Service (ToS) and API rules.
+- Define the data collection period.
+- Document search queries and sampling procedures.
+- Handle PII during data ingestion rather than waiting until after model training.
 
-Limitation: Weak generalizability.
+### C. Self-Collected and Annotated Data
 
-**2. Snowball Sampling:**
-Existing participants refer additional participants.
-
-Advantage: Useful for hard-to-reach populations.
-
-Limitation: Referral bias.
-
-**3. Purposive Sampling:**
-Selecting participants based on specific characteristics relevant to the RQ.
-
-Advantage: Provides relevant and information-rich participants.
-
-Limitation: Findings may not represent the wider population.
-
-### Sample Size
-
-- Quantitative studies: Sample size should be justified based on the planned statistical analysis.
-- Qualitative studies: Sample size depends on research scope and information sufficiency; saturation may guide recruitment.
-- The lecture suggests around 8–15 interviews as a realistic course-level target, not a universal rule.
-
-### Recruitment Ethics
-
-Participation must be voluntary. Researchers must not use grades, employment authority, favors, or pressure to force participation.
-
-## 7. Interview Design
-
-An interview is a qualitative data collection method used to explore participants' experiences, opinions, reasoning, and behavior in depth.
-
-### Semi-Structured Interview
-
-A semi-structured interview uses prepared core questions while allowing follow-up questions and probes.
-
-### Interview Structure
-
-1. Opening: Explain the study, reconfirm consent, and build rapport.
-2. Core Questions: Ask open-ended questions linked to RQs.
-3. Probes: Ask follow-up questions such as "Can you explain more?"
-4. Closing: Invite additional comments, thank participants, and explain next steps.
-
-**Good Interview Questions:**
-- How do you decide whether a post is trustworthy?
-- Can you describe the last time you verified information?
-
-Avoid leading or judgmental questions.
-
-## 8. Focus Groups
-
-A focus group is a qualitative method in which a small group discusses a specific topic under the guidance of a moderator.
-
-### Characteristics
-
-- Usually 4–8 participants.
-- One moderator.
-- One note-taker.
-- Useful for shared norms, group language, and disagreement.
-
-### Advantages
-- Generates multiple perspectives.
-- Reveals group interaction.
-- Helps identify shared beliefs and disagreements.
-
-### Limitations
-- Dominant participants may influence others.
-- Participants may hesitate to disagree.
-- Confidentiality cannot be guaranteed among participants.
-
-**Important:** Sensitive personal topics are generally more appropriate for individual interviews.
-
-## 9. Observation
-
-Observation is a data collection method in which researchers systematically watch and record actual behavior in a particular setting.
-
-### Types
-
-**Naturalistic Observation:** Observing behavior in its natural environment with minimal interference.
-
-**Structured Observation:** Recording predefined behaviors using a coding sheet or checklist.
-
-### Important Considerations
-
-- Observer effect: Participants may change their behavior because they know they are being observed.
-- Field notes: Separate direct observations from researcher interpretations.
-- Online observation: Public online content still requires privacy and ethical consideration.
-
-## 10. Usability Testing
-
-Usability testing evaluates how effectively and efficiently users can complete tasks using a system or product.
-
-### Important Measures
-
-1. Task Success: Whether the participant completes the task.
-2. Time on Task: How long task completion takes.
-3. Error Count: Number of errors made.
-4. SUS: System Usability Scale score.
-5. Think-Aloud: Participants explain their thoughts while performing tasks.
-
-### Think-Aloud Method
-
-Participants verbalize their thoughts while interacting with a system. It helps researchers understand confusion, decisions, and interaction problems.
-
-**Important:** Test the system, not the participant.
-
-## 11. Dataset-Track Research Methods
-
-For AI, ML, CV, and NLP projects, the dataset and evaluation protocol function as the main research instruments.
-
-Important steps:
-
-1. Select a dataset that matches the RQ.
-2. Check its provenance and license.
-3. Inspect samples manually.
-4. Identify duplicates, incorrect labels, and missing data.
-5. Define train/test splits.
-6. Select appropriate evaluation metrics.
-7. Compare with baseline models.
-8. Document transformations and limitations.
-
-### Common Evaluation Metrics
-
-- Accuracy.
-- Precision.
-- Recall.
-- F1-score.
-- Mean Average Precision (mAP).
-- BLEU.
-- Calibration metrics.
-
-Metrics must match the research task.
-
-### Annotation Quality
-
-For self-collected or manually labeled datasets:
+Researchers should:
 - Prepare written annotation guidelines.
 - Use at least two annotators on a sample where feasible.
 - Measure inter-annotator agreement, such as Cohen's kappa.
-
-## 12. Instrument Quality and Pilot Testing
-
-An instrument is a tool used to collect research evidence, such as a survey questionnaire or interview guide.
-
-Pilot testing helps identify:
-- Unclear questions.
-- Confusing language.
-- Technical issues.
-- Excessive completion time.
-- Problems with response options.
-
-### Language Considerations
-
-For Bangla and English instruments:
-1. Translate the questions.
-2. Back-translate to check meaning.
-3. Avoid complex expressions and jargon.
-4. Record the language used by each participant.
-
-## 13. Thematic Analysis
-
-Thematic analysis is a qualitative method used to identify, analyze, and report patterns or themes within qualitative data.
-
-### Six Phases of Thematic Analysis
-
-1. Familiarization: Read and understand the data.
-2. Coding: Label meaningful data segments.
-3. Building Themes: Group related codes into patterns.
-4. Reviewing Themes: Check themes against the complete dataset.
-5. Defining and Naming: Clearly define each theme.
-6. Writing Up: Present findings with supporting evidence.
-
-**Important:** Themes are developed through systematic analysis; they do not automatically emerge from data.
-
-## 14. Research Ethics
-
-Research ethics refers to the principles and practices that protect participants' rights, dignity, privacy, safety, and well-being during research.
-
-### Three Fundamental Ethical Principles
-
-**1. Respect for Persons**
-
-- Respect individual autonomy.
-- Obtain informed consent.
-- Ensure voluntary participation.
-- Allow withdrawal without penalty.
-
-**2. Beneficence**
-
-- Maximize potential benefits.
-- Minimize possible harm.
-- Assess and reduce research risks.
-
-**3. Justice**
-
-- Distribute research burdens and benefits fairly.
-- Avoid exploiting vulnerable populations.
-- Ensure fair participant selection.
-
-These principles are associated with the Belmont Report.
-
-## 15. Informed Consent
-
-Informed consent is a process through which participants voluntarily agree to participate after receiving and understanding relevant information about the study.
-
-### Elements of Informed Consent
-
-1. Research purpose.
-2. Procedures and estimated time.
-3. Potential risks and benefits.
-4. Voluntary participation.
-5. Right to withdraw without penalty.
-6. Data usage and storage.
-7. Anonymization or confidentiality measures.
-8. Separate permission for audio/video recording.
-9. Contact information for questions or complaints.
-
-**Important:** Consent means understanding and voluntary agreement, not merely signing a form.
-
-### Ongoing Consent
-
-Researchers should check whether participants remain comfortable during long or sensitive sessions.
-
-## 16. Privacy and Data Protection
-
-Privacy and data protection involve safeguarding personal information from unauthorized access, disclosure, misuse, or identification.
-
-### Anonymization vs Pseudonymization
-
-| Anonymization | Pseudonymization |
-|---|---|
-| Removes identifying information so identity cannot reasonably be recovered | Replaces direct identifiers with codes |
-| No identity key is retained | A separate key may reconnect codes to identities |
-| Identity is intended to be unrecoverable | Re-identification remains possible through the key |
-
-### Data Protection Practices
-
-- Use encrypted storage.
-- Restrict access to authorized team members.
-- Keep identity keys separate.
-- Define retention and deletion periods.
-- Avoid storing participant data in personal messaging accounts.
-- Remove or generalize indirect identifiers.
-- Avoid sharing identifiable data publicly.
-
-## 17. IRB and Ethics Review
-
-IRB stands for Institutional Review Board.
-
-An IRB is a committee that reviews research involving human participants to ensure that ethical principles, participant rights, and safety requirements are followed.
-
-### What Does an IRB Review?
-
-1. Risk-benefit balance.
-2. Informed consent quality.
-3. Recruitment fairness.
-4. Protection of vulnerable participants.
-5. Privacy and data storage.
-6. Researcher competence.
-7. Risk mitigation procedures.
-
-For course projects, the instructor may review instruments and ethics plans before data collection. Formal thesis research may require university ethics review.
-
-## 18. Dataset Ethics
-
-Dataset ethics concerns the responsible collection, selection, use, storage, and application of datasets, especially datasets containing information about people.
-
-Important issues:
-
-1. Provenance: Where did the dataset come from?
-2. Licensing: Is research and model training permitted?
-3. Consent: Under what expectations was the data collected?
-4. PII: Does it contain personally identifiable information?
-5. Bias: Are particular groups or regions underrepresented?
-6. Downstream Harm: Could the model cause discrimination or other harm?
-7. Storage: Who can access the data and when will it be deleted?
-
-**Important:** Public availability does not automatically establish ethical permission for every type of use.
-
-## 19. PII (Personally Identifiable Information)
-
-PII refers to information that can directly or indirectly identify an individual.
-
-Examples:
-- Full name.
-- Phone number.
-- Email address.
-- Face image.
-- Username.
-- Precise location.
-- Other combinations of identifying information.
-
-Researchers should identify and minimize unnecessary PII before analysis.
-
-## 20. Data Provenance
-
-Data provenance is the documented history and origin of a dataset, including who collected it, why, when, how, and what transformations were applied.
-
-### Main Components
-
-1. Origin: Creator, purpose, funding, and collection period.
-2. Collection: How the data was obtained.
-3. Labeling: Who labeled the data and what guidelines were used.
-4. Transformations: Cleaning, filtering, deduplication, and rebalancing.
-5. Documentation: Records of processing and limitations.
-
-**Importance:** Provenance improves transparency, reproducibility, accountability, and trustworthiness.
-
-## 21. Responsible AI Use in Research
-
-Responsible AI use means using AI tools transparently, safely, and with human verification.
-
-### Legitimate Uses
-
-- Literature scanning.
-- Transcription assistance.
-- Coding assistance.
-- Brainstorming coding schemes.
-- Language polishing.
-
-### Important Restrictions
-
-- Do not upload identifiable participant information or raw transcripts to third-party AI tools without proper authorization and safeguards.
-- Do not treat AI-generated synthetic participants as real research evidence.
-- Do not use unverified AI-generated claims as citations.
-- Verify all AI-generated outputs.
-- Disclose AI tools and their purposes in the research report.
-
-**Key Principle:** Researchers remain responsible for all findings, claims, data, and code, even when AI tools are used.
-
-## 22. Dataset Ethics Note
-
-A dataset ethics note is a document that explains whether a dataset can be responsibly and legally used for a research project.
-
-It should include:
-
-1. Source and Provenance: Who created the dataset, why, and how?
-2. License: Does the license permit research and model training?
-3. Consent Basis: Under what conditions was the original data collected?
-4. PII Audit: What identifying information exists?
-5. Bias and Coverage: Which groups or cases are missing or overrepresented?
-6. Downstream Harm: What risks could result from using the dataset or model?
-7. Storage and Access: Where is it stored and who can access it?
-
-## 23. Ethics Considerations Draft
-
-An ethics considerations draft describes the ethical risks and protection measures associated with a research project.
-
-For human-participant studies, include:
-- Participants and their context.
-- Recruitment and consent.
-- Voluntary participation.
-- Potential risks and mitigation.
-- Privacy and storage.
-- Withdrawal procedure.
-- AI-use disclosure.
-
-For dataset/ML studies, include:
-- Data source and provenance.
-- License and consent basis.
-- PII and anonymization.
-- Bias and representation.
-- Downstream harm.
-- Access control and deletion.
-- AI-use disclosure.
+- Document labeling instructions and limitations.
 
 ---
 
-# IMPORTANT DIFFERENCES FOR EXAM
+## Add to Section 12: Instrument Quality and Pilot Testing
 
-## 1. Quantitative vs Qualitative Research
+### Additional Instrument Quality Principles
 
-| Quantitative | Qualitative |
-|---|---|
-| Uses numerical data | Uses non-numerical data |
-| Measures variables | Explores meanings and experiences |
-| Uses statistical analysis | Uses thematic or interpretive analysis |
-| Often uses surveys and experiments | Often uses interviews and observations |
-| Answers how much, how many, or how strongly | Answers how and why |
+A good instrument should produce consistent interpretations across participants.
 
-## 2. Interview vs Focus Group
+Researchers should check:
+- Whether participants understand the questions consistently.
+- Whether response scales behave as expected.
+- Whether interview questions produce relevant and answerable responses.
+- Whether the instrument works across different education levels in the target population.
 
-| Interview | Focus Group |
-|---|---|
-| Usually one participant at a time | Multiple participants |
-| Explores individual experiences | Explores group interaction and shared views |
-| Better for sensitive personal topics | Better for shared norms and disagreements |
-| Interviewer asks questions | Moderator manages discussion |
-
-## 3. Survey vs Interview
-
-| Survey | Interview |
-|---|---|
-| Structured questions | Structured or semi-structured conversation |
-| Can reach many participants | Usually fewer participants |
-| Often produces numerical data | Produces detailed verbal data |
-| Useful for measuring prevalence | Useful for understanding experiences |
-
-## 4. Anonymization vs Pseudonymization
-
-| Anonymization | Pseudonymization |
-|---|---|
-| Identity cannot reasonably be recovered | Identity may be recovered using a separate key |
-| No identity mapping is retained | Identity mapping may exist |
-| Stronger identity protection | Requires secure key management |
-
-## 5. H1 vs H0
-
-| H1 – Alternative Hypothesis | H0 – Null Hypothesis |
-|---|---|
-| Predicts a relationship or difference | Predicts no relationship or difference |
-| Represents the research expectation | Represents the null position tested statistically |
-
-## 6. Week 4 vs Week 5
-
-| Week 4 | Week 5 |
-|---|---|
-| Revises problem statement and RQs | Designs instruments and collection procedures |
-| Identifies variables and constructs | Measures constructs using instruments |
-| Selects study design | Implements ethical data collection planning |
-| Identifies dataset candidates | Audits dataset ethics and provenance |
-| Plans evidence and analysis | Protects participants and data subjects |
+**Important:** If a pilot participant cannot understand a question, the researcher should reconsider the wording instead of blaming the participant.
 
 ---
 
-# IMPORTANT SHORT QUESTIONS AND ANSWERS
+## Add to Section 13: Thematic Analysis
 
-**Q1. What is a research gap?**
+### Practical Planning Before Data Collection
 
-A research gap is an unanswered or underexplored issue in existing literature that requires further investigation.
+Researchers should consider analysis requirements before collecting qualitative data.
 
-**Q2. What is a research question?**
+Important considerations:
+1. Consent must explicitly cover audio or video recording.
+2. One hour of audio may require approximately 4–6 hours of transcription.
+3. For multilingual research, code the data in its original language where feasible.
+4. Translate themes rather than unnecessarily translating all raw quotations before analysis.
+5. Maintain a clear record of coding and theme development.
 
-A research question is a focused and answerable question that guides a research study.
-
-**Q3. What is a hypothesis?**
-
-A hypothesis is a testable prediction about a relationship or difference between variables.
-
-**Q4. What are H1 and H0?**
-
-H1 is the alternative hypothesis, which predicts a relationship or difference. H0 is the null hypothesis, which predicts no relationship or difference.
-
-**Q5. What is a construct?**
-
-A construct is an abstract concept, such as trust, usability, or cognitive load, that researchers investigate.
-
-**Q6. What is operationalization?**
-
-Operationalization is the process of defining how an abstract construct or variable will be observed or measured.
-
-**Q7. What is study design?**
-
-Study design is the overall plan for collecting and analyzing evidence to answer research questions.
-
-**Q8. What is mixed-methods research?**
-
-Mixed-methods research combines quantitative and qualitative approaches in one study.
-
-**Q9. What is external validity?**
-
-External validity refers to the extent to which research findings can be generalized to other populations, settings, or contexts.
-
-**Q10. What is reliability?**
-
-Reliability refers to the consistency of a research measurement or procedure.
-
-**Q11. What is a pilot study?**
-
-A pilot study is a small preliminary test conducted to identify problems in research instruments or procedures before the main study.
-
-**Q12. What is informed consent?**
-
-Informed consent is the voluntary agreement of participants after they understand the purpose, procedures, risks, and conditions of a study.
-
-**Q13. What are the three principles of the Belmont Report?**
-
-Respect for Persons, Beneficence, and Justice.
-
-**Q14. What is PII?**
-
-PII stands for Personally Identifiable Information, which can directly or indirectly identify an individual.
-
-**Q15. What is data provenance?**
-
-Data provenance is the documented origin and history of a dataset, including its collection, labeling, and transformations.
-
-**Q16. What is an IRB?**
-
-An Institutional Review Board is a committee that reviews research involving human participants to protect their rights, safety, and welfare.
-
-**Q17. What is thematic analysis?**
-
-Thematic analysis is a qualitative method for identifying, analyzing, and reporting patterns or themes in data.
-
-**Q18. What is usability testing?**
-
-Usability testing evaluates how effectively and efficiently users can complete tasks using a system or product.
-
-**Q19. What is pseudonymization?**
-
-Pseudonymization replaces direct identifiers with codes while retaining a separate key that may allow re-identification.
-
-**Q20. Why is dataset ethics important?**
-
-Dataset ethics ensures that data is collected and used responsibly, legally, and fairly while protecting privacy and reducing potential harm.
-
-**Q21. Does public data mean ethically free data?**
-
-No. Publicly available data may still contain personal information, licensing restrictions, or ethical risks.
-
-**Q22. Why should researchers disclose AI use?**
-
-Researchers should disclose AI use to maintain transparency, accountability, and research integrity.
+**Important:** Themes are developed through systematic analytical work. They do not automatically emerge from the data.
 
 ---
 
-# FINAL REVISION CHECKLIST
+## Add to Section 15: Informed Consent
 
-## Week 4
-- [ ] Problem statement and research gap
-- [ ] Research question definition and characteristics
-- [ ] Six types of RQs
-- [ ] RQ revision checklist
-- [ ] Hypothesis: H1 and H0
-- [ ] Constructs, variables, and operationalization
-- [ ] Quantitative, qualitative, and mixed methods
-- [ ] ML study design
-- [ ] Six validity considerations
-- [ ] Feasibility
-- [ ] Alignment matrix
-- [ ] Dataset selection and quality
+### Additional Elements of Consent
 
-## Week 5
-- [ ] Human-participant and dataset tracks
-- [ ] Survey design and common item problems
-- [ ] Sampling and recruitment
-- [ ] Interview and focus group
-- [ ] Observation and usability testing
-- [ ] Dataset evaluation protocol
-- [ ] Pilot testing
-- [ ] Six phases of thematic analysis
-- [ ] Three Belmont principles
-- [ ] Informed consent
-- [ ] Privacy and data protection
-- [ ] IRB
-- [ ] Dataset ethics
-- [ ] PII and data provenance
-- [ ] Responsible AI use
-- [ ] Dataset ethics note
-- [ ] Ethics considerations draft
+The consent document should also explain:
 
-**Exam Tip:** For a broad question, write the definition first, explain the main points in numbered form, give one relevant example, and finish with the importance or application. This structure makes answers clear and complete.
+1. What happens to already-collected data if a participant withdraws.
+2. Whether audio or video recording is involved.
+3. That recording permission is a separate decision from general participation consent.
+
+**Important:** Participants consent to a specific research purpose and data use, not to any future use the researcher may decide later.
+
+---
+
+## Add to Section 16: Privacy and Data Protection
+
+### Indirect Identifiers
+
+Information that does not directly identify a person may still identify them when combined with other details.
+
+Example:
+- Role
+- Department
+- Gender
+- Institution
+
+In a small research community, this combination may identify a specific individual.
+
+Researchers should generalize or aggregate such information when necessary.
+
+### Data Protection Principle
+
+Use encrypted and access-controlled storage, keep identity keys separate, and establish a clear retention and deletion plan.
+
+---
+
+## Add to Section 17: IRB and Ethics Review
+
+### Risk-Benefit Assessment
+
+Before data collection, researchers should identify:
+
+1. The worst realistic harm that could happen to a participant.
+2. The likelihood of that harm.
+3. The possible impact.
+4. The measures taken to prevent or reduce it.
+
+If the risks cannot be adequately managed, the research design should be revised.
+
+### Course-Level Review
+
+According to the lecture's course-level guidance, the instructor should review instruments and ethics considerations before data collection begins. Formal thesis research may require the university's designated ethics review process.
+
+---
+
+## Add to Section 18: Dataset Ethics
+
+### Scraping, Licensing, and Secondary Use
+
+**Scraping and Terms of Service:**
+Technically downloadable data is not automatically permitted for research use. Researchers should check platform rules and API restrictions.
+
+**Licensing:**
+A dataset's license should explicitly support the intended research use, redistribution, or model training where applicable.
+
+**Secondary Use:**
+Data collected for one purpose may carry expectations that restrict unrelated future uses.
+
+Example: Using sensitive crisis-related social media posts to train an unrelated model may create ethical risks even if the posts are publicly accessible.
+
+**Comfort Test:** Researchers should consider whether the people represented in the dataset would reasonably be comfortable with the specific intended use.
+
+---
+
+## Add to Section 20: Data Provenance
+
+### Additional Provenance Requirements
+
+Provenance should also document:
+- Funding and collection purpose.
+- Sampling and collection methods.
+- Annotator instructions and agreement.
+- Annotation labor and payment conditions, where relevant.
+- Dataset versioning.
+- Every major preprocessing and cleaning decision.
+
+Researchers are also data creators when they collect, filter, label, or transform datasets.
+
+**Important:** If dataset provenance cannot be established, its size or popularity does not make it trustworthy.
+
+---
+
+## Add to Section 22: Dataset Ethics Note
+
+### Recommended Length and Documentation
+
+A dataset ethics note should generally be around 1–2 pages for the course milestone.
+
+Every statement should have a checkable basis.
+
+If information about consent, provenance, or licensing is unavailable, explicitly write "Unknown" rather than making assumptions.
+
+---
+
+## Add to Section 23: Ethics Considerations Draft
+
+### Additional Requirements
+
+For human-participant studies:
+- Include withdrawal rights and a contact point.
+- Explain what happens to already-collected data after withdrawal.
+
+For dataset/ML studies:
+- Include a process for handling data takedown requests.
+- Identify a contact point for concerns about the dataset or its use.
+
+The draft should generally be 1–2 pages and contain project-specific ethical risks and protection measures rather than generic template statements.
+
+---
+
+## Additional Section: Dataset Requirement Audit
+
+Before selecting a dataset, researchers should derive explicit requirements from the RQ.
+
+### Step 1: Define Requirements
+
+Specify:
+- Research task and labels.
+- Unit of analysis.
+- Target population or domain.
+- Conditions and time period.
+- Minimum dataset scale and class requirements.
+- License and provenance requirements.
+
+### Step 2: Audit the Dataset
+
+1. Read the dataset paper or datasheet.
+2. Inspect approximately 50–100 samples manually where feasible.
+3. Check label correctness.
+4. Identify duplicates.
+5. Verify whether the actual content matches the dataset description.
+
+### Step 3: Make a Decision
+
+| Decision | Meaning |
+|---|---|
+| Fit | Meets the core research requirements |
+| Partial Fit | Has limitations but each has a realistic mitigation |
+| Reject | A core requirement fails without an honest mitigation |
+
+### Worked Example: Dataset Fit
+
+**Research Question:** To what extent can a detection model identify helmet non-use among motorcycle riders in Dhaka daytime traffic images?
+
+**Candidate Dataset:** A public helmet dataset collected from Indian urban traffic CCTV.
+
+| Requirement | Candidate limitation | Decision |
+|---|---|---|
+| Task and labels | Helmet boxes are available but not linked to individual riders | Partial fit |
+| Domain | Indian urban traffic differs from Dhaka traffic | Domain shift risk |
+| Conditions | Daytime and dry weather only | Narrow the claim |
+| Class balance | 12,000 helmet vs. 1,800 no-helmet instances | Imbalance risk |
+| License | CC BY-NC 4.0 | Research use subject to license conditions |
+| Provenance | No clear annotator agreement information | Document uncertainty |
+
+**Conclusion:** The dataset may be partially suitable if limitations are addressed. The generalization claim must be restricted to the conditions actually represented by the data.
+
+---
+
+## Additional Section: Week 5 Workshop
+
+### Instrument and Ethics Design Workshop
+
+The workshop follows four steps:
+
+| Step | Activity | Expected Output |
+|---|---|---|
+| 1 — 10 min | Map each RQ to an instrument or data source | Instrument-RQ map |
+| 2 — 25 min | Draft survey/interview/usability tasks or audit a dataset | Draft instrument or dataset audit |
+| 3 — 15 min | Peer-review consent, coercion, privacy, and provenance | Written risk list |
+| 4 — 10 min | Revise the draft and record unresolved questions | Revised draft and open questions |
+
+**Workshop Question:** What is the worst realistic thing that could happen to a participant or data subject, and where does your draft address that risk?
+
+---
+
+## Additional Section: Recommended Reading Materials
+
+| Topic | Recommended Reading |
+|---|---|
+| HCI Methods | Lazar, Feng & Hochheiser — Research Methods in Human-Computer Interaction |
+| Thematic Analysis | Braun & Clarke — Using Thematic Analysis in Psychology (2006) |
+| Research Ethics | The Belmont Report |
+| Survey Design | Groves et al. — Survey Methodology |
+| Dataset Ethics | Gebru et al. — Datasheets for Datasets |
+| Responsible AI | ACM Code of Ethics and target publication venue's AI-use policy |
+
+**Week 5 Milestone:** Bring a draft instrument or dataset ethics note, an ethics considerations draft, and one unresolved ethical question for discussion.
